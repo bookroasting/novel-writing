@@ -1,0 +1,2 @@
+# novel-writing 스킬의 스크립트가 쓰는 파이썬 패키지 (python3 3.9 이상)
+python-docx>=1.1

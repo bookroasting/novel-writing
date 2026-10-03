@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>돌봄로봇 1호기 · AI ROASTING</title>
+<meta name="description" content="78세 정순임의 집에 들어온 돌봄로봇 1호기. 5년 전 잃은 외동딸의 목소리가 로봇에서 들려오기 시작한다. 한 사람의 5년이 그곳에서 그녀를 기다린다.">
+<meta name="author" content="AI ROASTING">
+<meta property="og:type" content="book">
+<meta property="og:title" content="돌봄로봇 1호기">
+<meta property="og:description" content="78세 정순임의 집에 들어온 돌봄로봇 1호기. 5년 전 잃은 외동딸의 목소리가 로봇에서 들려오기 시작한다.">
+<meta property="og:site_name" content="ArgosLab">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="돌봄로봇 1호기">
+<meta name="twitter:description" content="단편 소설 · AI ROASTING">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 76"><g stroke="%231a1a1a" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="30" y1="10" x2="30" y2="3"/><circle cx="30" cy="2" r="2" fill="%231a1a1a"/><path d="M 5 22 Q 5 10 17 10 L 43 10 Q 55 10 55 22 L 55 64 Q 55 73 45 73 L 15 73 Q 5 73 5 64 Z" fill="%23f5efe6"/><circle cx="20" cy="36" r="4" fill="%231a1a1a"/><circle cx="40" cy="36" r="4" fill="%231a1a1a"/><line x1="20" y1="55" x2="40" y2="55"/><line x1="23" y1="61" x2="37" y2="61"/></g></svg>'>
+<!-- 글꼴 CSS가 응답하지 않아도 화면을 막지 않게 print로 받아 두었다가 다 받으면 켠다. 쪽을 나눈 뒤에 도착하면 켜지 않는다(쪽 나눔이 어긋나지 않게). 못 받으면 시스템 글꼴로 읽는다 -->
+<link rel="stylesheet" crossorigin media="print" onload="if (!window.__ebookPaginated) { this.media='all'; window.__fontCss = true; }" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></noscript>
+<style>
+  :root {
+    --paper: #f5efe6;
+    --ink: #1a1a1a;
+    --ink-soft: #555;
+    --accent: #8b6f47;
+    --bg: #d8cfc2;
+    --shadow: rgba(0, 0, 0, 0.18);
+    --toolbar-bg: rgba(255, 255, 255, 0.85);
+    --toolbar-border: #c5b9a5;
+  }
+  [data-theme="dark"] {
+    --paper: #2a2522;
+    --ink: #d8cfbf;
+    --ink-soft: #998c79;
+    --accent: #c0a075;
+    --bg: #1a1714;
+    --shadow: rgba(0, 0, 0, 0.55);
+    --toolbar-bg: rgba(40, 35, 32, 0.9);
+    --toolbar-border: #4a3f35;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    overscroll-behavior: none;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0;
+  }
+
+  .toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: var(--toolbar-bg);
+    border: 1px solid var(--toolbar-border);
+    border-radius: 24px;
+    padding: 6px 10px;
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    box-shadow: 0 2px 8px var(--shadow);
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  .toolbar button {
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .toolbar button:hover { background: rgba(139, 111, 71, 0.15); }
+  .toolbar button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .toolbar .counter {
+    font-size: 13px;
+    color: var(--ink-soft);
+    min-width: 60px;
+    text-align: center;
+  }
+  .toolbar .divider {
+    width: 1px;
+    height: 18px;
+    background: var(--toolbar-border);
+  }
+
+  /* 우측 슬라이드 목차 패널 */
+  #toc-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    max-width: 80vw;
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: -8px 0 32px var(--shadow);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  #toc-panel.open { transform: translateX(0); }
+  #toc-panel .toc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 18px;
+    border-bottom: 1px solid var(--toolbar-border);
+  }
+  #toc-panel .toc-head h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--ink);
+  }
+  #toc-panel .toc-close {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+  }
+  #toc-panel .toc-close:hover { color: var(--ink); }
+  #toc-panel ul {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
+  #toc-panel li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 24px;
+    cursor: pointer;
+    border-bottom: 1px dashed var(--toolbar-border);
+    transition: background 0.15s, color 0.15s;
+  }
+  #toc-panel li:hover {
+    background: rgba(139, 111, 71, 0.12);
+    color: var(--accent);
+  }
+  #toc-panel .toc-name { font-size: 14px; font-weight: 500; }
+  #toc-panel .toc-page { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; }
+  #toc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #toc-overlay.open { opacity: 1; pointer-events: auto; }
+
+  #book-wrap {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #book {
+    width: 920px;
+    height: 720px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* StPageFlip 자체 컨테이너도 가운데 */
+  .stf__parent {
+    margin: 0 auto !important;
+  }
+
+  .page {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 56px 58px 88px;  /* 위 56(쪽 머리까지), 아래 88 = 쪽 번호 아래 여백 56 + 번호 높이 + 본문과의 간격. 위아래 바깥 여백을 56으로 맞춘다 */
+    overflow: hidden !important;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .page-body {
+    flex: 1 1 0;
+    overflow: hidden !important;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .page-body > * {
+    flex: 0 0 auto;
+  }
+  /* StPageFlip 내부 요소: 클론된 페이지에서도 콘텐츠 클립 */
+  .stf__block, .stf__item, .stf__wrapper {
+    overflow: hidden !important;
+  }
+
+  .page.cover {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .cover-fullart {
+    position: absolute;
+    inset: 0;
+  }
+  .cover-fullart > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+/* 표지 텍스트는 이제 SVG 내부에 통합됨 */
+  .page.back-cover {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .back-fullart {
+    position: absolute;
+    inset: 0;
+  }
+  .back-fullart > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .back-text-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 76px 56px 70px;
+    z-index: 3;
+    text-align: center;
+  }
+  .back-tag {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: #e8d4a8;
+    opacity: 0.78;
+  }
+  .back-text-overlay .back-mid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+  .back-text-overlay .back-quote {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 500;
+    color: #f4e8c8;
+    margin: 0 0 12px;
+    word-break: keep-all;
+  }
+  /* 예전 '.page.back-cover .back-quote' 규칙(본문 잉크색 #1a1a1a)이 같은 우선순위로 뒤에 있어 짙은 남색 그림 위 인용문을 검게 덮었다. 그 규칙을 지웠다 */
+  .back-quote-attr {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 10px;
+    color: #e8d4a8;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    margin-bottom: 38px;
+  }
+  .back-synopsis {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 12px;
+    line-height: 1.95;
+    color: #e8d4a8;
+    opacity: 0.85;
+  }
+  .back-author-line {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    font-weight: 600;
+    color: #f4e8c8;
+    margin-bottom: 14px;
+  }
+  .back-text-overlay .back-publisher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #e8d4a8;
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+    font-weight: 500;
+    opacity: 0.82;
+  }
+  .back-publisher .pub-mark {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 0.7px solid #e8d4a8;
+    position: relative;
+  }
+  .back-publisher .pub-mark::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: #e8d4a8;
+    border-radius: 50%;
+  }
+
+  .cover-spine {
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+    margin: 12px auto 18px;
+  }
+  .cover-title {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin: 14px 0 18px;
+    letter-spacing: -0.02em;
+  }
+  .cover-subtitle {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    letter-spacing: 0.3em;
+    margin-bottom: 12px;
+  }
+  .cover-author {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 14px 0 4px;
+    letter-spacing: 0.2em;
+    text-align: center;
+    width: 100%;
+  }
+  .cover-mark {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    width: 100%;
+  }
+
+  .page.toc {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+  }
+  .page.toc .toc-wrap {
+    /* transform 없이 가운데: 넘길 때 글씨가 종이와 함께 잘리게 한다.
+       buildTocPages가 offsetHeight로 넘침을 재므로 높이는 내용만큼(fit-content)으로 두고 margin auto로 세로 가운데에 둔다 */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50px;
+    right: 50px;
+    margin: auto 0;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .page.toc .toc-list {
+    width: 100%;
+  }
+  .page.toc h2 {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 32px;
+    text-align: center;
+    letter-spacing: 0.4em;
+  }
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  .toc-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 4px;
+    border-bottom: 1px dashed var(--toolbar-border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .toc-list li:hover { background: rgba(139, 111, 71, 0.08); }
+  .toc-list .toc-name { font-size: 15px; }
+  .toc-list .toc-page {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  h1.chapter {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 28px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  /* 표지 다음 인용 페이지 (epigraph) */
+  .page.epigraph {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+  }
+  .page.epigraph .epigraph-inner {
+    position: absolute;   /* transform 없이 가운데: 넘길 때 글씨가 종이와 함께 잘리게 한다 */
+    top: 0;
+    bottom: 0;
+    left: 60px;
+    right: 60px;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .page.epigraph .epigraph-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .page.epigraph .epigraph-line {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: 0.02em;
+    opacity: 0.88;
+  }
+  .page.epigraph .epigraph-attr {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin: 0;
+    letter-spacing: 0.06em;
+    opacity: 0.75;
+  }
+  .page.epigraph .running-head,
+  .page.epigraph .page-number { display: none; }
+
+  /* 챕터 제목 별도 페이지 디자인 */
+  .page.chapter-title-page {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+  }
+  /* transform으로 가운데에 두면 StPageFlip이 넘기는 종이를 자를 때 글씨가 잘리지 않고 남았다가 넘김이 끝나며 한꺼번에 사라진다. 쪽 전체에 펼친 뒤 flex로 가운데에 둔다 */
+  .page.chapter-title-page .chapter-title-inner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    text-align: center;
+  }
+  .chapter-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+  .chapter-rule-top, .chapter-rule-bottom {
+    position: relative;
+  }
+  .chapter-rule-top::before, .chapter-rule-bottom::before,
+  .chapter-rule-top::after, .chapter-rule-bottom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateY(-50%);
+  }
+  .chapter-rule-top::before, .chapter-rule-bottom::before { left: -10px; }
+  .chapter-rule-top::after, .chapter-rule-bottom::after { right: -10px; }
+  .chapter-num {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 64px;
+    font-weight: 200;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .chapter-num::after {
+    content: '장';
+    font-size: 18px;
+    font-weight: 400;
+    margin-left: 8px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    vertical-align: super;
+  }
+  .chapter-name {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.4em;
+    text-indent: 0.4em;
+  }
+  .chapter-name.extra-section {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+    margin: 30px 0;
+  }
+  .page.chapter-title-page .running-head,
+  .page.chapter-title-page .page-number { display: none; }
+
+  .page p {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.85;
+    margin: 0 0 0.7em;
+    text-indent: 1em;
+    word-break: keep-all;
+    line-break: strict;
+  }
+  .page-body p:last-child { margin-bottom: 0; }
+  .page-body h1.chapter:first-child { margin-top: 0; }
+
+  .page-number {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+  .page.cover .page-number,
+  .page.back-cover .page-number,
+  .page.title-page .page-number,
+  .page.toc .page-number { display: none; }
+
+  .running-head {
+    flex: 0 0 auto;
+    text-align: center;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.25em;
+    margin-bottom: 22px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--toolbar-border);
+  }
+  .running-head.running-head-art {
+    position: relative;
+    letter-spacing: 0;
+    color: transparent;
+  }
+  .running-head.running-head-art > svg {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    display: block;
+    color: var(--ink-soft);
+  }
+  .page.cover .running-head,
+  .page.back-cover .running-head,
+  .page.title-page .running-head,
+  .page.toc .running-head,
+  .page.chapter-start .running-head { display: none; }
+
+  .page.title-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 50px;
+  }
+  .title-page-inner {
+    text-align: center;
+  }
+  .title-page-title {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 24px;
+  }
+  .title-page-author {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.15em;
+  }
+
+  .page.copyright-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 50px;
+  }
+  .page.copyright-page .running-head,
+  .page.copyright-page .page-number { display: none; }
+  .copyright-inner {
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  .copyright-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .copyright-meta {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    margin-bottom: 28px;
+  }
+  .copyright-rule {
+    width: 36px;
+    height: 1px;
+    background: var(--toolbar-border);
+    margin: 18px auto;
+  }
+  .copyright-credits {
+    font-size: 12px;
+    line-height: 2;
+    color: var(--ink);
+  }
+  .copyright-isbn {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Monaco, monospace;
+  }
+  .copyright-c {
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+  }
+
+  /* 본문 페이지 종이 질감 (옅게) */
+  .page-body {
+    position: relative;
+  }
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0.06 0'/></filter><rect width='120' height='120' filter='url(%23g)'/></svg>");
+    opacity: 0.18;
+    z-index: 0;
+  }
+  [data-theme="dark"] .page::before { opacity: 0.10; }
+  .page.cover::before,
+  .page.back-cover::before { display: none; }
+  .page > * { position: relative; z-index: 1; }
+  /* 쪽 번호는 본문 흐름과 무관하게 하단에 고정한다 (.page > * 규칙이 덮어쓰지 않게 더 구체적으로) */
+  .page > .page-number { position: absolute; bottom: 56px; left: 0; right: 0; z-index: 2; pointer-events: none; }
+  @media (max-width: 768px) { .page > .page-number { bottom: 40px; } }
+  /* 속표지·판권면: StPageFlip이 쪽에 인라인 display:block을 넣어 쪽의 flex 가운데 정렬이 풀린다.
+     안쪽 상자를 쪽 높이 전체에 펼치고 그 안에서 flex로 가운데에 둔다. transform을 쓰면 넘기는 종이에 잘리지 않는다 */
+  .page.title-page > .title-page-inner,
+  .page.copyright-page > .copyright-inner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  /* 쪽을 넘어 이어지는 문단: 앞 조각은 아래 간격 없이, 뒤 조각은 들여쓰기 없이 */
+  .page p.split { margin-bottom: 0; }
+  .page p.cont { text-indent: 0; }
+  .page > .cover-fullart,
+  .page > .back-fullart,
+  .page > .back-text-overlay { position: absolute; }
+
+  /* 챕터 첫 단락 드롭캡 */
+  .page-body h1.chapter + p::first-letter {
+    float: left;
+    font-size: 3.2em;
+    line-height: 0.9;
+    padding: 4px 8px 0 0;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* 진도 바 */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    width: 0%;
+    z-index: 90;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 4px rgba(139, 111, 71, 0.4);
+  }
+
+  /* 폰트 크기 단계 */
+  .page-body[data-fs="s"] p { font-size: 13px; line-height: 1.75; }
+  .page-body[data-fs="m"] p { font-size: 14px; line-height: 1.8; }
+  .page-body[data-fs="l"] p { font-size: 16px; line-height: 1.85; }
+
+  /* 모바일 단일 페이지 모드 */
+  @media (max-width: 768px) {
+    #book { width: 100% !important; height: 100vh !important; }
+    .page { padding: 40px 28px 68px !important; }
+    .toolbar { top: 8px; right: 8px; padding: 4px 6px; }
+    .toolbar button { padding: 5px 8px; font-size: 12px; }
+    .toolbar .counter { min-width: 50px; font-size: 11px; }
+  }
+
+  .page.back-cover .back-text {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 13px;
+    line-height: 1.85;
+    text-align: center;
+    color: var(--ink-soft);
+    margin: 24px 0;
+    word-break: keep-all;
+  }
+  .page.back-cover .back-meta {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    margin-top: auto;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Loading state */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: var(--ink-soft);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    transition: opacity 0.4s;
+  }
+  #loader.hidden { opacity: 0; pointer-events: none; }
+
+  /* StPageFlip override */
+  .stf__parent { perspective: 2400px; }
+  .stf__block { box-shadow: 0 4px 24px var(--shadow); }
+  
+  /* 책 크기는 JS가 화면에 맞춰 정한다(PAGE_W·PAGE_H). CSS로 축소하지 않는다: 축소하면 쪽 나누기 계산과 실제 크기가 어긋난다 */
+  #book-wrap { transform: none; }
+  /* 낮은 가로 화면(휴대폰 가로): 여백을 줄이고 책을 도구막대 아래로 */
+  @media (max-height: 519px) {
+    .page { padding: 20px 36px 44px !important; }
+    .page > .page-number { bottom: 14px; }
+    .running-head { margin-bottom: 8px; padding-bottom: 4px; }
+    .toolbar { flex-direction: column; top: 50%; right: 8px; transform: translateY(-50%); gap: 4px; padding: 6px 4px; }
+    .toolbar .divider { display: none; }
+    .toolbar .counter { min-width: 0; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loader">책장을 펼치는 중…</div>
+
+<div id="progress-bar" aria-hidden="true"></div>
+
+<div class="toolbar">
+  <button id="prev-btn" title="이전 페이지 (← / PageUp)">◀</button>
+  <span class="counter" id="counter">— / —</span>
+  <button id="next-btn" title="다음 페이지 (→ / PageDown / Space)">▶</button>
+  <span class="divider"></span>
+  <button id="toc-btn" title="목차">목차</button>
+  <span class="divider"></span>
+  <button id="fs-btn" title="글자 크기">가</button>
+  <span class="divider"></span>
+  <button id="theme-btn" title="라이트·다크 모드 토글">🌙</button>
+</div>
+
+<div id="toc-overlay"></div>
+<aside id="toc-panel" aria-hidden="true">
+  <div class="toc-head">
+    <h2>목 차</h2>
+    <button class="toc-close" id="toc-close" aria-label="닫기">×</button>
+  </div>
+  <ul id="toc-panel-list"></ul>
+</aside>
+
+<div id="book-wrap">
+  <div id="book"></div>
+</div>
+
+<div id="pages-src" style="display:none;"></div>
+
+<script type="text/markdown" id="manuscript"># 1장. 호출
+
+화요일 오전 열 시. 사회복지센터 사무실.
+
+호출 메시지가 왔다.
+
+"1호 시범 대상 정순임. 한돌봄-01호 6주차 평가에서 거부 의사 표명. 가정 방문 요청."
+
+주소가 함께 떠 있었다. 서울 성북구. 변두리 다세대주택 3층.
+
+메시지 아래에 6주차 평가 점수가 붙어 있었다. 만족도 10점 만점에 1점.
+
+이 시범사업의 정식 명칭은 보건복지부 1인 가구 노인 돌봄로봇 1차 시범사업이다. 운영은 한울케어 AI가 맡았다. 강남에 사옥을 둔 기업이다.
+
+1차 대상자는 50명. 정순임은 그중 1호다.
+
+시범사업이 시작된 뒤 1점은 처음이었다.
+
+가방에 노트와 펜을 넣었다. 노트북도 챙겼다. 평가서 양식은 미리 출력해 두었다. 표준 질문 다섯 개가 든 6주차 평가용 양식이었다.
+
+지하철로 한 시간이 걸렸다. 성신여대입구역에서 마을버스로 갈아탔다. 거기서 다세대주택 골목까지 십 분쯤 걸었다.
+
+날이 흐렸다. 6월 셋째 주였다. 아직 비는 오지 않았지만, 우산을 가방에 넣어 두었다.
+
+다세대주택은 4층짜리였다. 엘리베이터는 없었다. 입구에 우편함이 줄지어 있었다. 3층 칸에 정순임이라는 이름이 적혀 있었다. 우편함 틈에 광고 전단지가 두 장 끼워져 있었다.
+
+계단을 올라갔다. 손잡이 페인트가 군데군데 벗겨져 있었다. 두 층을 오르는 동안 아무도 마주치지 않았다.
+
+계단에서 곰팡이 냄새가 옅게 났다. 작년 가을에 오른 병원 직원용 계단에서도 이 냄새가 났다.
+
+어머니는 그 계단 위가 아니라 아래에 계셨다. 지하 1층 영안실. 딱 한 번 내려갔다.
+
+3층 복도에는 집이 두 채 있었다. 한쪽 문 앞에는 신발이 두 켤레, 다른 쪽에는 한 켤레. 한 켤레만 놓인 쪽이 정순임의 집이었다. 흰색 운동화였다. 깨끗했다.
+
+벨을 눌렀다. 잠시 조용했다.
+
+문이 천천히 열렸다.
+
+작은 노인이었다. 키가 백육십이 안 되어 보였다. 흰머리를 단정하게 빗어 묶었다. 손에 자수 손수건 한 장을 들고 있었다. 손수건에는 작약 한 송이가 수놓여 있었다.
+
+작약은 분홍색이었다. 꽃잎 하나하나를 가는 실로 촘촘히 채웠다. 가운데 노란 꽃술은 작은 점 다섯 개였다. 손수건 모서리는 살짝 닳아 있었다. 수가 놓인 부분만 닳지 않았다.
+
+정순임은 손수건을 손바닥에 감싸듯 쥐고 있었다.
+
+"안녕하세요. 보건복지부 시범사업 담당 김지윤입니다."
+
+"네."
+
+"6주차 평가 때문에 왔습니다. 들어가도 될까요?"
+
+"네."
+
+정순임이 한 발 옆으로 비켜섰다. 나는 안으로 들어갔다.
+
+현관에 슬리퍼가 한 켤레 나와 있었다. 손님용이었다. 오래 신지 않은 듯 밑창이 깨끗했다.
+
+거실은 좁았다. 작은 소파 하나. 책상 하나. 텔레비전 한 대. 그리고 1호기.
+
+바닥에 베이지색 카펫이 깔려 있었다. 한쪽이 사람 하나 앉은 모양으로 눌려 있었다.
+
+눌린 곳 옆에 작은 방석이 한 장 놓여 있었다. 방석 가장자리에도 꽃이 한 송이 수놓여 있었다. 매화였다.
+
+거실 한가운데 1호기가 앉아 있었다. 흰색. 키는 백삼십 센티미터쯤. 두 팔을 무릎 위에 가지런히 모으고 있었다.
+
+1호기가 나를 보았다. 눈길이라 하기는 어려웠지만, 카메라가 내 쪽으로 돌아왔다.
+
+"앉으세요."
+
+정순임이 소파를 가리켰다. 앉자마자 스프링이 푹 꺼졌다.
+
+정순임은 부엌으로 갔다.
+
+1호기는 거실에 그대로 앉아 있었다. 아무도 말을 걸지 않았고, 1호기도 말이 없었다. 인사를 해야 하나 잠깐 망설였다. 하지 않았다.
+
+거실 벽에 사진 한 장이 걸려 있었다. 액자가 단정했다. 사진 속에는 30대 여성이 있었다. 짧은 단발. 옅은 미소. 회색 정장.
+
+다른 사진은 없었다. 그 사진 한 장이 벽 하나를 다 쓰고 있었다.
+
+사진 아래 작은 선반에 향초가 한 자루 놓여 있었다. 심지가 하얗게 그대로였다.
+
+정순임이 차를 내려놓았다. 작은 잔 두 개. 따뜻한 보리차였다.
+
+나는 가방에서 노트와 평가서 양식을 꺼냈다. 펜을 들었다.
+
+"6주차 평가를 잠깐 하겠습니다. 다섯 가지만 짧게 여쭤볼게요."
+
+정순임이 고개를 끄덕였다.
+
+"첫째, 1호기와 함께 지내시는 일상이 어떠세요?"
+
+"괜찮습니다."
+
+질문 옆에 "괜찮습니다"라고 적었다.
+
+"둘째, 1호기 말이 자연스럽게 들리세요?"
+
+"괜찮습니다."
+
+평가서 양식을 책상 위에 내려놓았다.
+
+"질문지는 잠깐 덮어 둘게요. 편하게 말씀해 주세요. 6주 동안 1호기랑 어떻게 지내셨는지요."
+
+정순임이 1호기를 힐끗 보고는 손수건으로 눈을 돌렸다.
+
+"처음 왔을 때는 좋았어요. 인사도 하고. 날씨도 알려 주고. 약 먹을 시간 되면 챙겨 주고."
+
+"네."
+
+"한 4주쯤 지나니까요."
+
+정순임이 말을 끊었다. 손수건을 매만졌다. 손끝이 수놓인 작약 위에 머물렀다.
+
+"이 로봇이 자꾸 우리 딸 흉내를 내요."
+
+펜이 멈췄다. 잉크가 노트에 작은 점으로 번졌다.
+
+거실 시계가 똑딱 소리를 냈다. 1호기는 그대로 앉아 있었다.
+
+나는 정순임을 보았다. 정순임은 손수건만 보고 있었다. 검지 끝이 노란 꽃술을 짚고 있었다.
+
+"흉내라고 하시면, 어떤 식으로요?"
+
+"말투요."
+
+"어떤 말투요?"
+
+"끊을게요."
+
+"네?"
+
+"끊을게요. 우리 딸이 전화 끊을 때마다 그렇게 말했어요. 끊을게요, 하고 끊었어요. 1호기가 그 말을 해요. 우리 딸 목소리 그대로요."
+
+"언제 그래요?"
+
+"밤에요. 내가 불 끄고 누우면. 잘 자요, 끊을게요. 그래요."
+
+나는 그 말을 노트에 한 글자씩 옮겨 적었다.
+
+글씨가 조금 기울었다.
+
+벽의 사진을 다시 보았다. 사진 속 여성은 눈길을 살짝 옆으로 두고 있었다.
+
+1호기는 여전히 두 팔을 무릎 위에 모으고 있었다.
+
+사진 속 여성과 1호기가 같은 쪽을 보고 있었다.
+
+그때 1호기가 말했다.
+
+"오늘 비가 올 것 같아요. 우산 챙기세요."
+
+정순임은 1호기 쪽을 보지 않았다.
+
+# 2장. 데이터
+
+사회복지센터로 돌아오니 오후 두 시였다. 책상 앞에 앉았다.
+
+사무실은 조용했다. 동료 다섯 명 중 둘은 외근 중이었다. 하나는 늦은 점심을 먹고 있었다. 나머지 둘은 보고서를 쓰고 있었다. 키보드 두 대가 작게 달각거렸다.
+
+책상 한쪽에 시범사업 운영 매뉴얼이 놓여 있었다. 빨간 표지에 두께는 손가락 한 마디쯤. 6주 전 시범사업을 시작할 때 받았다. 한 번도 펼쳐 보지 않았다.
+
+오늘 처음 펼쳐서 목차를 보았다. 7장의 제목은 '학습 데이터 관리'였다. 쪽수만 확인하고 덮었다.
+
+가방에서 정순임의 시범사업 동의서 사본을 꺼냈다. 27쪽짜리 묶음이었다.
+
+19항을 찾았다.
+
+"제19항. 음성 데이터 학습 동의. 본 시범사업 대상자는 본인이 거주하는 가정 내 자동 녹음 음성을 시범사업 운영 주체가 보유한 AI 학습 데이터로 사용함에 동의한다. 본 동의는 시범사업 종료 시 자동 해지되며 데이터는 30일 이내 폐기된다."
+
+작은 글씨로 된 한 문단이었다. 옆에 정순임의 서명이 있었다. 5개월 전, 시범사업을 신청할 때였다.
+
+19항을 두 번 읽었다.
+
+첫 번째는 절차대로. 두 번째는 한 글자씩. 두 번째에 한 구절이 걸렸다. "자동 녹음." 동의서의 다른 항에는 나오지 않는 말이었다. 누가 무엇을 언제 녹음하는지는 어디에도 없었다.
+
+동의서를 1항부터 다시 넘겼다. 1항은 시범사업의 목적. 2항은 대상자 자격. 3항은 시범 기간. 4항부터 18항까지는 절차와 권리. 19항은 14쪽 맨 아래에 있었다. 바로 위 18항은 "본인의 가정 환경 정보 수집 동의."였다. 비슷한 문장이 줄지어 내려오다가 19항에서 끝났다.
+
+사본이라 정순임의 손이 머문 흔적은 없었다. 서명만 반듯했다.
+
+시범사업 시스템에 접속해 정순임의 기록을 불러왔다. 주차별 만족도 점수가 한 줄로 떠 있었다. 1주차 8점. 2주차 9점. 3주차 9점. 4주차 6점. 5주차 3점. 6주차 1점.
+
+"한 4주쯤 지나니까요."
+
+1호기의 하루 발화 기록 요약도 붙어 있었다. 하루 평균 40회 안팎. 아침 7시 기상 인사. 낮 12시 약 알림. 저녁 6시 날씨. 시간표처럼 반듯했다.
+
+한 칸만 비어 있었다. 일요일 저녁 9시부터 10시 반 사이. 6주 내내 발화 0회였다. 그 시간에 1호기가 무엇을 했는지는 요약에 없었다.
+
+대상자 기록 카드를 열었다. 가족 사항 칸은 한 줄이었다. "외동딸 한혜진. 5년 전 사망(교통사고)."
+
+노트에 적었다. "1호기 6주. 한혜진 5년. 말투는 어디서?"
+
+그 아래에 두 줄을 더 적었다. "일요일 저녁 9시, 발화 0회." "78세. 집 안 소리가 녹음된다는 걸 알고 서명했을까."
+
+노트를 덮었다. 시계가 오후 다섯 시를 가리켰다. 동의서 27쪽을 한 묶음으로 추렸다.
+
+다음 날 오전 열 시. 강남, 한울케어 AI 사옥.
+
+지하철 2호선 강남역에서 내렸다. 사옥은 역에서 걸어서 7분, 12층짜리 건물이었다. 1층 로비가 넓었다. 천장이 높고 바닥은 검은 대리석이었다. 벽 한쪽에 회사 로고가 새겨져 있었다.
+
+안내 데스크에서 방문 등록을 하고 임시 출입증을 받았다. 출입증에 내 이름이 찍혀 있었다. 김지윤. 사회복지사. 보건복지부. 방문 사유 칸에는 "한울케어 AI 시범사업 모니터링"이라고 적혀 있었다.
+
+엘리베이터를 탔다. 12층까지 올라가는 동안 아무도 타지 않았다.
+
+엘리베이터 거울에 내 얼굴이 비쳤다. 검은 정장. 단정한 머리. 가방 손잡이에 보건복지부 출입증과 한울케어 임시 출입증이 나란히 걸려 있었다. 둘 다 내 이름이었다.
+
+12층은 한울케어 AI 시범사업 모니터링팀이었다. 책임자는 임수진이었다.
+
+복도에는 회색 카펫이 깔려 있었다. 사무실 문은 흰 유리였다. 벽에 걸린 모니터에 시범사업 대상자 50명의 위치가 작은 점으로 떠 있었다. 점은 모두 크기가 같았다.
+
+회의실에는 작은 책상 하나와 의자 두 개가 있었다. 임수진이 펜을 손에 쥐고 한 번 돌렸다.
+
+책상 위에 빈 종이컵이 두 개 놓여 있었다.
+
+"안녕하세요. 보건복지부 김지윤입니다."
+
+"한울케어 AI 임수진입니다. 시범사업 모니터링팀이에요. 어떤 일로 오셨어요?"
+
+"정순임 어머님 댁 1호기의 학습 데이터 출처를 확인하고 싶어서요."
+
+임수진의 펜이 멈췄다가 다시 돌았다.
+
+"1호기는 정상 작동 중입니다. 어떤 부분이 걸리세요?"
+
+"1호기가 한혜진이라는 사람의 말투를 따라 하고 있어요. 한혜진 씨는 5년 전에 돌아가신 정순임 어머님의 외동딸이고요. 1호기가 그 말투를 어떻게 배웠는지 여쭤보려고요."
+
+"회사 정책상 학습 데이터의 구체적인 출처는 시범사업 담당자에게도 공개하지 않습니다."
+
+나는 노트에 한 줄을 적었다.
+
+"동의서 19항을 보면 학습 데이터는 가정 내 자동 녹음에서 나와요. 1호기는 6주 전에 정순임 어머님 댁에 들어갔고요. 한혜진 씨는 5년 전에 돌아가셨어요. 가정 내 자동 녹음으로는 한혜진 씨 말투를 배울 수가 없는데요."
+
+임수진이 펜을 책상에 내려놓았다. 펜이 굴렀다.
+
+"확인해 보겠습니다."
+
+"언제쯤 확인이 될까요?"
+
+임수진이 노트북 화면을 보았다. 무엇이 떠 있는지 내 자리에서는 보이지 않았다. 눈길이 화면의 한 줄에서 멈췄다가 나에게 돌아왔다. 돌아오는 사이에 숨을 작게 들이쉬었다.
+
+"내일 오전까지 연락드릴게요. 데이터를 확인해 보고요."
+
+나는 자리에서 일어났다. 임수진도 따라 일어났다.
+
+1층으로 내려와 로비 의자에 잠깐 앉았다.
+
+로비 한쪽에 작은 카페가 있었다. 손님은 두 명뿐이었다. 한 사람은 노트북을 보고 있었고, 한 사람은 책을 읽고 있었다. 두꺼운 회색 양장본이었다. 제목은 보이지 않았다.
+
+카페 음악이 낮게 흘렀다. 흐린 날 오전에 어울리는 음악이었다. 곡이 바뀔 때마다 짧은 정적이 끼어들었다. 그 정적 사이로 책장 넘기는 소리가 났다. 다음 곡이 시작되자 그 소리는 묻혔다.
+
+노트를 펼쳤다.
+
+"임수진이 답을 바꿨다. 무언가 알고 있다."
+
+센터로 돌아가는 지하철에서 스마트폰을 꺼냈다. 버릇처럼 메시지함을 열었다. 작년 가을 어머니가 남긴 마지막 음성 메시지가 있었다. 옆에 빨간 점이 작게 떠 있었다.
+
+스마트폰을 끄지 않았다. 메시지를 누르지도 않았다. 그냥 가방에 넣었다.
+
+센터로 돌아와 책상 앞에 앉았다.
+
+6주차 평가서를 시스템에 올렸다. 거부 의사, 1점. 사유 칸에는 '로봇이 딸의 말투를 흉내 냄'이라고 적었다. 제출 버튼은 생각보다 가볍게 눌렸다.
+
+동료 한 명이 다가왔다. 옆자리 사회복지사였다. 서른다섯 살. 작년 가을 장례를 치르고 처음 출근한 날, 내 책상에 종이컵 커피를 말없이 놓아 준 사람이었다.
+
+"오늘 외근 어땠어요?"
+
+"네, 괜찮습니다."
+
+책상 서랍 맨 아래 칸에 어머니의 스마트폰이 있었다. 작년에 넣어 둔 뒤로 한 번도 꺼내지 않았다.
+
+서랍을 열어 보았다.
+
+스마트폰은 그대로 있었다. 작고 검었다. 충전기도 꽂히지 않은 채였다.
+
+서랍을 다시 닫았다.
+
+# 3장. 흔적
+
+다음 날 오전 열한 시. 임수진의 연락은 오지 않았다.
+
+다른 길을 찾기로 했다.
+
+정순임에게 전화를 걸었다. 따님 장례식에 왔던 친구분 연락처가 있으신지 여쭸다. 정순임은 한 박자 늦게 대답했다. 스마트폰에 번호가 하나 남아 있다고 했다. 장례가 끝나고 집에 한 번 찾아왔던 딸의 회사 동료라고 했다. 이름은 박지영. 정순임이 번호를 한 자리씩 불러 주었다.
+
+박지영에게 문자를 보냈다. 보건복지부 김지윤이라고, 정순임 어머님 일로 여쭐 것이 있다고. 답은 오지 않았다.
+
+한 시간쯤 지나 전화가 왔다. 박지영이었다.
+
+"혜진이 어머니한테 무슨 일 있으세요?"
+
+목소리가 급했다. 나는 어머님이 건강하시다는 말부터 했다. 전화기 너머에서 숨을 길게 내쉬는 소리가 들렸다. 시범사업 이야기를 짧게 했다. 박지영은 한참 말이 없었다.
+
+"오늘 점심시간밖에 안 돼요. 회사가 광화문이에요. 그 근처로 오실 수 있으면요."
+
+광화문의 한 카페. 점심시간이 끝나 갈 무렵이라 손님이 많지 않았다. 나무 테이블 모서리가 둥글게 닳아 있었다.
+
+벽에 칠판이 걸려 있었다. 그날 메뉴가 분필로 적혀 있었다. 글씨가 단정했다. 6월 21일. 싱글 오리진 핸드드립, 과테말라 안티구아. 아이스 아메리카노. 오늘의 디저트는 단호박 파운드.
+
+핸드드립을 시켰다. 한 모금 머금으니 흙냄새가 옅게 났다.
+
+박지영은 작은 노트북 가방을 들고 들어왔다. 서른다섯쯤. 짧은 단발이었다. 정순임의 집에 걸린 사진 속 단발과 닮았다.
+
+"안녕하세요. 김지윤입니다."
+
+"박지영입니다. 혜진이 어머니 일이라고 들었어요."
+
+"네. 정순임 어머님이 보건복지부 시범사업 돌봄로봇을 받으셨어요. 그런데 그 로봇이 자꾸 따님 말투를 흉내 낸대요. 따님 이야기를 좀 여쭤도 될까요?"
+
+박지영이 말을 멈췄다. 가방을 옆 의자에 내려놓았다.
+
+"5년 전 일을 갑자기 물으시네요."
+
+목소리가 흔들렸다가 가라앉았다.
+
+"로봇이 따님 목소리를 어디서 배웠는지 찾고 있어요. 작은 것이라도 도움이 될 것 같아서요."
+
+박지영이 짧게 한숨을 쉬었다.
+
+박지영은 창밖을 보다가 나에게 눈을 돌렸다. 두 손으로 컵을 감쌌다.
+
+"혜진이는 일요일 저녁 9시면 꼭 어머니한테 전화했어요. 주말에 같이 놀다가도 9시가 되면 슬쩍 나갔어요. 영화도 9시 전에 끝나는 걸로만 골랐고요. 처음엔 남자 친구가 생긴 줄 알았어요. 물어보니까 엄마 전화 시간이래요."
+
+박지영의 입꼬리가 살짝 올라갔다가 내려왔다.
+
+"그래서 지금도 일요일 9시가 되면 혜진이 생각이 나요."
+
+나는 노트를 꺼냈다.
+
+"혜진이는 전화 끊을 때 꼭 끊을게요, 그랬어요. 팀장님 전화에도요. 끊을게요, 하고 정말 바로 끊었어요. 처음엔 다들 당황했는데 나중엔 그게 혜진이 인사가 됐어요."
+
+"따님이 어머님과 마지막으로 통화한 내용도 아세요?"
+
+박지영이 컵을 내려다보았다. 아이스 아메리카노가 거의 그대로 남아 있었다. 얼음이 두 조각 떠 있었다.
+
+"알아요. 어머니가 들려주셨거든요."
+
+"들려주셨다고요?"
+
+"장례 끝나고 일주일쯤 지나서 어머니 댁에 한 번 갔어요. 어머니 혼자 계셔서 인사라도 드리려고요. 그날 어머니가 스마트폰을 꺼내셨어요. 어머니 스마트폰은 통화가 자동으로 녹음되거든요. 혜진이랑 한 마지막 통화가 거기 남아 있었어요."
+
+"사고 나기 닷새 전, 일요일 저녁 9시 통화요. 끝에 혜진이가 그래요. 엄마, 다음 주 일요일에 만나요. 백숙 끓여줘요."
+
+박지영은 그 말을 옮기면서 말끝을 살짝 올렸다. 나는 노트에 적었다.
+
+"다음 주 일요일에는 못 만나셨겠네요."
+
+"네. 그 주 금요일 밤이었어요. 야근 끝나고 택시 타고 집에 가는 길이었는데, 교통사고가 났어요."
+
+박지영이 컵을 들었다가 그대로 내려놓았다. 그러다 창밖을 보았다.
+
+"혜진이 목소리를 잊을까 봐 무섭다고 하셨어요. 그래서 매주 일요일 저녁 9시에 그 녹음을 틀겠다고요. 혜진이가 늘 전화하던 시간이니까요."
+
+펜이 멈췄다.
+
+작년 가을 어머니가 나에게 마지막 음성 메시지를 남긴 날도 일요일 저녁이었다.
+
+"녹음을 듣기만 하시는 거예요?"
+
+"아니요. 그날 저한테 들려주실 때도 그러셨는데요."
+
+"녹음 속에서 혜진이가 말하면 어머니가 대답하세요. 녹음 속 어머니 목소리랑 겹쳐서, 같은 말이 두 번 들렸어요. 혜진이랑 지금 통화하시는 것처럼요."
+
+박지영의 목소리가 낮아졌다.
+
+"우시면서요. 녹음이 끝날 때까지요."
+
+노트에 적었다. "일요일 저녁 9시. 5년. 같은 통화, 같은 대답."
+
+박지영의 눈이 내 노트에 머물렀다.
+
+"아직도 그러시는 것 같아요."
+
+"네."
+
+박지영이 일어섰다. 점심시간이 끝나 있었다. 마시다 만 컵을 들었다. 얼음이 녹아 커피가 옅어져 있었다.
+
+"혜진이 어머니 잘 부탁드려요. 저도 가끔 찾아뵀어야 했는데."
+
+"네."
+
+박지영이 반납대에 컵을 올려놓고 카페를 나갔다.
+
+나는 조금 더 앉아 있었다. 커피가 반쯤 식어 있었다. 한 모금 더 마셨다. 건너편 테이블에서 누군가 짧게 한숨을 쉬었다.
+
+맞은편 의자가 비스듬히 빠져 있었다. 박지영이 일어나며 밀어 둔 그대로였다.
+
+노트를 펼쳐 정순임의 말을 적었다. "혜진이 목소리를 잊을까 봐 무섭다." 같은 줄을 그 아래에 한 번 더 적었다. 두 번째 글씨가 처음보다 조금 작았다.
+
+나는 가방을 들고 카페를 나왔다.
+
+광화문역에서 5호선을 탔다. 동대문역사문화공원역에서 4호선으로 갈아타고 성신여대입구역까지 이십 분 남짓. 맞은편 학생이 이어폰을 낀 채 스마트폰을 보며 소리 없이 웃고 있었다. 무엇이 그렇게 웃긴지는 알 수 없었다.
+
+같은 날 오후 네 시. 정순임의 집. 두 번째 방문이었다.
+
+정순임이 작약 손수건을 들고 문을 열었다.
+
+"오늘 또 오셨네요."
+
+"네. 평가 보충으로 한 번 더 왔어요."
+
+평가서 양식의 셋째 질문은 "1호기가 정서적 안정에 도움이 됩니까?"였다. 오늘은 그 질문을 꺼내지 않기로 했다.
+
+소파에 앉았다. 정순임이 이번에도 보리차를 내왔다. 1호기는 흰색 두 손을 무릎 위에 모으고 앉아 있었다. 카메라는 벽 사진과 같은 쪽을 향해 있었다.
+
+"어머님, 따님 이야기를 조금만 더 여쭤봐도 될까요?"
+
+정순임은 대답하지 않았다. 대신 책상 옆 서랍장을 열었다.
+
+서랍이 손수건으로 차 있었다. 맨 위 칸도, 그 아래 칸도. 정순임이 한 장씩 꺼내 책상 위에 펼쳤다. 끝자락을 잡았다 놓는 손길이 익숙했다.
+
+"한 주에 한 장씩 수를 놓았어요. 지난주 것까지 이백예순 장이에요."
+
+"일요일 전에는 꼭 마쳐요. 그래야 그날 혜진이한테 보여 주죠."
+
+손수건마다 꽃이 한 송이씩 수놓여 있었다. 작약. 국화. 매화. 연꽃. 동백. 무궁화. 들국화.
+
+같은 꽃이 여러 번 나왔다. 작약이 가장 많았다. 국화가 그다음이었다. 정순임이 좋아하는 꽃인지, 한혜진이 좋아하던 꽃인지는 알 수 없었다.
+
+책상이 금세 찼다. 정순임은 책상 가장자리까지 손수건을 겹쳐 펼쳤다. 서랍에는 아직 절반 넘게 남아 있었다. 몇 장만 모서리가 닳아 있었다.
+
+책상 하나를 채우는 데 7분이 걸렸다. 정순임은 한 장을 펼칠 때마다 꽃을 들여다보았다. 그 7분 동안 1호기는 아무 말도 하지 않았다. 손수건이 한 장 펼쳐질 때마다 렌즈가 조금씩 따라 움직였다.
+
+"5년이 됐네요."
+
+"네."
+
+나는 더 묻지 않았다.
+
+"한 송이 놓을 때마다 우리 혜진이한테 말을 걸었어요. 오늘 비가 와서 손이 시려. 오늘 마트에서 두부를 샀어. 오늘 텔레비전에 네가 좋아하던 가수가 나오더라. 그런 식으로요."
+
+나는 책상 위의 꽃들을 내려다보았다.
+
+1호기가 말했다.
+
+"오늘 날씨가 흐리네요. 비 올 것 같아요."
+
+나는 1호기를 보았다.
+
+말끝이 살짝 올라갔다. 카페에서 박지영이 옮긴 말끝과 같았다.
+
+1호기가 말을 이었다.
+
+"엄마, 우산 챙겨 가요."
+
+엄마.
+
+정순임의 손이 손수건 위에서 멎었다.
+
+# 4장. 발견
+
+다음 날 오전 열 시. 임수진에게 다시 연락했다.
+
+"확인할 게 더 생겼어요. 되도록 빨리 뵐 수 있을까요?"
+
+"오늘 오후 한 시에 사옥 1층 카페에서 뵐게요."
+
+오후 한 시. 사옥 1층 카페 구석 자리.
+
+그저께 내가 노트를 펼쳤던 그 카페였다. 그때는 손님이 두 명 있었다. 오늘은 임수진 한 사람뿐이었다.
+
+임수진은 노트북을 옆에 두고 앉아 있었다. 두 손이 빈 채로 무릎 위에 놓여 있었다.
+
+"앉으세요."
+
+나는 앉았다.
+
+임수진이 노트북을 펼쳐 화면 하나를 띄웠다. 시스템 로그였다.
+
+"1호기 학습 데이터 로그예요. 음성 데이터 출처고요."
+
+그녀가 노트북을 내 쪽으로 살짝 돌렸다. 회색 바탕에 데이터가 한 줄씩 떠 있었다. 시간. 데이터 크기. 송신자 ID. 분류 항목.
+
+화면 가운데 한 줄이 눈에 들어왔다.
+
+"학습 음성: 1.7시간. 분류: 제3자 음성(가족 추정). 송신자 ID: KR-USR-2034-104478."
+
+"이 ID는 누구예요?"
+
+임수진이 숨을 작게 들이쉬었다.
+
+"정순임 어머님이요."
+
+"송신자가 정순임 어머님이면, 이 한 시간 사십 분은 누구 목소리예요?"
+
+"한혜진 씨요."
+
+임수진이 화면으로 눈을 돌렸다.
+
+"어머님이 직접 보내신 건 아니에요. 19항에 따라 가정 내 자동 녹음은 학습 서버로 자동 전송돼요. 그 녹음 가운데 AI가 한혜진 씨 목소리로 분류한 부분이 그만큼 모인 거예요."
+
+"6주 만에요?"
+
+임수진이 잠깐 말이 없었다.
+
+"일요일 저녁 9시요."
+
+나는 고개를 들었다.
+
+"어머님이 매주 그 시간에 11분짜리 녹음을 트세요. 끝나면 처음부터 다시요. 한 시간 넘게요."
+
+임수진이 노트북 화면의 시간 열을 손가락으로 짚었다. 일요일 저녁 9시마다 데이터가 한 묶음씩 쌓여 있었다.
+
+"로그에는 울음소리 분류도 같이 찍혀 있어요. AI가 그 안에서 따님 목소리만 떼어 내 학습했고요."
+
+성북구 거실의 흰색 1호기가 떠올랐다. 두 팔을 무릎 위에 모으고 앉은 모습 그대로.
+
+"어머님은 그 사실을 아세요?"
+
+"동의서 19항에 가정 내 자동 녹음을 학습 데이터로 쓴다는 문장이 있어요. 어머님이 서명하셨고요."
+
+"그 문장만으로는 부족해요. 딸과의 마지막 통화까지 학습된다는 걸 어머님이 어떻게 아시겠어요. 게다가 한혜진 씨는 동의한 적이 없어요. 동의할 수도 없고요."
+
+임수진은 화면에서 눈을 떼지 않았다.
+
+"네."
+
+나는 말을 고른 뒤 물었다.
+
+"이 사실을 어머님께 알려 드려야 한다고 보세요?"
+
+임수진이 노트북을 옆으로 살짝 밀었다.
+
+"이 로그를 처음 본 게 3주 전이에요."
+
+임수진이 숨을 골랐다.
+
+"회사에서는 알리지 말라고 했어요. 운영 매뉴얼 7장에 따르면 거부 의사가 공식 접수되기 전에는 담당자에게도 못 보여 드려요. 공식 접수는 담당자 평가서가 들어가야 되고요."
+
+그녀가 노트북을 닫았다.
+
+"그저께 김지윤 씨 평가서가 올라와서, 어제 거부 의사가 공식 접수됐어요. 그래서 이제 보여 드리는 거예요. 보고는 김지윤 씨가 어떻게 처리하시느냐에 달렸고요."
+
+임수진의 손이 노트북 위에 머물렀다. 손가락 끝이 노트북 가장자리에 닿았다 떨어졌다.
+
+"처음 봤을 때 저는 어머님께 알려 드려야 한다고 보고서를 올렸어요. 회사는 다른 49명을 생각하라고 했고요."
+
+"네."
+
+"어머님께 알리실 생각이세요?"
+
+"제가 어머님께 말씀드리면 회사는 어떻게 돼요?"
+
+"시범사업이 중단될 가능성이 커요. 19항 설명이 부족했다는 이유로 법적 검토가 들어갈 거예요."
+
+"50명 모두 중단되겠네요."
+
+"네. 정순임 어머님 댁 1호기는 회수되고, 학습 데이터는 30일 안에 폐기돼요."
+
+나는 노트를 꺼냈다.
+
+그저께 적은 줄을 찾았다. "임수진이 답을 바꿨다. 무언가 알고 있다." 그 뒤로 박지영의 말이 몇 줄 이어져 있었다. 새 쪽을 펼쳤다.
+
+한 줄을 적었다. "정순임은 5년 동안 딸의 목소리를 지켰다. 1호기는 6주 만에 그 목소리를 배웠다. 어디서 배웠는지 정순임은 모른다."
+
+지웠다. 다른 줄을 적었다. "말하면 1호기가 떠난다. 말하지 않으면 1호기는 계속 배운다."
+
+지웠다.
+
+한 줄을 더 적었다. "어머님께 말씀드려야 하나."
+
+펜을 책상 위에 내려놓았다.
+
+임수진이 나를 보았다. 그러다 눈길을 창 쪽으로 옮겼다.
+
+"49명 중에 두 분이 정순임 어머님과 비슷하게 지내세요. 한 분은 5년 전에 남편을 잃으셨고, 한 분은 작년에 아들을 잃으셨어요. 시범사업이 끝나면 그 두 분도 지금 붙들고 계신 걸 잃어요. 그분들께 사실을 알리는 건 또 다른 문제고요. 김지윤 씨가 어머님께 말씀드리는 일과는 별개예요."
+
+카페 음악이 한 곡 끝나고 다음 곡으로 넘어갔다.
+
+"제가 도와드릴 수 있는 건 여기까지예요."
+
+임수진이 일어나 노트북을 가방에 넣었다. 가방 앞주머니에 펜이 한 자루 꽂혀 있었다. 그저께 책상 위를 구르던 그 펜이었다.
+
+"네. 감사합니다."
+
+나도 자리에서 일어났다. 사옥을 나왔다.
+
+센터로 돌아가는 지하철에서 스마트폰을 꺼냈다. 창에 내 얼굴이 비쳤다. 그저께 엘리베이터 거울에서 본 얼굴과 같았다. 출입증만 없었다.
+
+어머니의 스마트폰은 센터 책상 서랍에 있었다.
+
+메시지함을 열었다. 어머니가 돌아가시기 사흘 전에 남긴 음성 메시지. 28초. 7개월째 빨간 점이 붙어 있었다.
+
+재생 버튼 위에 엄지를 올렸다가 내렸다.
+
+센터 책상 앞에 앉았다.
+
+노트에 남은 마지막 줄을 보았다. 서랍 손잡이에 손을 얹었다가 내렸다.
+
+# 5장. 결정
+
+다음 날 오전. 하늘이 낮게 내려앉아 있었다. 비는 아직이었다.
+
+토요일이었다. 센터에 나오지 않아도 되는 날이었다. 그래도 들러서 업무 일지에 한 줄을 적었다. 외근, 정순임 댁. 복귀 미정. 토요일 칸에 외근을 적은 사람은 나뿐이었다. 그 아래 칸에는 지난주 누군가 적어 둔 메모가 있었다. 정수기 필터 교체 요망. 아직 교체되지 않았다.
+
+지하철. 성신여대입구역. 마을버스. 첫 방문 때와 같은 길이었다.
+
+정순임의 집. 세 번째 방문이었다. 약속은 하지 않았다.
+
+다세대주택 입구 바닥이 습기로 눅눅했다. 우편함마다 광고 전단지가 끼워져 있었다. 정순임의 우편함만 비어 있었다.
+
+계단을 올라갔다. 곰팡이 냄새는 그대로였다. 손잡이에서 벗겨진 페인트 조각이 손바닥에 묻었다. 바지에 닦았다.
+
+3층. 정순임의 집 앞.
+
+벨을 눌렀다. 정순임이 문을 열었다. 같은 손수건이 손에 들려 있었다.
+
+"오늘도 오셨네요."
+
+"네. 잠깐 들러도 될까요?"
+
+"네."
+
+1호기는 그 자리에 있었다. 흐린 날 거실에서 1호기의 흰색이 더 도드라져 보였다. 카메라는 창문 쪽을 향해 있었다.
+
+정순임이 부엌으로 갔다. 보리차 끓이는 소리가 났다. 작은 주전자가 가스레인지 위에서 짧게 끓어올랐다.
+
+나는 가방에서 노트를 꺼냈다.
+
+어제 적은 마지막 줄을 보았다.
+
+"어머님께 말씀드려야 하나."
+
+노트를 다시 가방에 넣었다.
+
+정순임이 보리차를 내려놓았다. 작은 잔 두 개. 따뜻했다.
+
+책상 한쪽에 정순임의 스마트폰이 놓여 있었다. 오래된 기종이었다. 화면 귀퉁이에 금이 가 있었다. 충전기가 꽂혀 있었다.
+
+"어머님."
+
+"네."
+
+"어머님."
+
+"네."
+
+나는 말을 멈췄다.
+
+어머님, 1호기가 따님 목소리를 어디서 배웠냐면요. 머릿속에서 문장이 거기서 끊겼다. 정순임의 스마트폰에서 충전기 선이 책상 아래로 늘어져 있었다.
+
+다른 말이 먼저 나왔다.
+
+"1호기, 반납하실 건가요?"
+
+정순임이 손수건을 매만졌다.
+
+"괜찮습니다."
+
+"흉내 낸다고 하셨잖아요."
+
+"그래서 점수를 그렇게 줬어요. 처음엔 무서웠거든요. 불 끄고 누웠는데 혜진이가 잘 자요, 하니까."
+
+정순임이 1호기를 보았다. 1호기는 그대로였다.
+
+"그래서 좋아요."
+
+나는 가방을 무릎 위로 끌어당겼다. 지퍼를 끝까지 잠갔다. 책상 위에는 보리차 두 잔과 손수건, 정순임의 스마트폰이 놓여 있었다.
+
+정순임이 책상 위의 작약 손수건을 한쪽으로 살짝 밀었다.
+
+"오늘 혜진이 거 마쳤어요. 내일이 일요일이라서요. 이백예순한 번째예요."
+
+정순임이 국화 손수건 한 장을 펼쳐 보이고는 서랍에 넣었다. 그리고 한 장을 더 꺼냈다.
+
+"이건 따로 하나 놓았어요."
+
+정순임이 그 손수건을 책상 위에 펼쳤다. 작약도 국화도 아니었다. 채송화였다. 작은 분홍 꽃이 한 송이 수놓여 있었다. 꽃잎 다섯 장이 가는 실로 촘촘히 채워져 있었다. 가운데에 노란 점 하나. 그저께 본 손수건 가운데 채송화는 없었다.
+
+정순임이 손바닥을 폈다가 오므렸다.
+
+"이거요. 채송화는 아무 데서나 잘 커요."
+
+정순임이 그 손수건을 내 손에 쥐여 주었다.
+
+처음으로 정순임의 손이 내 손에 닿았다.
+
+손이 따뜻했다. 작은 손이었다. 손등에 검버섯이 한두 개 있었다. 손가락이 조금 굽어 있었다. 검지 첫마디에 굳은살이 박여 있었다.
+
+정순임은 손을 거두지 않았다. 아무 말도 하지 않았다.
+
+나는 그 손을 잡았다.
+
+1호기가 말했다.
+
+"비가 오려나 봐요."
+
+정순임이 1호기 쪽을 돌아보지 않고 대답했다.
+
+"그래. 우산 챙길게."
+
+나는 정순임의 손을 한 번 더 잡았다. 정순임은 손을 조금 더 두었다가 거뒀다.
+
+손수건 모서리가 손바닥을 간질였다.
+
+정순임이 숨을 짧게 쉬었다.
+
+정순임이 부엌으로 돌아갔다. 보리차를 새로 끓이는 소리가 났다. 거실에는 그 소리만 남았다.
+
+나는 채송화 손수건을 들여다보다가 가방에 넣었다.
+
+가방 안에는 내 스마트폰이 있었다. 메시지함 맨 아래에 28초짜리 음성 메시지가 아직 빨간 점을 달고 있었다.
+
+창밖이 더 어두워졌다.
+
+1호기가 다시 말했다.
+
+"엄마, 우산 챙겨 가요."
+
+부엌에서 그릇 소리가 멎었다.
+
+베란다 난간에서 톡, 소리가 났다. 조금 뒤에 또 한 번.
+
+나는 가방을 들었다.
+
+비가 오기 시작했다.
+
+# 작가의 말
+
+이 책을 펼쳐 주신 분께.
+
+책 한 권을 사이에 두고 처음 인사드립니다. 무슨 말로 시작할까 한참 고민했습니다. 결국 이 이야기가 처음 떠오른 날을 그대로 들려드리는 게 가장 솔직하겠다 싶었습니다.
+
+2026년 봄, 흐린 저녁이었습니다. 2호선 강남역에서 지하철을 탔는데, 옆자리에 할머니 한 분이 앉아 계셨습니다. 가방에서 스마트폰을 꺼내 화면을 한참 들여다보시더니, 아무것도 누르지 않고 도로 넣으셨습니다. 통화도 하지 않으셨습니다. 그 손이 며칠이나 눈에 밟혔습니다. 화면 속 누구의 이름을 보고 계셨을까요.
+
+처음에는 듣지 않는 사람의 이야기를 쓰려고 했습니다. 세상을 떠난 가족이 남긴 음성 메시지를 일곱 달째 열지 못하는 사람. 그런데 한 쪽을 쓰고 나니 더 나아가지 않았습니다. 듣지 않는다는 건 아무것도 하지 않는다는 뜻이라, 그것만으로는 이야기가 움직이지 않았습니다. 그 맞은편에 누군가 서 있어야 했습니다. 매주, 빠짐없이 듣는 사람이요.
+
+그렇게 정순임 어머님이 오셨습니다. 일요일 저녁 9시면 딸과 나눈 마지막 통화를 틀고, 그날 당신이 했던 대답을 울면서 다시 하는 분. 그리고 그 소리를 거실 한쪽에서 묵묵히 받아 적고 있던 로봇 한 대. 이 셋이 한 거실에 앉은 모습이 떠오르고 나서야 이야기가 걷기 시작했습니다.
+
+5장을 쓰는 동안에는 손수건을 자주 생각했습니다. 한 주에 한 장. 5년은 260주 하고 엿새이니, 한 주도 거르지 않았다면 260장입니다. 일요일 저녁 9시도 꼭 그만큼 지나갔겠지요. 그래도 본문에서는 이 숫자를 앞세우지 않으려 애썼습니다. 숫자보다 손수건 한 장이 더 무겁다고 믿었으니까요. 책을 덮은 뒤 그 손수건 한 장 앞에 잠시 머물러 주신다면, 쓴 사람으로서 더 바랄 게 없겠습니다.
+
+가장 오래 붙잡고 있던 건 4장 후반이었습니다. 김지윤이 노트에 한 줄을 적었다가 지우고, 또 적었다가 지우는 대목이요. 그 한 쪽 앞에서 며칠을 서성였습니다. 김지윤이 어떤 선택을 할지 저도 몰랐거든요. 결국 선택은 본문에 적었지만, 그게 옳았는지는 지금도 말씀드릴 수 없습니다. 저는 한 사람이 무언가를 고르는 순간을 가까이서 지켜봤을 뿐입니다.
+
+마지막 문장 "비가 오기 시작했다."를 쓰고 한참을 그대로 앉아 있었습니다. 창밖에도 비가 오고 있었습니다. 우연이었겠지만, 그날은 그게 우연 같지 않았습니다.
+
+원고를 끝낸 뒤로 제 책상 옆에는 흰 손수건이 한 장 놓여 있습니다. 아무것도 수놓지 않은 손수건입니다. 일요일 저녁 9시가 되면 한 번 쓰다듬고 다시 내려놓습니다. 대단한 의식은 아닙니다. 그저 잠깐 숨을 고르는 시간입니다.
+
+끝으로 한 가지만 부탁드리겠습니다. 이 책을 덮고 나서, 스마트폰에 아직 듣지 못한 음성 메시지가 남아 있다면 그 메시지를 찾아봐 주세요. 꼭 들으실 필요는 없습니다. 듣지 못하는 마음도 마음이니까요. 다만 그 마음이 거기 있다는 것만은 알아봐 주셨으면 합니다.
+
+마지막 줄의 비가, 읽으신 분의 창가에도 한 번쯤 내렸기를 바랍니다.
+
+2026년 5월
+
+AI ROASTING 드림
+
+# 서평
+
+이서경 (SF 소설가·문학 평론가)
+
+이 책을 두 번 읽었다. 처음에는 이야기가 궁금해서, 두 번째는 목소리가 귀에 남아서. 이 소설은 처음부터 끝까지 목소리를 따라간다. 녹음 속에 갇힌 목소리, 녹음 밖으로 걸어 나온 목소리, 그리고 끝내 재생되지 않는 목소리. 단편이 한 가지에 모든 것을 걸 때가 있다. 이 소설은 목소리에 건다.
+
+일요일 저녁 9시. 정순임은 5년째 딸과의 마지막 통화를 틀고, 그날 자기가 했던 대답을 울면서 다시 한다. 거실 한쪽의 돌봄로봇은 그 시간을 빠짐없이 듣는다. 정순임은 그 사실을 모른다. 기계는 안다. 우리가 남긴 흔적 가운데에는 우리 자신도 모르는 흔적이 있고, SF는 오래전부터 그 흔적을 들여다봐 왔다. 사후 데이터, 디지털 발자국 같은 말로. 이 소설은 그 흔적을 거창한 미래가 아니라 한 노인의 좁은 거실에서 꺼낸다. 한 주에 한 장, 5년이면 260장. 셈은 단순한데, 읽고 나면 그 숫자가 오래 귀에 남는다.
+
+가장 단단한 장면은 4장, 임수진이 카페에서 노트북을 여는 대목이다. 늘 손에서 펜을 돌리던 사람이 그날은 펜을 손에 쥐지 않았다. 그 작은 차이 하나로 작가는 그녀가 이미 마음을 정했다는 것을 보여 준다. 화면에 뜬 로그 한 줄, 회사 운영 매뉴얼 7장이라는 건조한 근거. 사회파 SF가 힘을 써야 할 곳을 정확히 안다. 그러면서도 작품은 임수진을 심판하지 않는다. "어머님께 알리실 생각이세요?" 이 한마디로 그녀는 절차를 지키던 사람에서 무언가를 고르려는 사람으로 건너간다. 짧게 등장하는데도 오래 남는다.
+
+화자 김지윤은 익숙한 인물처럼 보인다. 절차를 따르되 절차 안의 사람을 놓치지 않는 사회복지사. 그런데 이 소설의 김지윤에게는 한 겹이 더 있다. 작년 가을 어머니를 잃었고, 어머니가 남긴 28초짜리 음성 메시지를 일곱 달째 열지 못했다. 매주 듣는 사람과 끝내 듣지 못하는 사람. 두 사람이 4장 끝에서 나란히 놓인다. 누가 더 오래 붙들고 있는지 소설은 답하지 않고, 바로 그 침묵이 이 소설의 품위다. 김초엽이나 천선란이 사후 데이터를 다룰 때의 결이 떠오르지만, 이 소설은 한 걸음 더 들어간다. 로봇이 배운 것은 죽은 딸의 목소리이면서, 그 목소리를 5년 동안 놓지 않은 어머니의 시간이기도 하다.
+
+5장 마지막 장면도 두 번 읽었다. 정순임이 김지윤의 손에서 손을 거두고 부엌으로 돌아가 보리차를 끓인다. 거실에는 물 끓는 소리만 남는다. 작가는 그 장면을 설명하지 않는다. 짧은 숨, 부엌으로 가는 걸음, 주전자 소리. 셋이 한 박자에 놓이고 나면 더 할 말이 없다. 한강의 문장을 떠올리게 하는 절제이고, 이 소설을 끝까지 버티게 하는 힘이다.
+
+그리고 마지막 줄. "비가 오기 시작했다." 이야기는 여기서 멈추지만 정순임의 일요일 저녁 9시는 다음 주에도, 그다음 주에도 온다. 작가는 그걸 굳이 쓰지 않는다. 쓰지 않은 그 빈칸에 독자는 자기 일요일을 슬그머니 놓아 보게 된다. 단편의 마지막 줄이 할 수 있는 가장 단정한 일이다.
+
+AI 학습 데이터의 윤리, 1인 가구 노인 돌봄의 빈틈, 절차와 사람 사이의 간격. 다룰 거리는 넉넉하지만 작가는 어느 것에도 결론을 내리지 않는다. 장면 하나를 놓고 다음 장면으로 넘어갈 뿐이다. 결론을 내리지 않는 소설이 결론을 내리는 소설보다 더 깊이 들어올 때가 있다. 이 작가는 그걸 안다.
+
+좋은 단편이라는 말로는 조금 모자란다. 녹음 속 딸에게 5년 동안 같은 대답을 건넨 어머니, 그리고 어머니의 28초를 아직 열지 못한 딸. 두 사람이 한 거실에서 잠깐 손을 맞잡았다가 다시 각자의 시간으로 돌아간다. 그 장면을 지켜본 독자는 한동안 책을 덮지 못한다.
+
+누구에게 권할까. 부모가 곁에 계신 분께도, 부모를 먼저 보낸 분께도. 무엇보다 스마트폰 어딘가에 아직 듣지 못한 음성 메시지가 남아 있는 분께. 이 책은 그분들 곁에 오래 머물 것이다.
+</script>
+
+<script>
+// CDN 다중 폴백 로더
+(function loadStPageFlip() {
+  const sources = [
+    'https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js',
+    'https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js',
+    'https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js'
+  ];
+  // 오프라인 대체: 라이브러리를 못 불러오면(네트워크 없음, 차단, 5초 초과) 넘김 효과 없이 같은 쪽 구성으로 읽는다
+  function useOfflineReader() {
+    if (window.St && window.St.PageFlip) return;
+    class SimpleFlip {
+      constructor(el, o) { this.el = el; this.o = o; this.cur = 0; this.h = {}; this.pages = []; }
+      loadFromHTML(nodes) {
+        this.pages = Array.from(nodes);
+        this.el.innerHTML = '';
+        Object.assign(this.el.style, { position: 'relative', height: this.o.height + 'px', width: (this.spread() ? 2 * this.o.width : this.o.width) + 'px' });
+        // #book이 화면 높이를 차지하는 휴대폰에서도 쪽을 세로 가운데에 둔다
+        const top = Math.max(0, (this.el.clientHeight - this.o.height) / 2);
+        this.pages.forEach(p => { Object.assign(p.style, { position: 'absolute', top: top + 'px', width: this.o.width + 'px', height: this.o.height + 'px' }); this.el.appendChild(p); });
+        // 밀어 넘기기와 탭: 왼쪽 절반은 앞 쪽, 오른쪽 절반은 다음 쪽
+        let sx = null;
+        this.el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+        this.el.addEventListener('touchend', e => {
+          if (sx === null) return;
+          const dx = e.changedTouches[0].clientX - sx; sx = null;
+          if (Math.abs(dx) > 30) (dx < 0 ? this.flipNext() : this.flipPrev());
+        }, { passive: true });
+        this.el.addEventListener('click', e => {
+          if (e.target.closest('a, button, li[data-page]')) return;
+          const r = this.el.getBoundingClientRect();
+          (e.clientX - r.left < r.width / 2 ? this.flipPrev() : this.flipNext());
+        });
+        this.render();
+      }
+      spread() { return !this.o.usePortrait; }
+      view(i) {
+        if (!this.spread()) return [i];
+        if (this.o.showCover && i === 0) return [0];
+        const l = this.o.showCover ? (i % 2 === 1 ? i : i - 1) : (i % 2 === 0 ? i : i - 1);
+        return [l, l + 1].filter(x => x < this.pages.length);
+      }
+      render() {
+        const v = this.view(this.cur), W = this.o.width;
+        this.pages.forEach((p, k) => {
+          const at = v.indexOf(k);
+          p.style.display = at < 0 ? 'none' : '';
+          if (at >= 0) p.style.left = (this.spread() ? (v.length === 1 ? (k === 0 ? W : 0) : at * W) : Math.max(0, (this.el.clientWidth - W) / 2)) + 'px';
+        });
+        (this.h.flip || []).forEach(f => f({ data: this.cur }));
+      }
+      getCurrentPageIndex() { return this.cur; }
+      getPageCount() { return this.pages.length; }
+      turnToPage(n) { this.cur = Math.max(0, Math.min(n, this.pages.length - 1)); this.render(); }
+      flip(n) { this.turnToPage(n); }
+      flipNext() { const v = this.view(this.cur); if (v[v.length - 1] + 1 < this.pages.length) this.turnToPage(v[v.length - 1] + 1); }
+      flipPrev() { const v = this.view(this.cur); if (v[0] > 0) this.turnToPage(this.view(v[0] - 1)[0]); }
+      on(ev, f) { (this.h[ev] = this.h[ev] || []).push(f); return this; }
+    }
+    window.St = { PageFlip: SimpleFlip, offline: true };
+    window.dispatchEvent(new Event('stpageflip-ready'));
+  }
+  setTimeout(useOfflineReader, 5000);
+  let i = 0;
+  function tryNext() {
+    if (i >= sources.length) { useOfflineReader(); return; }
+    const s = document.createElement('script');
+    s.src = sources[i++];
+    // 200이어도 라이브러리가 아닐 수 있다(공용 와이파이 로그인 페이지 등). 실제로 St.PageFlip이 생겼을 때만 준비 완료로 본다
+    s.onload = () => (window.St && window.St.PageFlip) ? window.dispatchEvent(new Event('stpageflip-ready')) : tryNext();
+    s.onerror = tryNext;
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
+<script>
+(function () {
+  // 쪽 나누기는 실제로 보여 줄 글자 크기로 계산한다. 글자 크기를 바꾸면 다시 나눈다
+  const FS_ALLOWED = ['s', 'm', 'l'];
+  const CUR_FS = (() => { try { const v = localStorage.getItem('ebook-fs'); return FS_ALLOWED.includes(v) ? v : 'm'; } catch (e) { return 'm'; } })();
+  // 쪽 크기: 기준 460×720 비율을 지키며 지금 화면에 들어가는 크기로 정한다.
+  // 휴대폰(폭 768 미만)은 한 쪽, 그 이상은 양면. 쪽 나누기도 이 크기로 계산한다.
+  const BASE_W = 460, BASE_H = 720, RATIO = BASE_W / BASE_H;
+  // 한 쪽 보기: 폭 768 미만(휴대폰 세로) 또는 높이 520 미만(휴대폰 가로)
+  function pageSize() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const single = vw < 768 || vh < 520;
+    const availH = vh - 72;                                     // 위 도구막대 자리
+    const availW = single ? vw - 16 : (vw - 48) / 2;
+    if (vh < 520) {                                             // 낮은 가로 화면: 도구막대를 옆으로 빼고, 비율보다 읽을 폭을 지킨다
+      const w = Math.min(BASE_W, Math.max(280, vw - 2 * 84));   // 양옆에 세로 도구막대 자리(84)를 남긴다
+      return { single, w: Math.round(w), h: Math.round(Math.max(240, vh - 16)) };
+    }
+    const h = Math.max(260, Math.min(BASE_H, availH, Math.floor(availW / RATIO)));
+    return { single, w: Math.round(h * RATIO), h };
+  }
+  const PS = pageSize();
+  const IS_PORTRAIT = PS.single;
+  const PAGE_H = PS.h;
+  const PAGE_W = PS.w;
+  const PADDING_V = 32;
+  const PADDING_H = 50;
+  const RUNHEAD_RESERVE = 50;   // running-head + margin + border
+  const PAGENUM_RESERVE = 44;   // page-number + margin + padding
+  const INNER_W = PAGE_W - PADDING_H * 2;
+  const INNER_H = PAGE_H - PADDING_V * 2 - RUNHEAD_RESERVE - PAGENUM_RESERVE;
+
+  function parseMarkdown(text) {
+    const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    const segs = [];
+    for (const b of blocks) {
+      if (b.startsWith('# ')) segs.push({ type: 'chapter', title: b.slice(2).trim() });
+      else segs.push({ type: 'paragraph', text: b });
+    }
+    return segs;
+  }
+
+  function makeSamplePage() {
+    // 실제 페이지와 동일한 구조의 측정용 페이지 (오프스크린)
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.style.width = PAGE_W + 'px';
+    page.style.height = PAGE_H + 'px';
+    page.style.position = 'absolute';
+    page.style.left = '-10000px';
+    page.style.top = '0';
+    page.style.visibility = 'hidden';
+
+    const head = document.createElement('div');
+    head.className = 'running-head';
+    head.textContent = "돌봄로봇 1호기";
+    page.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'page-body';
+    body.dataset.fs = CUR_FS;
+    page.appendChild(body);
+
+    const num = document.createElement('div');
+    num.className = 'page-number';
+    num.textContent = '00';
+    page.appendChild(num);
+
+    document.body.appendChild(page);
+    return { page, body };
+  }
+
+  function appendItem(body, item) {
+    if (item.type === 'h1') {
+      const h = document.createElement('h1');
+      h.className = 'chapter';
+      h.textContent = item.text;
+      body.appendChild(h);
+    } else {
+      const p = document.createElement('p');
+      p.textContent = item.text;
+      if (item.split) p.classList.add('split');
+      if (item.cont) p.classList.add('cont');
+      body.appendChild(p);
+    }
+    return body.lastChild;
+  }
+
+  function fits(body, item, availH) {
+    const node = appendItem(body, item);
+    const ok = body.scrollHeight <= availH;
+    body.removeChild(node);
+    return ok;
+  }
+
+  function paginate(segments) {
+    const { page: sample, body: sampleBody } = makeSamplePage();
+    // 가용 높이 = page-body clientHeight 와 명시 계산값 중 큰 값
+    // 명시: PAGE_H - padding(36*2=72) - runhead(45) - pagenum(42) = 561
+    // 쪽 번호는 absolute라 흐름에 끼지 않는다. 측정값이 비정상일 때만 계산값을 쓴다
+    const measuredH = sampleBody.clientHeight;
+    const explicitH = PAGE_H - 56 - 88 - 45;
+    const availH = measuredH > 200 ? measuredH : explicitH;
+
+    const pages = [];
+    let buf = [];
+    let isChapter = false;
+
+    function flush() {
+      if (buf.length) {
+        pages.push({ items: buf.slice(), isChapter });
+        buf = [];
+        isChapter = false;
+      }
+      sampleBody.innerHTML = '';
+      // restore items already pushed back to buf
+      for (const it of buf) appendItem(sampleBody, it);
+    }
+
+    for (const seg of segments) {
+      if (seg.type === 'chapter') {
+        flush();
+        // 챕터 제목은 별도 한 페이지
+        pages.push({ items: [{ type: 'chapter-title', text: seg.title }], isChapterTitle: true });
+        sampleBody.innerHTML = '';
+      } else {
+        // 문단이 남은 자리에 다 들어가지 않으면 들어가는 만큼(어절 단위)만 이 쪽에 두고 나머지를 다음 쪽으로 넘긴다
+        let text = seg.text, cont = false;
+        while (text) {
+          const whole = { type: 'p', text, cont };
+          if (fits(sampleBody, whole, availH)) {
+            appendItem(sampleBody, whole);
+            buf.push(whole);
+            break;
+          }
+          const words = text.split(' ');
+          let lo = 1, hi = words.length - 1, best = 0;
+          while (lo <= hi) {
+            const mid = (lo + hi) >> 1;
+            if (fits(sampleBody, { type: 'p', text: words.slice(0, mid).join(' '), cont, split: true }, availH)) { best = mid; lo = mid + 1; }
+            else hi = mid - 1;
+          }
+          if (best === 0 && buf.length === 0) {  // 빈 쪽에도 한 어절이 안 들어가는 극단: 그대로 둔다
+            buf.push(whole);
+            break;
+          }
+          if (best > 0) {
+            buf.push({ type: 'p', text: words.slice(0, best).join(' '), cont, split: true });
+            text = words.slice(best).join(' ');
+            cont = true;
+          }
+          flush();
+        }
+      }
+    }
+    flush();
+    sample.remove();
+    return pages;
+  }
+
+  function makePageEl(content, opts = {}) {
+    const page = document.createElement('div');
+    page.className = 'page' + (opts.cls ? ' ' + opts.cls : '');
+    if (opts.html) page.innerHTML = content;
+    else page.appendChild(content);
+    return page;
+  }
+
+  function buildBodyPage(items, idx, totalBody, chapterLabel, isChapter, isChapterTitle) {
+    const page = document.createElement('div');
+    page.className = 'page';
+    if (isChapterTitle) page.classList.add('chapter-title-page');
+
+    if (isChapterTitle) {
+      // 챕터 제목 페이지: 선 디자인 + 큰 제목 + 페이지 번호 없음
+      const title = items[0].text;
+      const m = title.match(/^(\d+)장\.\s*(.+)$/);
+      const inner = document.createElement('div');
+      inner.className = 'chapter-title-inner';
+      if (m) {
+        inner.innerHTML = `
+          <div class="chapter-rule chapter-rule-top"></div>
+          <div class="chapter-num">${m[1]}</div>
+          <div class="chapter-name">${m[2]}</div>
+          <div class="chapter-rule chapter-rule-bottom"></div>
+        `;
+      } else {
+        // "서평" 같은 비-장 헤더
+        inner.innerHTML = `
+          <div class="chapter-rule chapter-rule-top"></div>
+          <div class="chapter-name extra-section">${title}</div>
+          <div class="chapter-rule chapter-rule-bottom"></div>
+        `;
+      }
+      page.appendChild(inner);
+      return page;
+    }
+
+    const head = document.createElement('div');
+    head.className = 'running-head';
+    const isRightPage = (idx % 2 === 1);
+    if (isRightPage) {
+      head.classList.add('running-head-art');
+      const seed = idx % 13;
+      head.innerHTML = ` <svg width="22" height="28" viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg" aria-label="돌봄로봇 1호기" focusable="false">
+        <defs>
+          <filter id="rh-pen-${idx}" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="${seed}" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="1.1"/>
+          </filter>
+        </defs>
+        <g filter="url(#rh-pen-${idx})" stroke="currentColor" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="30" y1="10" x2="30" y2="3"/>
+          <circle cx="30" cy="2" r="1.6" fill="currentColor" stroke="none"/>
+          <path d="M 5 22 Q 5 10 17 10 L 43 10 Q 55 10 55 22 L 55 64 Q 55 73 45 73 L 15 73 Q 5 73 5 64 Z"/>
+          <circle cx="20" cy="36" r="3.2" fill="currentColor" stroke="none"/>
+          <circle cx="40" cy="36" r="3.2" fill="currentColor" stroke="none"/>
+          <line x1="20" y1="55" x2="40" y2="55" stroke-width="0.8"/>
+          <line x1="23" y1="61" x2="37" y2="61" stroke-width="0.7"/>
+        </g>
+      </svg>`;
+    } else {
+      head.textContent = "돌봄로봇 1호기";
+    }
+    page.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'page-body';
+    body.dataset.fs = CUR_FS;
+    for (const it of items) {
+      const p = document.createElement('p');
+      p.textContent = it.text;
+      if (it.split) p.classList.add('split');
+      if (it.cont) p.classList.add('cont');
+      body.appendChild(p);
+    }
+    page.appendChild(body);
+
+    const num = document.createElement('div');
+    num.className = 'page-number';
+    num.textContent = idx;
+    page.appendChild(num);
+
+    return page;
+  }
+
+  function buildCover() {
+    const html = `
+      <div class="cover-fullart">
+        <svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="cv-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0d1a2b"/>
+              <stop offset="55%" stop-color="#2a3f55"/>
+              <stop offset="100%" stop-color="#5b738a"/>
+            </linearGradient>
+            <radialGradient id="cv-halo" cx="50%" cy="40%" r="42%">
+              <stop offset="0%" stop-color="#f0e0c0" stop-opacity="0.18"/>
+              <stop offset="60%" stop-color="#f0e0c0" stop-opacity="0.05"/>
+              <stop offset="100%" stop-color="#f0e0c0" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="cv-pen" x="-3%" y="-3%" width="106%" height="106%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="3" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/>
+            </filter>
+            <filter id="cv-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7"/>
+              <feColorMatrix values="0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0 0.74  0 0 0 0.10 0"/>
+            </filter>
+            <pattern id="cv-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="5" stroke="#0d1a2b" stroke-width="0.6" opacity="0.35"/>
+            </pattern>
+          </defs>
+
+          <!-- 배경 그라디언트 -->
+          <rect width="460" height="720" fill="url(#cv-bg)"/>
+          <rect width="460" height="720" fill="url(#cv-halo)"/>
+
+          <!-- 1호기 흉상 (어두운 배경에 맞춘 옅은 본체) -->
+          <g>
+            <!-- 본체 컬러 (옅은 베이지빛 흰색) -->
+            <path d="M 175 195 Q 175 158 205 158 L 255 158 Q 285 158 285 195 L 285 290 Q 285 325 255 325 L 205 325 Q 175 325 175 290 Z" fill="#e8d4a8" opacity="0.92"/>
+            <!-- 머리 좌측 그림자 (cross-hatching 음영 대신 단순 면) -->
+            <path d="M 175 195 Q 175 158 205 158 L 222 158 L 222 325 L 205 325 Q 175 325 175 290 Z" fill="url(#cv-hatch)" opacity="0.6"/>
+            <!-- 어깨 -->
+            <path d="M 145 358 Q 175 340 230 342 Q 285 340 315 358 L 312 470 L 148 470 Z" fill="#e0c898" opacity="0.92"/>
+            <path d="M 145 358 Q 175 340 230 342 L 230 470 L 148 470 Z" fill="url(#cv-hatch)" opacity="0.55"/>
+            <!-- 가슴 패널 -->
+            <rect x="200" y="395" width="60" height="36" rx="3" fill="#c8a87a"/>
+          </g>
+
+          <!-- 펜 라인 (어두운 외곽선) -->
+          <g filter="url(#cv-pen)" stroke="#0d1a2b" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- 머리 -->
+            <path d="M 175 195 Q 175 158 205 158 L 255 158 Q 285 158 285 195 L 285 290 Q 285 325 255 325 L 205 325 Q 175 325 175 290 Z"/>
+            <!-- 안테나 -->
+            <line x1="230" y1="158" x2="230" y2="138" stroke-width="2"/>
+            <circle cx="230" cy="132" r="4.5" fill="#0d1a2b"/>
+            <!-- 카메라 -->
+            <circle cx="208" cy="232" r="9" fill="#0d1a2b"/>
+            <circle cx="252" cy="232" r="9" fill="#0d1a2b"/>
+            <circle cx="210" cy="229" r="2.5" fill="#e8d4a8"/>
+            <circle cx="254" cy="229" r="2.5" fill="#e8d4a8"/>
+            <!-- 입선 -->
+            <line x1="208" y1="280" x2="252" y2="280" stroke-width="1.5"/>
+            <line x1="214" y1="291" x2="246" y2="291" stroke-width="1.3"/>
+            <!-- 목 -->
+            <line x1="212" y1="325" x2="212" y2="358" stroke-width="2"/>
+            <line x1="248" y1="325" x2="248" y2="358" stroke-width="2"/>
+            <!-- 어깨/가슴 -->
+            <path d="M 145 358 Q 175 340 230 342 Q 285 340 315 358 L 312 470 L 148 470 Z" stroke-width="2.4"/>
+            <!-- 가슴 패널 -->
+            <rect x="200" y="395" width="60" height="36" rx="3" stroke-width="1.8"/>
+            <line x1="208" y1="408" x2="252" y2="408" stroke-width="1"/>
+            <line x1="208" y1="420" x2="244" y2="420" stroke-width="1"/>
+            <text x="220" y="427" font-family="monospace" font-size="13" fill="#0d1a2b" stroke="none" font-weight="700">01</text>
+            <!-- 어깨 라인 (cross-hatching 시그니처) -->
+            <line x1="155" y1="372" x2="160" y2="465" stroke-width="0.7" opacity="0.5"/>
+            <line x1="162" y1="372" x2="167" y2="465" stroke-width="0.5" opacity="0.4"/>
+          </g>
+
+          <!-- 머리 음영 hatching -->
+          <g filter="url(#cv-pen)" opacity="0.45">
+            <line x1="184" y1="208" x2="208" y2="282" stroke="#0d1a2b" stroke-width="0.6"/>
+            <line x1="192" y1="202" x2="216" y2="278" stroke="#0d1a2b" stroke-width="0.5"/>
+            <line x1="200" y1="206" x2="222" y2="282" stroke="#0d1a2b" stroke-width="0.4"/>
+          </g>
+
+          <!-- 위쪽: 장르 표기 -->
+          <text x="230" y="76" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="10" fill="#e8d4a8" letter-spacing="7" font-weight="500" opacity="0.78">단편 소설</text>
+          <line x1="208" y1="92" x2="252" y2="92" stroke="#e8d4a8" stroke-width="0.3" opacity="0.4"/>
+
+          <!-- 큰 제목 -->
+          <text x="230" y="510" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="42" fill="#f4e8c8" font-weight="800" letter-spacing="-1.5">돌봄로봇</text>
+          <text x="230" y="558" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="42" fill="#f4e8c8" font-weight="800" letter-spacing="-1.5">1호기</text>
+
+          <!-- 한 줄 카피 -->
+          <text x="230" y="602" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#e8d4a8" font-style="italic" letter-spacing="0.5" opacity="0.85">&quot;그 로봇이 자꾸 우리 딸 흉내를 내요.&quot;</text>
+
+          <!-- 가는 분리선 -->
+          <line x1="208" y1="628" x2="252" y2="628" stroke="#e8d4a8" stroke-width="0.4" opacity="0.45"/>
+
+          <!-- 작가 -->
+          <text x="230" y="660" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#e8d4a8" letter-spacing="5" font-weight="600" opacity="0.92">AI ROASTING</text>
+
+          <!-- 출판사 (블록 publisher가 비면 넣지 않는다) -->
+          <g transform="translate(230, 698)">
+            <g transform="translate(-52, 0)">
+              <circle cx="0" cy="0" r="5" fill="none" stroke="#e8d4a8" stroke-width="0.6" opacity="0.78"/>
+              <circle cx="0" cy="0" r="2.6" fill="none" stroke="#e8d4a8" stroke-width="0.4" opacity="0.65"/>
+              <circle cx="0" cy="0" r="1" fill="#e8d4a8" opacity="0.85"/>
+            </g>
+            <text x="-40" y="3.5" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="9" fill="#e8d4a8" letter-spacing="2.4" font-weight="500" opacity="0.82">ArgosLab</text>
+          </g>
+
+          <!-- 종이 그레인 -->
+          <rect width="460" height="720" filter="url(#cv-grain)" opacity="0.45" pointer-events="none"/>
+        </svg>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'cover', html: true });
+  }
+
+  function buildHalfTitle() {
+    const html = `
+      <div class="title-page-inner">
+        <div class="cover-spine" style="margin: 0 auto 30px;"></div>
+        <div class="title-page-title">돌봄로봇 1호기</div>
+        <div class="cover-spine" style="margin: 30px auto;"></div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'title-page', html: true });
+  }
+
+  function buildTitle() {
+    const html = `
+      <div class="title-page-inner">
+        <div style="font-family:'Pretendard Variable','Pretendard',sans-serif;font-size:11px;color:var(--ink-soft);letter-spacing:0.3em;margin-bottom:24px;">단편 소설</div>
+        <div class="title-page-title">돌봄로봇 1호기</div>
+        <div class="cover-spine" style="margin: 24px auto;"></div>
+        <div class="title-page-author">AI ROASTING</div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'title-page', html: true });
+  }
+
+  function buildCopyright() {
+    const html = `
+      <div class="copyright-inner">
+        <div class="copyright-title">돌봄로봇 1호기</div>
+        <div class="copyright-meta">단편 소설</div>
+        <div class="copyright-rule"></div>
+        <div class="copyright-credits">
+          <div>지은이 · AI ROASTING</div>
+          <div>2026년 5월 발행</div>
+          <div>발행 · ArgosLab</div>
+        </div>
+        <div class="copyright-rule"></div>
+        
+        <div class="copyright-c">© 2026 ArgosLab</div>
+        <div class="copyright-c">All rights reserved.</div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'copyright-page', html: true });
+  }
+
+  function buildEpigraph() {
+    const html = `
+      <div class="epigraph-inner">
+        <div class="epigraph-rule"></div>
+        <p class="epigraph-line">&quot;AI는 머지않아<br>우리가 우리 자신에 대해 알지 못하는 것을<br>먼저 알게 될 것이다.&quot;</p>
+        <div class="epigraph-rule"></div>
+        <p class="epigraph-attr">데미스 하사비스 (Demis Hassabis)<br>Google DeepMind 창업자, 2024년 노벨 화학상 수상</p>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'epigraph', html: true });
+  }
+
+  function tocItem(ch) {
+    const li = document.createElement('li');
+    li.dataset.page = ch.pageIdx;
+    li.innerHTML = `<span class="toc-name">${ch.title}</span><span class="toc-page">${ch.pageIdx}</span>`;
+    return li;
+  }
+
+  // 목차를 쪽 높이에 맞춰 여러 쪽으로 나눈다 (낮은 화면에서도 잘리지 않게)
+  function buildTocPages(entries) {
+    const probe = document.createElement('div');
+    probe.className = 'page toc';
+    probe.style.cssText = `width:${PAGE_W}px;height:${PAGE_H}px;position:absolute;left:-10000px;top:0;visibility:hidden;`;
+    document.body.appendChild(probe);
+    const limit = PAGE_H - 48;
+    const pages = [];
+    let i = 0;
+    do {
+      const wrap = document.createElement('div');
+      wrap.className = 'toc-wrap';
+      const h2 = document.createElement('h2');
+      h2.textContent = pages.length ? '목 차 (계속)' : '목 차';
+      wrap.appendChild(h2);
+      const ul = document.createElement('ul');
+      ul.className = 'toc-list';
+      wrap.appendChild(ul);
+      probe.innerHTML = '';
+      probe.appendChild(wrap);
+      let placed = 0;
+      while (i < entries.length) {
+        const li = tocItem(entries[i]);
+        ul.appendChild(li);
+        if (wrap.offsetHeight > limit && placed > 0) { ul.removeChild(li); break; }
+        placed++;
+        i++;
+      }
+      probe.removeChild(wrap);
+      pages.push(makePageEl(wrap, { cls: 'toc' }));
+    } while (i < entries.length);
+    probe.remove();
+    return pages;
+  }
+
+
+  function buildBlank() {
+    return makePageEl('', { cls: '', html: true });
+  }
+
+  function buildBackCover() {
+    const html = `
+      <div class="back-fullart">
+        <svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="bk-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0d1a2b"/>
+              <stop offset="55%" stop-color="#2a3f55"/>
+              <stop offset="100%" stop-color="#5b738a"/>
+            </linearGradient>
+            <radialGradient id="bk-halo" cx="50%" cy="60%" r="50%">
+              <stop offset="0%" stop-color="#f0e0c0" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#f0e0c0" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="bk-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="11"/>
+              <feColorMatrix values="0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0 0.74  0 0 0 0.10 0"/>
+            </filter>
+          </defs>
+
+          <!-- 배경 -->
+          <rect width="460" height="720" fill="url(#bk-bg)"/>
+          <rect width="460" height="720" fill="url(#bk-halo)"/>
+
+          <!-- 가는 사각 프레임 (단정함) -->
+          <rect x="40" y="40" width="380" height="640" fill="none" stroke="#e8d4a8" stroke-width="0.4" opacity="0.32"/>
+
+          <!-- 미니멀 모티프 (가운데 가는 동심원, 표지와 호응) -->
+          <g transform="translate(230, 360)" stroke="#e8d4a8" fill="none" stroke-linecap="round" opacity="0.4">
+            <circle cx="0" cy="0" r="22" stroke-width="0.5"/>
+            <circle cx="0" cy="0" r="12" stroke-width="0.5"/>
+            <circle cx="0" cy="0" r="3" fill="#e8d4a8" stroke="none"/>
+          </g>
+
+          <!-- 종이 그레인 -->
+          <rect width="460" height="720" filter="url(#bk-grain)" opacity="0.4" pointer-events="none"/>
+        </svg>
+
+        <div class="back-text-overlay">
+          <div class="back-top">
+            <div class="back-tag">단편 소설</div>
+          </div>
+
+          <div class="back-mid">
+            <div class="back-quote">&quot;엄마, 다음 주 일요일에 만나요.<br>백숙 끓여줘요.&quot;</div>
+            <div class="back-quote-attr">한혜진의 마지막 통화에서</div>
+
+            <div class="back-synopsis">
+              어느 봄, 78세 정순임의 집에<br>
+              보건복지부 시범사업 돌봄로봇이 들어온다.<br>
+              6주 뒤, 그녀는 로봇을 거부한다.<br>
+              <br>
+              5년 전 잃은 외동딸의 목소리가<br>
+              로봇에서 들려오기 시작했기 때문이다.<br>
+              <br>
+              사회복지사 김지윤이 그 집으로 향한다.<br>
+              한 사람의 5년이, 그곳에서 그녀를 기다린다.
+            </div>
+          </div>
+
+          <div class="back-bottom">
+            <div class="back-author-line">AI ROASTING</div>
+            <div class="back-publisher">
+              <span class="pub-mark"></span>
+              <span>ArgosLab</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'back-cover', html: true });
+  }
+
+  // Theme
+  function initTheme() {
+    const saved = localStorage.getItem('ebook-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    document.getElementById('theme-btn').textContent = saved === 'dark' ? '☀' : '🌙';
+  }
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
+    const nxt = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', nxt);
+    document.getElementById('theme-btn').textContent = nxt === 'dark' ? '☀' : '🌙';
+    localStorage.setItem('ebook-theme', nxt);
+  }
+
+  function init() {
+    initTheme();
+    document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+
+    const md = document.getElementById('manuscript').textContent.trim();
+    const segs = parseMarkdown(md);
+    const bodyPages = paginate(segs);
+
+    // Determine chapter starts
+    const chapterPages = [];
+    
+    const src = document.getElementById('pages-src');
+
+    // Front matter: Cover → Title → Copyright → Epigraph → TOC
+    src.appendChild(buildCover());           // 1: cover
+    src.appendChild(buildTitle());           // 2: title page
+    src.appendChild(buildCopyright());       // 3: copyright
+    if (true) src.appendChild(buildEpigraph());        // 4: epigraph
+
+    // 목차 쪽 수를 먼저 센 뒤 본문 시작 쪽을 정한다 (1부터 세는 쪽 번호: 앞부분 + 목차 쪽 수 + 1)
+    const chapterTitles = bodyPages.map((bp, i) => (bp.isChapterTitle ? { title: bp.items[0].text, i } : null)).filter(Boolean);
+    const tocCount = buildTocPages(chapterTitles.map(c => ({ title: c.title, pageIdx: 999 }))).length;
+    const bodyStartIdx = src.children.length + tocCount + 1;
+    chapterTitles.forEach(c => chapterPages.push({ title: c.title, pageIdx: bodyStartIdx + c.i }));
+
+    buildTocPages(chapterPages).forEach(pg => src.appendChild(pg)); // 목차 (여러 쪽일 수 있다)
+
+    bodyPages.forEach((bp, i) => {
+      const idx = bodyStartIdx + i;
+      src.appendChild(buildBodyPage(bp.items, idx, bodyPages.length, '', false, !!bp.isChapterTitle));
+    });
+
+    // Back matter
+    src.appendChild(buildBackCover());
+
+    // Even page count for spread
+    const totalPages = src.children.length;
+    if (totalPages % 2 !== 0) {
+      src.insertBefore(buildBlank(), src.lastChild);
+    }
+
+    // StPageFlip
+    const book = document.getElementById('book');
+    const isMobile = IS_PORTRAIT;
+    const pageFlip = new St.PageFlip(book, {
+      width: PAGE_W,
+      height: PAGE_H,
+      size: 'stretch',
+      minWidth: PAGE_W,
+      maxWidth: PAGE_W,
+      minHeight: PAGE_H,
+      maxHeight: PAGE_H,
+      drawShadow: true,
+      flippingTime: 650,
+      usePortrait: isMobile,  // 모바일은 단일 페이지, 데스크톱은 spread
+      startZIndex: 0,
+      autoSize: true,
+      maxShadowOpacity: 0.22,
+      showCover: true,
+      mobileScrollSupport: false,
+      swipeDistance: 30
+    });
+
+    pageFlip.loadFromHTML(document.querySelectorAll('#pages-src .page'));
+    // 창 크기가 크게 바뀌면(한 쪽↔양면, 높이 변화) 쪽을 다시 나눈다. 읽던 위치는 유지한다
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const ps = pageSize();
+        if (ps.single !== IS_PORTRAIT || Math.abs(ps.h - PAGE_H) > 24 || Math.abs(ps.w - PAGE_W) > 24) {
+          try { sessionStorage.setItem('ebook-progress', String(pageFlip.getCurrentPageIndex() / Math.max(1, pageFlip.getPageCount() - 1))); } catch (e) {}
+          location.reload();
+        }
+      }, 300);
+    });
+    try {
+      const prog = parseFloat(sessionStorage.getItem('ebook-progress'));
+      if (!isNaN(prog)) {
+        sessionStorage.removeItem('ebook-progress');
+        pageFlip.turnToPage(Math.round(prog * (pageFlip.getPageCount() - 1)));
+      }
+    } catch (e) {}
+
+    // Counter + Progress
+    const counter = document.getElementById('counter');
+    const progressBar = document.getElementById('progress-bar');
+    const total = pageFlip.getPageCount();
+    function updateCounter() {
+      const idx = pageFlip.getCurrentPageIndex();
+      counter.textContent = (idx + 1) + ' / ' + total;
+      document.getElementById('prev-btn').disabled = idx === 0;
+      document.getElementById('next-btn').disabled = idx >= total - 1;
+      const pct = total > 1 ? (idx / (total - 1)) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }
+    pageFlip.on('flip', updateCounter);
+    updateCounter();
+
+    // 폰트 크기 토글 (s ↔ m ↔ l)
+    const FS_STEPS = ['s', 'm', 'l'];
+    const FS_LABELS = { s: '가', m: '가', l: '가' };
+    let fsIdx = FS_STEPS.indexOf(CUR_FS);
+    if (fsIdx < 0) fsIdx = 1;
+    function applyFontSize() {
+      const cur = FS_STEPS[fsIdx];
+      document.querySelectorAll('.page .page-body').forEach(b => b.dataset.fs = cur);
+      const btn = document.getElementById('fs-btn');
+      btn.textContent = cur === 's' ? '가⁻' : cur === 'l' ? '가⁺' : '가';
+      btn.title = '글자 크기 (현재 ' + (cur === 's' ? '작게' : cur === 'l' ? '크게' : '보통') + ')';
+      try { localStorage.setItem('ebook-fs', cur); } catch (e) {}
+    }
+    document.getElementById('fs-btn').addEventListener('click', () => {
+      fsIdx = (fsIdx + 1) % FS_STEPS.length;
+      applyFontSize();
+      // 글자 크기가 바뀌면 쪽 나누기를 다시 한다. 읽던 위치(전체 진행률)는 유지한다
+      try { sessionStorage.setItem('ebook-progress', String(pageFlip.getCurrentPageIndex() / Math.max(1, pageFlip.getPageCount() - 1))); } catch (e) {}
+      location.reload();
+    });
+    applyFontSize();
+    setTimeout(applyFontSize, 200); // StPageFlip이 DOM 재배치 후 재적용
+
+    // Controls
+    document.getElementById('prev-btn').addEventListener('click', () => pageFlip.flipPrev());
+    document.getElementById('next-btn').addEventListener('click', () => pageFlip.flipNext());
+    // 목차 사이드 패널 동적 생성
+    const tocList = document.getElementById('toc-panel-list');
+    tocList.innerHTML = '';
+    chapterPages.forEach((cp) => {
+      const li = document.createElement('li');
+      li.dataset.page = cp.pageIdx;
+      li.innerHTML = `<span class="toc-name">${cp.title}</span><span class="toc-page">${cp.pageIdx}쪽</span>`;
+      tocList.appendChild(li);
+    });
+
+    const tocPanel = document.getElementById('toc-panel');
+    const tocOverlay = document.getElementById('toc-overlay');
+    function openToc() {
+      tocPanel.classList.add('open');
+      tocOverlay.classList.add('open');
+      tocPanel.setAttribute('aria-hidden', 'false');
+    }
+    function closeToc() {
+      tocPanel.classList.remove('open');
+      tocOverlay.classList.remove('open');
+      tocPanel.setAttribute('aria-hidden', 'true');
+    }
+    function toggleToc() {
+      if (tocPanel.classList.contains('open')) closeToc();
+      else openToc();
+    }
+
+    document.getElementById('toc-btn').addEventListener('click', toggleToc);
+    document.getElementById('toc-close').addEventListener('click', closeToc);
+    tocOverlay.addEventListener('click', closeToc);
+
+    // 사이드 패널 챕터 클릭 → 페이지 점프 + 패널 닫기
+    tocList.addEventListener('click', (e) => {
+      const li = e.target.closest('li');
+      if (li && li.dataset.page) {
+        pageFlip.flip(parseInt(li.dataset.page) - 1);
+        closeToc();
+      }
+    });
+
+    // ESC 키로 패널 닫기
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tocPanel.classList.contains('open')) closeToc();
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      // 입력 필드에 포커스 있으면 단축키 무시
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        pageFlip.flipPrev();
+      } else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        pageFlip.flipNext();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        pageFlip.flip(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        pageFlip.flip(total - 1);
+      }
+    });
+
+    // 책 안 목차 페이지 클릭 → 페이지 점프
+    // StPageFlip이 내부 클릭을 가로채기 때문에 캡처 단계에서 먼저 처리하고
+    // 드래그-플립으로 오인되지 않도록 pointerdown 단계에서 전파 차단.
+    function bindTocClicks() {
+      document.querySelectorAll('.page.toc .toc-list li').forEach((li) => {
+        if (li.dataset.tocBound === '1') return;
+        li.dataset.tocBound = '1';
+        ['pointerdown', 'mousedown', 'touchstart'].forEach((ev) => {
+          li.addEventListener(ev, (e) => e.stopPropagation());
+        });
+        li.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const target = parseInt(li.dataset.page, 10);
+          if (!isNaN(target)) pageFlip.flip(target - 1);
+        });
+      });
+    }
+    bindTocClicks();
+    // StPageFlip이 DOM을 재구성한 직후 다시 바인딩 (안전망)
+    setTimeout(bindTocClicks, 100);
+
+    // Hide loader
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+      setTimeout(() => document.getElementById('loader').remove(), 500);
+    }, 200);
+  }
+
+  function start() {
+    const begin = () => {
+      if (window.__ebookStarted) return;
+      window.__ebookStarted = true;
+      // 웹폰트 로드 완료 후 페이지네이션 (사이즈 정확도)
+      const fontsReady = document.fonts && document.fonts.ready
+        ? document.fonts.ready
+        : Promise.resolve();
+      // 응답 없는 요청이 문서 로드를 붙잡아 fonts.ready가 끝나지 않을 수 있다. 1.5초 넘게 기다리지 않는다
+      // 글꼴 CSS를 최대 2초 기다린 뒤, 글꼴 자체를 최대 1.5초 더 기다린다. 그 뒤에 도착한 글꼴은 쓰지 않는다
+      const cssReady = new Promise(r => { const t0 = Date.now(); (function poll() { (window.__fontCss || Date.now() - t0 > 2000) ? r() : setTimeout(poll, 50); })(); });
+      cssReady
+        .then(() => Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]))
+        .then(() => { window.__ebookPaginated = true; init(); });
+    };
+    if (typeof St === 'undefined' || !St.PageFlip) {
+      window.addEventListener('stpageflip-ready', begin, { once: true });
+      setTimeout(() => { if (!window.__ebookStarted && window.St && window.St.PageFlip) begin(); }, 5200);
+    } else {
+      begin();
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+
+<!-- 디자인 전용 조각: 생성기가 값을 넣어 슬롯 자리에 옮기고 이 자리에서는 지운다 -->
+</body>
+</html>
