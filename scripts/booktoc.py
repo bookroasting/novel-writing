@@ -1,6 +1,6 @@
 """book-toc.md의 작품 파라미터 블록과 원고를 읽는 공용 모듈.
 
-스킬·검증기·린터·docx 생성기가 모두 이 모듈로 값을 읽는다.
+스킬·검증기·린터·e북 생성기가 모두 이 모듈로 값을 읽는다.
 작품 고유 값은 이 모듈에도 하드코딩하지 않는다.
 """
 import json
@@ -30,8 +30,9 @@ SKILL_DIR = Path(__file__).resolve().parents[1]   # 이 스크립트가 든 스�
 ROOT = _find_root()                                # 작품 프로젝트 폴더
 DEFAULT_TOC = ROOT / "book-toc.md"
 RUN_RE = re.compile(r"^\d{8}_\d{2}$")
-TRIM_CM = {"B5": (18.2, 25.7), "신국판": (15.2, 22.5), "A5": (14.8, 21.0), "국판": (14.8, 21.0)}
-FORMATS = {"docx": "final.docx", "ebook": "ebook.html"}
+FORMATS = {"ebook": "ebook.html"}             # 만드는 출판 형식은 웹 e북 하나다
+LEGACY_FORMATS = {"docx": "final.docx"}       # 예전 작품에만 남은 형식. 만들지 않고, 블록에서 빼며 보관함으로 옮길 때만 알아본다
+ALL_FORMATS = {**FORMATS, **LEGACY_FORMATS}
 THIRD_PARTY = ("서평", "추천사", "해설")
 
 
@@ -211,11 +212,8 @@ NOTE_SYNC_KEYS = ("characters", "retired_names", "anchors", "last_line", "forbid
 
 
 def approved_gates(segment):
-    """구간 안의 사용자 승인 gate id 집합. `→ approved`·`→ verified`만 승인이다. 판형은 알려진 판형 값을 고른 응답이 승인이다."""
-    ids = {m.group(1) for m in re.finditer(APPROVAL_RE, segment, re.M)}
-    if any(v in TRIM_CM for v in re.findall(r"^gate:\s*trim\s*→\s*(\S+)", segment, re.M)):
-        ids.add("trim")
-    return ids
+    """구간 안의 사용자 승인 gate id 집합. `→ approved`·`→ verified`만 승인이다."""
+    return {m.group(1) for m in re.finditer(APPROVAL_RE, segment, re.M)}
 
 
 def leaf_diff(a, b, path=""):
@@ -354,7 +352,7 @@ META_OUT = ("final.docx", "ebook.html", "metadata.md")
 
 
 def output_sha(run, root=ROOT, names=("final.docx", "ebook.html")):
-    """출판 산출물의 해시. 모두 없으면 none. out=은 docx·e북, out2=는 metadata.md까지 담는다(옛 잠금 줄과 호환)."""
+    """출판 산출물의 해시. 모두 없으면 none. out=은 e북(예전 작품은 docx 포함), out2=는 metadata.md까지 담는다(옛 잠금 줄과 호환)."""
     import hashlib
     out = Path(root) / "03_output" / run
     fs = [out / n for n in names if (out / n).exists()]
@@ -417,7 +415,7 @@ def lock_violations(run, root=ROOT):
         elif seen_block:
             out.append(f"원장 {i + 1}줄 잠금 줄에 block= 이 빠졌다(앞 잠금에는 있다)")
     p = run_params(run, root)
-    now = {"back_matter": p.get("back_matter", []), "formats": p.get("publish", {}).get("formats", ["docx"]),
+    now = {"back_matter": p.get("back_matter", []), "formats": p.get("publish", {}).get("formats", ["ebook"]),
            "snapshot": snapshot_sha(run, root), "publish": publish_sha(p), "params": p, "draft": draft_sha(run, root), "out": output_sha(run, root),
            "out2": output_sha(run, root, META_OUT)}
     pub_done = [i for i, ln in enumerate(lines) if re.match(r"^stage:\s*publish done", ln)]
@@ -449,12 +447,12 @@ def lock_violations(run, root=ROOT):
             elif not dones or dones[-1] not in owners:
                 out.append(f"{where}의 출판 뒤 수정이 republish.py(같은 owner)로 끝나지 않았다. 손으로 쓴 done 줄로는 닫히지 않는다")
             if a.get("draft") != bst.get("draft") and not out_moved and a.get("out") not in (None, "none"):
-                out.append(f"{where}에 최종 원고는 바뀌었는데 docx·e북을 다시 만들지 않았다(republish.py로 마친다)")
+                out.append(f"{where}에 최종 원고는 바뀌었는데 e북을 다시 만들지 않았다(republish.py로 마친다)")
         elif pub_done and pub_done[0] < ai and a.get("blocksha") and changed and \
                 not re.search(r"^note:\s*post-audit-prepare\b.*\bowner=", seg, re.M):
             out.append(f"{where}에 출판본 원고·산출물이 바뀌었는데 republish.py --prepare 기록이 없다(고치기 전 보관 없이 고쳤다)")
         if pub_done and pub_done[0] < ai and out_moved and "post-audit" not in ok:
-            out.append(f"출판 산출물(final.docx·ebook.html·metadata.md)이 {where}에 바뀌었는데 gate: post-audit → approved 줄이 없다. "
+            out.append(f"출판 산출물(ebook.html·metadata.md)이 {where}에 바뀌었는데 gate: post-audit → approved 줄이 없다. "
                        f"생성기를 직접 돌리지 말고 SKILL.md \"출판 뒤 수정\" 절차(republish.py)로 다시 만든다")
         if pub_done and pub_done[0] < ai and a.get("draft") not in (None, "none") and bst.get("draft") and a["draft"] != bst["draft"] \
                 and "post-audit" not in ok:
@@ -462,7 +460,7 @@ def lock_violations(run, root=ROOT):
                        f"작가에게 묻고 SKILL.md \"출판 뒤 수정\" 절차(republish.py --prepare)로 고친다")
         for kind in ("back_matter", "formats"):
             for gone in [x for x in a[kind] if x not in bst[kind]]:
-                if not ({f"remove-{gone}", f"remove-{FORMATS.get(gone, gone)}"} & ok):   # 형식 이름과 파일 이름 어느 쪽 승인도 같다
+                if not ({f"remove-{gone}", f"remove-{ALL_FORMATS.get(gone, gone)}"} & ok):   # 형식 이름과 파일 이름 어느 쪽 승인도 같다
                     out.append(f"{kind}에서 '{gone}'이 빠졌는데 {where}에 사용자 승인이 없다. "
                                f'작가에게 묻고 gate: remove-{gone} → approved (날짜) "<응답 원문>"을 남긴다')
         removed = {"back_matter", "publish.formats"}
@@ -487,12 +485,6 @@ def lock_violations(run, root=ROOT):
     return out
 
 
-def ledger_trim(run, root=ROOT):
-    """원장의 마지막 판형 결정(gate: trim → <판형>). 없으면 None."""
-    found = re.findall(r"^gate:\s*trim\s*→\s*(\S+)", ledger(run, root), re.M)
-    return found[-1] if found else None
-
-
 def snapshot_sha(run, root=ROOT):
     f = Path(root) / "01_test" / run / "book-toc.snapshot.md"
     import hashlib
@@ -514,7 +506,7 @@ def lock_line(run, root=ROOT):
     name = f"lock-{len(list(d.glob('lock-*.json'))) + 1:02d}.json"
     (d / name).write_text(json.dumps(p, ensure_ascii=False, indent=1), encoding="utf-8")
     return (f"lock: back_matter={json.dumps(p.get('back_matter', []), ensure_ascii=False)} "
-            f"formats={json.dumps(p.get('publish', {}).get('formats', ['docx']), ensure_ascii=False)} "
+            f"formats={json.dumps(p.get('publish', {}).get('formats', ['ebook']), ensure_ascii=False)} "
             f"snapshot={snapshot_sha(run, root)} publish={publish_sha(p)} block={name} draft={draft_sha(run, root)} "
             f"blocksha={file_sha16(d / name)} out={output_sha(run, root)} out2={output_sha(run, root, META_OUT)}")
 

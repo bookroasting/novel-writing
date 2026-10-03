@@ -11,7 +11,7 @@
   L6 폴더 규칙      run 이름, 00_user_input 단일 파일, run마다 01_test 짝·원장·스냅샷
   L7 문서 크기      CLAUDE.md 6KB, AGENTS.md 20KB, SKILL.md 500줄
   L8 실행 감사      합평 머리(입력·sha256·판정 점수), 무결성, 점수 동결, 바뀐 자리, 게이트 로그,
-                    출판 run의 원고·docx·metadata·게이트 보고서
+                    출판 run의 원고·e북·metadata·게이트 보고서
 waiver 규칙: waiver는 사용자 승인 줄이 있을 때만 WARN으로 내린다.
   진행 중 run: `gate: waiver-<id> → approved "<원문>"`
   닫힌 run:    `closed:` + `gate: close-run → approved "<원문>"` (run 안의 모든 waiver를 함께 승인)
@@ -28,8 +28,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import booktoc  # noqa: E402
-from booktoc import (FORMATS, THIRD_PARTY, TRIM_CM, count_chars, final_draft_name, is_closed,  # noqa: E402
-                     is_finished, ledger, load_params, paired_waivers, lock_violations, ledger_trim, past_work_tokens, run_params,
+from booktoc import (FORMATS, ALL_FORMATS, LEGACY_FORMATS, THIRD_PARTY, count_chars, final_draft_name, is_closed,  # noqa: E402
+                     is_finished, ledger, load_params, paired_waivers, lock_violations, past_work_tokens, run_params,
                      split_back, split_draft, work_tokens, gate_status, ensemble_groups)
 from validate_draft import validate  # noqa: E402
 
@@ -72,7 +72,7 @@ def tree_digest(folder):
     h = hashlib.sha256()
     for f in sorted(p for p in folder.rglob("*") if p.is_file() and "__pycache__" not in p.parts
                     and p.name != ".DS_Store" and p.suffix != ".pyc"
-                    and p.relative_to(folder).parts[0] in ("SKILL.md", "requirements.txt", "references", "scripts", "templates")):
+                    and p.relative_to(folder).parts[0] in ("SKILL.md", "references", "scripts", "templates")):
         h.update(str(f.relative_to(folder)).encode())
         h.update(f.read_bytes())
     return h.hexdigest()
@@ -109,10 +109,11 @@ SCHEMA = {
     "style.principles": int, "style.avg_sentence_chars_max": int, "style.translationese": list, "style.cliches": list,
     "review.story_panel": str, "review.story_pass": NUM, "review.story_critic_min": NUM, "review.story_proof_weight": NUM,
     "review.body_pass": NUM, "review.rounds_before_user_check": int, "review.self_bias_warn": NUM,
-    "publish.trim_options": list, "publish.formats": list, "publish.cover_label": str,
-    "publish.body_font": str, "publish.body_size_pt": NUM, "publish.line_spacing": NUM, "publish.heading_font": str,
-    "publish.heading_size_pt": NUM, "publish.heading_color": str, "publish.margin_cm": dict,
+    "publish.formats": list, "publish.cover_label": str,
 }
+# 예전 docx 조판 키. 이제 아무 생성기도 읽지 않는다(남아 있으면 WARN으로 알린다)
+DOCX_ONLY_KEYS = ("trim_options", "body_font", "body_font_fallback", "body_size_pt", "line_spacing", "first_line_indent_chars",
+                  "heading_font", "heading_size_pt", "heading_color", "margin_cm", "header", "footer")
 NONEMPTY = ["title", "pen_name", "genre", "genre_label", "target_reader", "narrator.name", "last_line", "publish.cover_label"]
 ITEM_SCHEMA = {
     "chapters": {"no": int, "title": str, "pages": int},
@@ -392,13 +393,14 @@ def lint(root, skill_dir=None):
     if not p["characters"]:
         r.fail("L2", "characters가 비어 있다. 본문에 반드시 나올 이름·호칭을 넣는다")
     pub = p["publish"]
-    fm = pub.get("formats", ["docx"])
-    if not fm or any(x not in FORMATS for x in fm):
+    fm = pub.get("formats", ["ebook"])
+    if legacy := [x for x in fm if x in LEGACY_FORMATS]:
+        r.fail("L2", f"book-toc.md:{key_line(toc_text, 'formats')} publish.formats에 더는 만들지 않는 형식 {legacy}이 있다. [\"ebook\"]로 바꾼다. "
+                     f"이미 출판한 run이면 출판 뒤 수정 절차로 gate: block-change → approved publish.formats 와 gate: remove-{legacy[0]} → approved 를 남긴다")
+    elif not fm or any(x not in FORMATS for x in fm):
         r.fail("L2", f"book-toc.md:{key_line(toc_text, 'formats')} publish.formats 값 {fm} (가능: {list(FORMATS)})")
-    if "docx" in fm and not pub.get("trim_options"):
-        r.fail("L2", f"book-toc.md:{key_line(toc_text, 'trim_options')} publish.trim_options가 비었다. docx를 만들려면 판형을 하나 이상 적는다 (가능: {list(TRIM_CM)})")
-    if bad := [x for x in pub.get("trim_options", []) if x not in TRIM_CM]:
-        r.fail("L2", f"book-toc.md:{key_line(toc_text, 'trim_options')} publish.trim_options에 생성기가 모르는 판형 {bad} (가능: {list(TRIM_CM)})")
+    if left := [k for k in DOCX_ONLY_KEYS if k in pub]:
+        r.warn("L2", f"book-toc.md:{key_line(toc_text, left[0])} 예전 docx 조판 키 {left}는 더 쓰지 않는다. 지워도 된다")
     if "ebook" in fm:
         design = pub.get("ebook", {}).get("design", "plain")
         if not any((b / f"{design}.html").exists() for b in (root / "designs" / "ebook", sd / "templates" / "ebook")):
@@ -612,9 +614,6 @@ def lint(root, skill_dir=None):
             ok, why = gate_status(run, root, "body")
             if not ok:
                 emit("gate_log", f"stage: review done이 있는데 본문 게이트가 닫히지 않았다: {why}")
-        if "publish" in done and "docx" in rp["publish"].get("formats", ["docx"]) \
-                and not re.search(r"^gate:\s*trim\s*→", led, re.M) and not re.search(r"^stage:\s*publish done .*inherited", led, re.M):
-            emit("publish_gate", "stage: publish done이 있는데 판형 게이트(gate: trim → <판형>)가 없다")
         # 단계 게이트: 다음 단계 산출물이 있으면 그 게이트가 닫혀 있어야 한다 (판정은 booktoc.gate_status 하나)
         story_later = [x for x in ("01_research-notes.md", "02_outline.md", "03_draft-v1.md") if (d / x).exists()]
         if story_later:
@@ -649,7 +648,7 @@ def lint(root, skill_dir=None):
                 if m and not (root / src).exists() and src not in seen_src:
                     seen_src.add(src)
                     base = Path(src).name
-                    fmt = {v: k for k, v in FORMATS.items()}.get(base)   # final.docx ↔ docx, ebook.html ↔ ebook: 어느 이름으로 승인해도 같다
+                    fmt = {v: k for k, v in ALL_FORMATS.items()}.get(base)   # ebook.html ↔ ebook, (예전) final.docx ↔ docx: 어느 이름으로 승인해도 같다
                     names = [base] + ([fmt] if fmt else [])
                     if not any(re.search(rf"^gate:\s*remove-{re.escape(nm)}\s*→\s*approved\b", led, re.M) for nm in names):
                         emit("remove_output", f"작가 산출물 {src}이 옮겨졌는데 gate: remove-{fmt or base} → approved 줄이 없다")
@@ -679,31 +678,18 @@ def lint(root, skill_dir=None):
 
         if re.search(r"^stage:\s*publish done", led, re.M):
             out = root / "03_output" / run
-            formats = rp["publish"].get("formats", ["docx"])
+            formats = rp["publish"].get("formats", ["ebook"])
             for need in ["metadata.md", "validate_report.txt"] + [FORMATS[x] for x in formats if x in FORMATS]:
                 if not (out / need).exists():
                     emit("publish_files", f"03_output/{run}/{need} 없음")
-            dpath, decided = out / "final.docx", ledger_trim(run, root)
-            try:
-                import docx as _docx
-            except ImportError:
-                _docx = None
-                if "docx" in formats:
-                    r.fail("L8", f"{run} python-docx가 없어 docx를 검사하지 못했다. python3 -m pip install -r {sd / 'requirements.txt'}")
-            if _docx is not None and "docx" in formats and dpath.exists() and decided in TRIM_CM:
-                sec = _docx.Document(str(dpath)).sections[0]
-                got = (round(sec.page_width.cm, 1), round(sec.page_height.cm, 1))
-                if got != TRIM_CM[decided]:
-                    emit("trim", f"final.docx 판형 {got[0]}×{got[1]}cm가 원장의 판형 결정 {decided} {TRIM_CM[decided]}와 다르다")
             epi = rp["publish"].get("ebook", {}).get("epigraph")
             if "ebook" in formats and epi and not epi.get("source_verified"):
                 emit("epigraph_source", "e북 제사 인용의 출처가 확인되지 않았다. 확인했으면 epigraph.source_verified를 true로, "
                                         "확인 없이 싣기로 했으면 사용자 승인(waiver: epigraph_source + gate: waiver-epigraph_source → approved), 빼기로 했으면 epigraph를 null로")
             if fin.exists():
-                dx = out / "final.docx" if "docx" in formats and (out / "final.docx").exists() else None
                 eb = out / "ebook.html" if "ebook" in formats and (out / "ebook.html").exists() else None
                 busy_now = booktoc.open_post_audit(run, root)
-                for x in validate(text, rp, dx if _docx is not None else None, eb)[0]:
+                for x in validate(text, rp, eb)[0]:
                     emit("publish_gate", f"출판본 게이트 실패: {x}" + (" (출판 뒤 수정 진행 중: 산출물은 republish.py --owner가 다시 만든다. 손으로 만들지 않는다)" if busy_now else ""))
                 if eb is not None:
                     import tempfile
@@ -718,24 +704,6 @@ def lint(root, skill_dir=None):
                                                 "의도한 차이면 그대로 두고, 아니면 작가 승인 뒤 출판 뒤 수정(republish.py)으로 다시 만든다"))
                         except Exception as ex:  # noqa: BLE001
                             r.warn("L8", f"{run} e북 재생성 비교 실패: {ex}")
-                if _docx is not None and dx is not None and ledger_trim(run, root) in TRIM_CM:
-                    import contextlib
-                    import io
-                    import tempfile
-                    from generate_docx import build as build_docx
-                    with tempfile.TemporaryDirectory() as tdx, contextlib.redirect_stdout(io.StringIO()):
-                        try:
-                            fresh = Path(tdx) / "d.docx"
-                            build_docx(text, rp, ledger_trim(run, root), fresh)
-                            sig = lambda doc: ([q.text for q in doc.paragraphs], len(doc.sections))  # noqa: E731
-                            old_sig, new_sig = sig(_docx.Document(str(dx))), sig(_docx.Document(str(fresh)))
-                        except Exception as ex:  # noqa: BLE001
-                            old_sig = new_sig = None
-                            r.warn("L8", f"{run} docx 재생성 비교 실패: {ex}")
-                    if old_sig != new_sig:
-                        empt = sum(1 for x in old_sig[0] if not x.strip())
-                        r.warn("L8", f"{run} final.docx가 지금 원고·생성기로 다시 만든 결과와 다르다(문단 {len(old_sig[0])}→{len(new_sig[0])}, "
-                                     f"빈 문단 {empt}개, 구역 {old_sig[1]}→{new_sig[1]}). 생성기가 바뀐 것이면 작가에게 묻고 출판 뒤 수정(republish.py)으로 다시 만든다")
                 meta = out / "metadata.md"
                 if meta.exists():
                     mt = meta.read_text(encoding="utf-8")

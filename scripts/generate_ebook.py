@@ -43,7 +43,7 @@ def manuscript(draft_text, p):
 
 
 def one_line_per_paragraph(text):
-    """docx 생성기처럼 원고의 줄 하나를 문단 하나로 본다. e북 파서는 빈 줄로 문단을 나누므로 줄 사이에 빈 줄을 넣는다."""
+    """원고의 줄 하나를 문단 하나로 본다. e북 파서는 빈 줄로 문단을 나누므로 줄 사이에 빈 줄을 넣는다."""
     return "\n\n".join(ln.strip() for ln in text.split("\n") if ln.strip())
 
 

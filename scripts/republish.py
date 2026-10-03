@@ -27,8 +27,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from booktoc import (ROOT, count_chars, final_draft_name, ledger, ledger_trim, lock_line,  # noqa: E402
-                     lock_violations, open_post_audit, run_params, split_draft, parse_lock, draft_sha, output_sha, out_unchanged, FORMATS)
+from booktoc import (ROOT, count_chars, final_draft_name, ledger, lock_line,  # noqa: E402
+                     lock_violations, open_post_audit, run_params, split_draft, parse_lock, draft_sha, output_sha, out_unchanged,
+                     FORMATS, ALL_FORMATS)
 
 HERE = Path(__file__).parent
 
@@ -112,7 +113,7 @@ def main():
         same = out_unchanged(lk, run, root)
         o_changed = "알 수 없음" if same is None else ("아니오" if same else "예")
         print(f"진행 중인 출판 뒤 수정: 원장 {k + 1}줄, owner {st[1] or '기록 없음'}, 시작 {started}\n"
-              f"  요청: {req}\n  원고가 잠금 뒤 바뀌었나: {d_changed}\n  docx·e북이 잠금 뒤 바뀌었나: {o_changed}\n"
+              f"  요청: {req}\n  원고가 잠금 뒤 바뀌었나: {d_changed}\n  e북이 잠금 뒤 바뀌었나: {o_changed}\n"
               f"  작가에게 (a) 기다림 (b) 이어받기 (c) 버리기를 이 정보와 함께 묻는다(SKILL.md \"출판 뒤 수정\" 0단계)")
         return
     locks = [i for i, ln in enumerate(lines) if ln.startswith("lock:")]
@@ -165,19 +166,16 @@ def main():
                 restored += [f"03_output/{run}/{s.name}" for s in copies[0].iterdir()]
                 out_note = "산출물도 이 수정 전 판으로 되돌렸다"
             if out_unchanged(lk, run, root) is False:
-                # 보관본이 없으면 되돌린 원고로 다시 만든다(같은 원고·블록·디자인이면 e북은 같은 결과, docx는 내용이 같은 새 파일)
+                # 보관본이 없으면 되돌린 원고로 다시 만든다(같은 원고·블록·디자인이면 e북은 같은 결과)
                 p1 = run_params(run, root)
-                fm = p1["publish"].get("formats", ["docx"])
+                fm = p1["publish"].get("formats", ["ebook"])
                 py = [sys.executable]
-                if "docx" in fm and ledger_trim(run, root):
-                    subprocess.run(py + [str(HERE / "generate_docx.py"), "--run", run, "--root", str(root)], cwd=root, capture_output=True)
                 if "ebook" in fm:
                     subprocess.run(py + [str(HERE / "generate_ebook.py"), "--run", run, "--root", str(root)], cwd=root, capture_output=True)
                 if (out_dir / "metadata.md").exists():
                     sync_metadata(out_dir / "metadata.md", (root / "02_draft" / run / final_draft_name(p1)).read_text(encoding="utf-8"), p1)
                 restored.append("산출물 다시 만듦")
-                out_note = ("이 수정 중에 산출물이 바뀌었는데 보관본이 없어, 되돌린 원고로 다시 만들었다"
-                            + ("" if out_unchanged(lk, run, root) else "(docx는 내용이 같은 새 파일이라 해시가 다르다)"))
+                out_note = "이 수정 중에 산출물이 바뀌었는데 보관본이 없어, 되돌린 원고로 다시 만들었다"
         bad = lock_violations(run, root)
         if any("최종 원고" in b for b in bad):
             raise SystemExit("멈춤: 되돌린 원고가 잠금 당시 원고와 다르다:\n  " + "\n  ".join(bad))
@@ -234,7 +232,10 @@ def main():
         raise SystemExit(f"멈춤: {changelog.relative_to(root)}에 이번 수정을 적지 않았다(--prepare 뒤 그대로다)")
 
     p = run_params(run, root)
-    fmts = p["publish"].get("formats", ["docx"])
+    fmts = p["publish"].get("formats", ["ebook"])
+    if stale := [f_ for f_ in fmts if f_ not in FORMATS]:
+        raise SystemExit(f"멈춤: 블록 publish.formats에 더는 만들지 않는 형식 {stale}이 있다. 이번 수정에서 블록을 [\"ebook\"]로 바꾸고 "
+                         f"gate: block-change → approved publish.formats 와 gate: remove-{stale[0]} → approved 를 남긴다. 그 산출물은 보관함으로 옮겨진다")
     out = root / "03_output" / run
     draft = root / "02_draft" / run / final_draft_name(p)
     # 산출물을 건드리기 전에 원고부터 검증한다. 실패하면 아무것도 바꾸지 않는다
@@ -249,10 +250,10 @@ def main():
             archive(root, out / name, arc, "copy before post-audit republish (file kept in place)", today)
             kept.append(name)
 
-    # 블록에서 뺀 형식의 산출물(예: docx 빼기)은 승인(gate: remove-<형식>)을 확인하고 보관함으로 옮긴다
+    # 블록에서 뺀 형식의 산출물(예: 예전 작품의 docx)은 승인(gate: remove-<형식>)을 확인하고 보관함으로 옮긴다
     lk_prev = parse_lock(lines[last_lock])
     for fmt in [f_ for f_ in (lk_prev or {}).get("formats", []) if f_ not in fmts]:
-        fname = FORMATS.get(fmt)
+        fname = ALL_FORMATS.get(fmt)
         if fname and (out / fname).exists():
             if not any(re.match(rf"^gate:\s*remove-({re.escape(fmt)}|{re.escape(fname)})\s*→\s*approved\b", ln) for ln in since):
                 raise SystemExit(f"멈춤: 블록에서 '{fmt}'을 뺐는데 gate: remove-{fmt} → approved 줄이 없다. 작가에게 묻고 남긴다")
@@ -266,11 +267,6 @@ def main():
         raise SystemExit(f"멈춤: {why}. 산출물을 다시 만들기 전 판으로 되돌렸다({arc.relative_to(root)}). 잠그지 않았다")
 
     py = [sys.executable]
-    if "docx" in fmts:
-        if not ledger_trim(run, root):
-            raise SystemExit("멈춤: 원장에 판형 결정(gate: trim → <판형>)이 없다")
-        if subprocess.run(py + [str(HERE / "generate_docx.py"), "--run", run, "--root", str(root)], cwd=root).returncode:
-            restore("docx 생성 실패")
     if "ebook" in fmts:
         if subprocess.run(py + [str(HERE / "generate_ebook.py"), "--run", run, "--root", str(root)], cwd=root).returncode:
             restore("e북 생성 실패")
@@ -278,7 +274,7 @@ def main():
         n, total = sync_metadata(out / "metadata.md", draft.read_text(encoding="utf-8"), p)
         got = re.search(r"분량:\s*([\d,]+)자", (out / "metadata.md").read_text(encoding="utf-8"))
         if not got or int(got.group(1).replace(",", "")) != total:
-            restore(f"metadata.md에서 '분량: N자' 줄을 찾지 못해 {total:,}자로 맞추지 못했다. stage-publish.md 3단계 형식으로 분량 줄을 넣는다")
+            restore(f"metadata.md에서 '분량: N자' 줄을 찾지 못해 {total:,}자로 맞추지 못했다. stage-publish.md 2단계 형식으로 분량 줄을 넣는다")
         print(f"OK metadata 분량 {total:,}자로 맞춤 ({n}줄)")
     rep = subprocess.run(py + [str(HERE / "validate_draft.py"), "--run", run, "--root", str(root)], capture_output=True, text=True, cwd=root)
     (out / "validate_report.txt").write_text(rep.stdout, encoding="utf-8")

@@ -112,32 +112,8 @@
     "self_bias_warn": 0.5
   },
   "publish": {
-    "trim_options": [
-      "신국판",
-      "B5"
-    ],
-    "body_font": "KoPubWorld바탕",
-    "body_font_fallback": [
-      "본명조",
-      "함초롬바탕"
-    ],
-    "body_size_pt": 11,
-    "line_spacing": 1.6,
-    "first_line_indent_chars": 1,
-    "heading_font": "KoPubWorld돋움",
-    "heading_size_pt": 16,
-    "heading_color": "1A1A1A",
-    "margin_cm": {
-      "top": 2.5,
-      "bottom": 2.5,
-      "left": 2.0,
-      "right": 2.0
-    },
     "cover_label": "단편 소설",
-    "header": "title",
-    "footer": "page_number",
     "formats": [
-      "docx",
       "ebook"
     ],
     "publisher": "",
@@ -179,7 +155,7 @@
 | `structure_mode` | `chapter` 또는 `part`. `part`면 `parts` 배열을 추가하고 `<스킬>/references/workflow.md` 5절 장편 규칙을 쓴다 | write, review |
 | `chapters[].pages` | 장별 매수. 합이 `length.target_pages`와 같아야 한다 | write, SILVER, 린터 |
 | `last_line` | 작품 마지막 줄. storyline 통과본에 같은 문장이 있어야 한다 | 검증기, 린터 |
-| `back_matter` | 마지막 장 뒤에 둘 섹션 이름 목록(예: 작가의 말). 원고에서 `# <이름>` 헤딩으로 쓴다. 목록에 없는 장 밖 H1은 FAIL | 검증기, docx·e북 생성기 |
+| `back_matter` | 마지막 장 뒤에 둘 섹션 이름 목록(예: 작가의 말). 원고에서 `# <이름>` 헤딩으로 쓴다. 목록에 없는 장 밖 H1은 FAIL | 검증기, e북 생성기 |
 | `anchors` | 시각 닻. `min_total` 미달은 FAIL, `chapters` 배치 누락은 WARN | write, BLUE, 검증기 |
 | `retired_names` | 바꾸기 전 이름. 본문에 남으면 FAIL | 검증기 |
 | `forbidden_disclosures` | 명시 금지 항목을 잡는 구절 | 검증기 |
@@ -190,14 +166,12 @@
 | `review.story_proof_weight` | 스토리 패널 점수에서 PROOF 카드의 가중치(0~1) | storyline |
 | `review.rounds_before_user_check` | 이 라운드를 넘기기 전 사용자에게 계속할지 묻는다 | storyline, review, 린터 |
 | `style.*` | 문체 9원칙의 숫자(문장 평균 길이, 단락 줄 수)와 금지 목록(번역투, 클리셰). em dash·불릿·`**`는 forbid 고정 | write, 검증기 |
-| `publish.header`, `publish.footer` | docx 머리글·바닥글. `title`(제목)·`page_number`(쪽 번호) 또는 빈 값 | docx 생성기 |
 | `publish.third_party_verified` | back_matter의 서평·추천사·해설이 실제 제3자 글이면 true. 가상 평자면 원장 waiver로 처리 | 린터 |
 | `review.self_bias_warn` | BLACK 자기 점수가 패널보다 이만큼 높으면 편향 의심 표기 | storyline |
 | `review.*_pass` | 통과선. 이 값 외의 곳에 통과선을 적지 않는다 | storyline, review |
-| `publish.trim_options` | 판형 후보. 생성기는 B5, 신국판, A5, 국판을 안다 | publish |
-| `publish.formats` | 만들 형식: `docx`, `ebook` | publish, 린터 |
+| `publish.formats` | 출판 형식. `["ebook"]` 하나다(웹 e북 `ebook.html`). Word(docx)는 만들지 않는다 | publish, 린터 |
 | `publish.copyright_holder` | 판권면 © 줄의 저작권자. 비우면 필명(`pen_name`)을 쓴다 | e북 생성기 |
-| `publish.publisher`, `pub_date`, `isbn`, `copyright_year` | 판권 정보. 비우면(`""`, `null`) 그 줄을 넣지 않는다. 정본에 없는 값을 지어 넣지 않는다 | docx·e북 생성기 |
+| `publish.publisher`, `pub_date`, `isbn`, `copyright_year` | 판권 정보. 비우면(`""`, `null`) 그 줄을 넣지 않는다. 정본에 없는 값을 지어 넣지 않는다 | e북 생성기 |
 | `publish.ebook.design` | e북 디자인. `plain`(기본, 장식만) 또는 `<스킬>/templates/ebook/`의 다른 파일 이름 | e북 생성기 |
 | `publish.ebook.cover_title_lines` | 표지 제목 줄바꿈(두 줄까지, 한 줄 8자 이내). 비우면 제목 한 줄 | e북 생성기 |
 | `publish.ebook.epigraph` | 제사 `{"lines": [...], "attr_lines": [...], "source_verified": true}`. 출처를 확인하지 않았으면 false로 두고 검증기가 WARN을 낸다 | e북 생성기, 검증기 |

@@ -4,11 +4,11 @@
 
 T1 다른 장르 픽스처(가족 드라마 40매, 3장)의 정상 원고가 검증기를 통과한다
 T2 같은 픽스처의 결함 원고를 검증기가 결함별로 잡는다
-T3 범용 docx 생성기가 픽스처로 표지·목차·마지막 문단이 맞는 docx를 만든다
+T3 docx를 만들지 않는다: publish.formats의 docx는 린터 FAIL, 예전 docx 조판 키는 WARN, docx 생성기가 없다
 T4 현재 프로젝트가 린터를 통과한다
 T5 리팩터 이전 스킬·카드(_archive)를 넣은 사본에서 린터가 L1·L3·L4를 잡는다
 T6 README 절차대로 book-toc·storyline 두 파일만 바꾼 사본에서 린터 FAIL 0 (지난 run은 스냅샷으로 검사)
-T7 장편(part) 모드: 부 헤딩이 있는 원고 통과, 부 헤딩 누락 탐지, docx 목차에 부 제목
+T7 장편(part) 모드: 부 헤딩이 있는 원고 통과, 부 헤딩 누락 탐지, e북에 부 제목
 T8 실행 감사: 합평 머리 줄 누락, 점수 동결 위반, 바뀐 자리 누락, 승인 없는 waiver를 잡고 정상 run은 통과
 T9 빈칸이 남은 템플릿 블록을 린터가 L2로 잡는다
 T10 범용 e북 생성기: 다른 장르를 plain 디자인으로 만들고 검증 통과, 로봇 그림·이전 작품 문자열 없음, back_matter 포함
@@ -26,32 +26,28 @@ T21 게이트 순서: 본문 합평 미통과인데 최종본이 있으면 FAIL,
 T22 작가 산출물 제거: MANIFEST로 옮겨 없어진 03_output 파일에 remove 승인이 없으면 FAIL
 T23 rework 우회 차단: 스토리 게이트가 닫히지 않은 run은 new_run이 물려받지 않는다
 T24 storyline 양식 빈칸이 남으면 FAIL
-T25 단계 건너뛰기: 원장에 publish done만 있고 앞 단계·판형 게이트가 없으면 FAIL
+T25 단계 건너뛰기: 원장에 publish done만 있고 앞 단계가 없으면 FAIL
 T26 gate_status: rework 안의 reopen 이후 재합평, 장편의 빠진 부, 본문 reopen 뒤 새 라운드 없음, 다른 kind의 gate_log waiver
-T27 rework가 서평 결정을 승인 원문 그대로, 판형 결정과 함께 물려주고, back_matter 섹션을 빼면 검증기가 FAIL
+T27 rework가 서평 결정을 승인 원문 그대로 물려주고 잠금 줄을 남기며, back_matter 섹션을 빼면 검증기가 FAIL
 T28 잠금: 잠금 뒤 back_matter·formats가 승인 없이 줄거나 스냅샷이 기록 없이 바뀌면 FAIL, 승인이 있으면 통과, 출판 뒤 잠금 누락 FAIL
 T29 첫 작품 시작: init_project.py가 답 한 묶음으로 두 파일을 만들고, 블록은 린터 스키마를 통과하며, 있는 파일은 덮어쓰지 않는다
-T30 출판 감사: 원장 판형과 다른 docx, 승인 없는 미확인 제사를 FAIL로 잡고, docx 생성기는 판형 결정 없이 멈춘다
+T30 출판 감사: 승인 없는 미확인 제사를 FAIL로 잡는다
 T31 e북: 오프라인 대체 화면이 들어 있고, 디자인 전용 조각은 값이 채워져 슬롯으로 옮겨지며 결과물에 template이 남지 않는다
 T32 gate_status: 스토리용 gate_log waiver는 본문 게이트를 닫지 않는다
 T33 잠금 우회 차단: 다시 잠그기 거부, 잠금 구간마다 비교, rejected·note는 승인이 아님
 T34 waiver 짝: 승인 줄은 바로 위 waiver 하나만 승인한다
 T35 출판 뒤 수정: republish.py는 승인 없이 멈추고, 승인이 있으면 다시 만들고 메타 분량을 맞춰 잠근다
 T36 rework가 출판 뒤 작가 수정 기록을 넘긴다
-T37 docx 조판: 앞부분 구역에는 머리글·쪽번호가 없고 본문 구역 쪽번호는 1부터, 빈 문단 대신 간격, 글꼴 표에 대체 글꼴
 T38 e북 로더: 200 응답이어도 라이브러리가 없으면 다음 후보·대체 화면으로, 글꼴 대기는 1.5초 상한
 T39 잠금 키 범위: 무관한 승인(post-audit)·note로는 다른 키를 못 바꾸고, 키를 적은 block-change 승인은 통과
 T40 잠금 줄·잠금 파일 삭제를 잡는다
 T41 출판 뒤 잠긴 최종 원고를 승인 없이 고치면(글자 수가 같아도) 잡는다, 작가의 유지 결정이 있으면 republish.py가 멈춘다
 T42 잠금 파일 위조·산출물 직접 재생성·응답 원문 속 낱말을 키로 쓰기를 잡고, 출판 뒤 수정은 owner만 마치며 진행 중에는 두 번째 수정과 rework가 열리지 않는다
 T43 승인 전에 이미 고친 원고는 --prepare가 '수정 전 보관본'으로 받지 않는다
-T44 fc-list 없이도 글꼴 폴더에서 글꼴 계열 이름을 읽는다
 T45 끊긴 출판 뒤 수정: --status가 알리고, 승인 없이 이어받기·버리기가 멈추며, 버리기는 원고를 되돌려 다음 수정을 열고, 이어받기는 새 owner로 마친다
 T46 출판 뒤 수정 우회: owner 없는 prepare 줄 덧붙이기, 손으로 쓴 done 줄과 재잠금, prepare 없는 수정을 잡는다
 T47 승인 범위: 겹치는 끝 이름(lines)은 키가 아니고, publish-info는 빈칸 채우기만, epigraph-source는 출처 표시만 덮는다
 T48 출판 시점에 metadata 분량 줄 형식을 잡고, 없는 run에는 스크립트마다 있는 run 목록으로 답한다
-T49 장편 docx: 부 제목 쪽에는 머리글·쪽번호가 없고 장 쪽에는 있으며, 쪽번호는 본문 첫 구역에서만 1로 시작한다
-T50 출판된 docx가 지금 생성기 결과와 다르면 린터가 알린다
 T51 버리기: 끊긴 세션이 산출물까지 바꿨으면 산출물도 되돌리고, --status는 요청 원문·변경 여부를 보여 준다
 """
 import hashlib
@@ -73,7 +69,6 @@ SCRIPTS = SKILL / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 from booktoc import load_params, lock_line  # noqa: E402
 from validate_draft import validate  # noqa: E402
-from generate_docx import build  # noqa: E402
 from lint_project import lint  # noqa: E402
 from generate_ebook import build as build_ebook  # noqa: E402
 from validate_draft import check_ebook  # noqa: E402
@@ -173,12 +168,15 @@ def main():
 
     # T3
     with tempfile.TemporaryDirectory() as td:
-        out = Path(td) / "final.docx"
-        build(good, p, "신국판", out)
-        from validate_draft import check_docx
-        last = [x for x in good.strip().split("\n") if x.strip()][-1]
-        dfails = check_docx(out, p, last)
-        check("T3 범용 docx 생성기 (표지·목차·마지막 문단)", not dfails, str(dfails))
+        t3 = project_copy(td)
+        p3 = load_params(t3 / "book-toc.md")
+        p3["publish"]["formats"] = ["docx", "ebook"]
+        p3["publish"]["trim_options"] = ["신국판"]
+        write_block(t3 / "book-toc.md", p3)
+        r3, j3 = lint_codes(t3)
+        check("T3 publish.formats에 docx가 있으면 린터 FAIL", any("더는 만들지 않는 형식" in x for x in r3.fails), j3[:300])
+        check("T3 예전 docx 조판 키는 WARN", any("예전 docx 조판 키" in w for w in r3.warns), " | ".join(r3.warns)[:300])
+    check("T3 docx 생성기가 스킬에 없다", not (SKILL / "scripts" / "generate_docx.py").exists())
 
     # T4
     # 실제 작품의 지금 상태는 도구 회귀와 따로 본다. 진행 중인 작가 작업이 도구 시험을 깨뜨리지 않게, 이후 시험은 이 기준선에 없던 FAIL만 센다
@@ -228,11 +226,10 @@ def main():
     f7b, _, _ = validate(txt.replace("# 2부. 겨울\n", ""), pp)
     check("T7 부 헤딩 누락 탐지", any("헤딩" in x for x in f7b), str(f7b))
     with tempfile.TemporaryDirectory() as td:
-        out = Path(td) / "p.docx"
-        build(txt, pp, "B5", out)
-        from validate_draft import check_docx
-        d7 = check_docx(out, pp, pp["last_line"])
-        check("T7 장편 docx 목차에 부 제목 포함", not d7, str(d7))
+        out = Path(td) / "p.html"
+        build_ebook(txt, pp, out)
+        d7, _ = check_ebook(out, pp, pp["last_line"])
+        check("T7 장편 e북에 부 제목 포함·검증 통과", not d7 and "1부. 가을" in out.read_text(encoding="utf-8"), str(d7))
 
     # T8
     with tempfile.TemporaryDirectory() as td:
@@ -514,11 +511,8 @@ def main():
     with tempfile.TemporaryDirectory() as td:
         t25 = project_copy(td)
         dt25, dd = mk_run(t25, "20990909_01", "status: published\nstage: publish done 2099-09-09\n")
-        p25 = load_params(dt25 / "book-toc.snapshot.md")
-        p25["publish"]["formats"] = ["docx", "ebook"]   # 판형 게이트는 docx를 만드는 run에서만 본다
-        write_block(dt25 / "book-toc.snapshot.md", p25)
         _, j = lint_codes(t25)
-        check("T25 단계 건너뛰기와 판형 게이트 누락 탐지", "[stage_order]" in j and "판형 게이트" in j, j[:300])
+        check("T25 단계 건너뛰기 탐지", "[stage_order]" in j, j[:300])
 
     # T26
     from booktoc import gate_status
@@ -562,7 +556,7 @@ def main():
                         if ln.startswith("gate: waiver-fictional_reviewer")]
             check("T27 rework가 서평 결정을 승인 원문 그대로 물려줌 (새 run FAIL 0)",
                   "waiver: fictional_reviewer" in led and all(s in led for s in src_appr) and not mine, " | ".join(mine)[:300])
-            check("T27 rework는 판형을 물려받지 않고(다시 묻는다) 잠금 줄을 남김", "gate: trim →" not in led and "\nlock: " in led, led[-400:])
+            check("T27 rework가 잠금 줄을 남김", "\nlock: " in led, led[-400:])
             fin = (ROOT / "02_draft" / LIVE / "09_draft-final.md").read_text(encoding="utf-8")
             cut = fin.split("\n# 작가의 말")[0]
             f27, _, _ = validate(cut, load_params(ROOT / "01_test" / LIVE / "book-toc.snapshot.md"))
@@ -620,20 +614,14 @@ def main():
         t30 = project_copy(td)
         dt, dd = mk_run(t30, "20990202_01", "")
         p30 = load_params(dt / "book-toc.snapshot.md")
-        p30["publish"]["formats"] = ["docx", "ebook"]
         p30["publish"]["ebook"]["epigraph"] = {"lines": ["말"], "attr_lines": ["누군가"], "source_verified": False}
         write_block(dt / "book-toc.snapshot.md", p30)
         out = t30 / "03_output" / "20990202_01"
         out.mkdir(parents=True)
-        build(make_draft(load_params(FIX)), p30, "B5", out / "final.docx")
-        (dd / "00_RUN_STATUS.md").write_text('status: published\ngate: trim → 신국판 (2099-02-02) "신국판"\nstage: publish done 2099-02-02\n', encoding="utf-8")
+        build_ebook(make_draft(load_params(FIX)), p30, out / "ebook.html")
+        (dd / "00_RUN_STATUS.md").write_text('status: published\nstage: publish done 2099-02-02\n', encoding="utf-8")
         r, j = lint_codes(t30)
-        check("T30 원장 판형(신국판)과 다른 docx(B5)를 잡는다", any("20990202_01 [trim]" in x for x in r.fails), j[:300])
         check("T30 승인 없는 미확인 제사를 잡는다", any("20990202_01 [epigraph_source]" in x for x in r.fails), j[:300])
-        mk_run(t30, "20990202_02", "status: in-progress\n")
-        cp = subprocess.run([sys.executable, str(SKILL / "scripts" / "generate_docx.py"), "--run", "20990202_02", "--root", str(t30)],
-                            capture_output=True, text=True, cwd=t30)
-        check("T30 판형 결정 없이 docx 생성기가 멈춘다", cp.returncode != 0 and "판형이 정해지지 않았다" in (cp.stderr + cp.stdout), (cp.stderr + cp.stdout)[-300:])
 
     # T31
     with tempfile.TemporaryDirectory() as td:
@@ -724,7 +712,7 @@ def main():
             cl.write_text(cl.read_text(encoding="utf-8") + "\n## 2099-05-05 윤문\n- 문장 세 곳 덧붙임\n", encoding="utf-8")
             bad = fin.read_text(encoding="utf-8")
             fin.write_text(bad.replace("덧붙인 문장.", "덧붙인 — 문장.", 1), encoding="utf-8")
-            o35 = next(t35 / "03_output" / run35 / n_ for n_ in ("final.docx", "ebook.html") if (t35 / "03_output" / run35 / n_).exists())
+            o35 = t35 / "03_output" / run35 / "ebook.html"
             before = o35.read_bytes()
             cp = subprocess.run(fin35, capture_output=True, text=True, cwd=t35)
             check("T35 원고 검증이 실패하면 산출물을 건드리지 않고 멈춘다",
@@ -752,26 +740,6 @@ def main():
 
     else:
         print("SKIP T36 출판까지 마친 run이 이 저장소에 없다")
-    # T37
-    import zipfile
-    import docx as _docx
-    with tempfile.TemporaryDirectory() as td:
-        p37 = load_params(FIX)
-        o = Path(td) / "a.docx"
-        build(make_draft(p37), p37, "신국판", o)
-        d = _docx.Document(str(o))
-        s0, s1 = d.sections[0], d.sections[-1]
-        front_empty = not any(x.text.strip() for x in s0.header.paragraphs + s0.footer.paragraphs) and not s0.footer._element.xpath(".//w:fldChar")
-        start = s1._sectPr.xpath("./w:pgNumType/@w:start")
-        check("T37 앞부분 구역에는 머리글·쪽번호가 없고 본문 쪽번호는 1부터",
-              len(d.sections) == 2 and front_empty and not s1.header.is_linked_to_previous and start == ["1"], str((len(d.sections), front_empty, start)))
-        empties = sum(1 for para in d.paragraphs if not para.text.strip())
-        check("T37 문서 어디에도 빈 문단이 없다(세로 위치·쪽 나눔·문단 간격은 문단 서식으로)", empties == 0, f"빈 문단 {empties}개")
-        ft = zipfile.ZipFile(o).read("word/fontTable.xml").decode("utf-8")
-        fb = p37["publish"].get("body_font_fallback") or []
-        check("T37 글꼴 표에 계열·한글 문자 집합·대체 이름이 들어간다",
-              '<w:family w:val="roman"/>' in ft and '<w:family w:val="swiss"/>' in ft and 'w:charset w:val="81"' in ft and "w:altName" in ft, ft[-300:])
-
     # T38
     with tempfile.TemporaryDirectory() as td:
         o = Path(td) / "e.html"
@@ -867,12 +835,12 @@ with sync_playwright() as pw:
             r, j = lint_codes(t42)
             check("T42 잠금 파일만 고치면 잡는다", any(f"{LIVE} [lock]" in x and "해시와 다르다" in x for x in r.fails), j[:300])
             lf.write_text(orig_lock, encoding="utf-8")
-            docx_p = next(t42 / "03_output" / LIVE / n_ for n_ in ("final.docx", "ebook.html") if (t42 / "03_output" / LIVE / n_).exists())
-            orig_docx = docx_p.read_bytes()
-            docx_p.write_bytes(orig_docx + b"\0")
+            out_p = t42 / "03_output" / LIVE / "ebook.html"
+            orig_out = out_p.read_bytes()
+            out_p.write_bytes(orig_out + b"\0")
             r, j = lint_codes(t42)
             check("T42 출판 산출물을 승인 없이 바꾸면 잡는다", any(f"{LIVE} [lock]" in x and "출판 산출물" in x for x in r.fails), j[:300])
-            docx_p.write_bytes(orig_docx)
+            out_p.write_bytes(orig_out)
             rp = [sys.executable, str(SKILL / "scripts" / "republish.py"), "--run", LIVE, "--root", str(t42)]
             led.write_text(led.read_text(encoding="utf-8") + 'gate: post-audit → approved (2099-09-09) "고쳐"\n', encoding="utf-8")
             c1 = subprocess.run(rp + ["--prepare"], capture_output=True, text=True, cwd=t42)
@@ -917,15 +885,6 @@ with sync_playwright() as pw:
             check("T43 승인 전 수정이 있으면 --prepare가 멈춘다", cp.returncode != 0 and "이미 바뀌었다" in cp.stderr + cp.stdout, (cp.stderr + cp.stdout)[-200:])
     else:
         print("SKIP T43 출판까지 마친 run이 이 저장소에 없다")
-
-    # T44
-    import generate_docx as _gd
-    sample = next((p for d in ("/System/Library/Fonts", "C:/Windows/Fonts", "/usr/share/fonts")
-                   for p in (Path(d).rglob("*.tt[fc]") if Path(d).exists() else [])), None)
-    if sample:
-        check("T44 글꼴 파일의 name 표에서 계열 이름을 읽는다", bool(_gd.font_families(sample)), str(sample))
-    else:
-        print("SKIP T44 시스템 글꼴 폴더를 찾지 못했다")
 
     # T45
     if LIVE:
@@ -1024,50 +983,10 @@ with sync_playwright() as pw:
             r, j = lint_codes(t48)
             check("T48 metadata 분량 줄 형식이 다르면 출판 감사가 잡는다", any(f"{LIVE} [metadata]" in y and "형식" in y for y in r.fails), j[:300])
     msgs = []
-    for sc in ("validate_draft.py", "generate_docx.py", "generate_ebook.py", "lock_run.py"):
+    for sc in ("validate_draft.py", "generate_ebook.py", "lock_run.py"):
         cp = subprocess.run([sys.executable, str(SKILL / "scripts" / sc), "--run", "20991231_99", "--root", str(ROOT)], capture_output=True, text=True)
         msgs.append(cp.returncode != 0 and "있는 run" in cp.stderr + cp.stdout and "Traceback" not in cp.stderr)
-    check("T48 없는 run이면 네 스크립트 모두 traceback 없이 있는 run 목록으로 답한다", all(msgs), str(msgs))
-
-    # T49
-    with tempfile.TemporaryDirectory() as td:
-        p49 = json.loads(json.dumps(load_params(FIX)))
-        p49["structure_mode"] = "part"
-        p49["parts"] = [{"no": 1, "title": "가", "chapters": [1, 2]}, {"no": 2, "title": "나", "chapters": [3]}]
-        o = Path(td) / "p.docx"
-        build(make_draft(p49), p49, "신국판", o)
-        d = _docx.Document(str(o))
-        heads = [bool(s.header.paragraphs[0].text.strip()) for s in d.sections]
-        starts = [s._sectPr.xpath("./w:pgNumType/@w:start") for s in d.sections]
-        check("T49 부 제목 쪽은 머리글 없음, 장 쪽은 있음, 번호는 한 번만 1로",
-              heads == [False, False, True, False, True] and starts == [[], ["1"], [], [], []] and
-              not any(not q.text.strip() for q in d.paragraphs), str((heads, starts)))
-
-    # T50 (docx를 만드는 run이 아니면 사본에서 docx를 만드는 run으로 바꿔 시험한다)
-    if LIVE:
-        with tempfile.TemporaryDirectory() as td:
-            t50 = project_copy(td)
-            snap = t50 / "01_test" / LIVE / "book-toc.snapshot.md"
-            p50 = load_params(snap)
-            if "docx" not in p50["publish"].get("formats", []):
-                p50["publish"]["formats"] = ["docx"] + p50["publish"].get("formats", [])
-                write_block(snap, p50)
-            led = t50 / "02_draft" / LIVE / "00_RUN_STATUS.md"
-            if "gate: trim →" not in led.read_text(encoding="utf-8"):
-                led.write_text(led.read_text(encoding="utf-8") + 'gate: trim → 신국판 (selftest) "신국판"\n', encoding="utf-8")
-            dx = t50 / "03_output" / LIVE / "final.docx"
-            fin = (t50 / "02_draft" / LIVE / "09_draft-final.md").read_text(encoding="utf-8")
-            import contextlib
-            import io
-            with contextlib.redirect_stdout(io.StringIO()):
-                build(fin, p50, "신국판", dx)
-            d = _docx.Document(str(dx))
-            d.paragraphs[-1].insert_paragraph_before("")   # 옛 생성기처럼 빈 문단이 낀 docx
-            d.save(str(dx))
-            r = lint(t50)
-            check("T50 출판된 docx가 지금 생성기 결과와 다르면 WARN", any("final.docx가 지금 원고·생성기로" in w for w in r.warns), " | ".join(r.warns)[:300])
-    else:
-        print("SKIP T50 출판까지 마친 run이 이 저장소에 없다")
+    check("T48 없는 run이면 세 스크립트 모두 traceback 없이 있는 run 목록으로 답한다", all(msgs), str(msgs))
 
     # T51
     if LIVE:
@@ -1082,7 +1001,7 @@ with sync_playwright() as pw:
             out = t51 / "03_output" / LIVE
             keep = t51 / "_archive" / f"20991220_000000_000000_post-audit_{owner}" / "03_output" / LIVE   # 마침 단계가 남긴 보관본처럼
             keep.mkdir(parents=True)
-            for n_ in ("final.docx", "ebook.html", "metadata.md"):
+            for n_ in ("ebook.html", "metadata.md"):
                 if (out / n_).exists():
                     shutil.copy2(out / n_, keep / n_)
             fin = t51 / "02_draft" / LIVE / "09_draft-final.md"
@@ -1090,7 +1009,7 @@ with sync_playwright() as pw:
             (out / "ebook.html").write_text((out / "ebook.html").read_text(encoding="utf-8") + "<!-- 버려질 문장 -->", encoding="utf-8")
             st = subprocess.run(rp + ["--status"], capture_output=True, text=True, cwd=t51).stdout
             check("T51 --status가 요청 원문과 원고·산출물 변경 여부를 보여 준다",
-                  "서평 문장 고쳐" in st and "원고가 잠금 뒤 바뀌었나: 예" in st and "docx·e북이 잠금 뒤 바뀌었나: 예" in st, st[:300])
+                  "서평 문장 고쳐" in st and "원고가 잠금 뒤 바뀌었나: 예" in st and "e북이 잠금 뒤 바뀌었나: 예" in st, st[:300])
             led.write_text(led.read_text(encoding="utf-8") + 'gate: post-audit-abandon → approved (2099-12-21) "버려"\n', encoding="utf-8")
             c1 = subprocess.run(rp + ["--abandon"], capture_output=True, text=True, cwd=t51)
             r, j = lint_codes(t51)

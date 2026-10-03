@@ -5,3 +5,7 @@
 ## 2026-10-03 (owner 261405)
 - 승인 원문: "예시: 첫 문장을 조금 고쳐"
 - 1장 첫 문단: "엄마가 소매를 걷었다." → "엄마가 소매를 천천히 걷었다."
+
+- 2026-10-03 승인 "스킬을 수정하자. 작업 완료 버전은 ebook.html 파일로 만드는 걸로. docx 는 만들지 마"
+  - 스킬이 docx를 더 만들지 않게 바뀌어 예시도 e북 하나로 옮겼다. 블록과 스냅샷의 publish.formats ["docx", "ebook"] → ["ebook"], docx 조판 키(trim_options, body_font 등 12개) 삭제
+  - 03_output/20261003_01/final.docx는 republish.py가 승인(gate: remove-docx)을 확인하고 보관함으로 옮긴다. 원고는 바뀌지 않았다

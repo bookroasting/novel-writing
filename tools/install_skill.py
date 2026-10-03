@@ -23,7 +23,7 @@ NAME = "novel-writing"
 REPO = Path(__file__).resolve().parents[1]
 # 스킬 원본 위치: 작품 프로젝트 안이면 novel-writing/, 스킬 저장소(루트에 SKILL.md)면 저장소 루트
 SRC = REPO / NAME if (REPO / NAME / "SKILL.md").exists() else REPO
-SKILL_ITEMS = ("SKILL.md", "requirements.txt", "agents", "references", "scripts", "templates")   # 설치에 들어가는 것
+SKILL_ITEMS = ("SKILL.md", "agents", "references", "scripts", "templates")   # 설치에 들어가는 것
 IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store")
 
 

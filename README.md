@@ -1,94 +1,271 @@
 # novel-writing
 
-AI 에이전트 팀이 소설을 설계, 집필, 합평해 출판본(웹 e북, docx)까지 만드는 Agent Skill이다. 작가 페르소나 BLACK이 쓰고, 평가자 카드 13장이 합평한다. 사용자에게 물어야 하는 자리(게이트)는 지휘 에이전트가 직접 묻고, 답을 원장에 원문 그대로 남긴다.
+**AI 에이전트 팀이 한 편의 소설을 설계하고, 쓰고, 합평하고, 웹 e북으로 출판하는 Agent Skill.**
 
-Claude Code와 Codex에 설치할 수 있다.
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB.svg)
+![Runs on Claude Code · Codex](https://img.shields.io/badge/runs_on-Claude_Code_%C2%B7_Codex-555.svg)
 
-## 무엇이 들어 있나
+작가 페르소나 **BLACK**이 쓰고, **평가자 카드 13장**이 합평하고, **지휘 에이전트**가 다섯 단계를 이끈다. 결과물은 브라우저에서 바로 열리는 한 장짜리 웹 e북(`ebook.html`)이다. 작가의 결정은 모두 원장에 원문 그대로 남고, 린터와 검증기가 그 기록이 서로 맞는지 매 단계 확인한다.
 
+| | |
+|---|---|
+| **입력** | 작품 설정 한 장(`book-toc.md`)과 1차 콘셉트 한 장(`storyline.md`) |
+| **출력** | 웹 e북 `ebook.html`, 출판 메타데이터, 품질 게이트 보고서 |
+| **팀** | 지휘 1, 단계 서브 에이전트 5, 작가 페르소나 1, 평가자 카드 13 |
+| **사람의 자리** | 스토리 통과, 집필 방식, 라운드 상한, 출판 정보, 출판 뒤 수정 같은 결정은 작가가 한다 |
+
+> 예시: 이 스킬로 쓰고 출판한 단편 『돌봄로봇 1호기』가 [`examples/care-robot-unit-1/ebook.html`](examples/care-robot-unit-1/ebook.html)에 있다.
+
+---
+
+## 에이전트 구조
+
+대화하는 에이전트가 **지휘**를 맡는다. 지휘는 `SKILL.md`를 읽고 원장을 보며 다음 단계를 고르고, 단계 작업은 서브 에이전트에게 맡긴다. 서브 에이전트는 사용자와 직접 말하지 않는다. 결정이 필요한 자리에서 작업을 저장하고 질문을 들고 돌아오면, 지휘가 작가에게 묻고 답을 원장에 남긴 뒤 다시 맡긴다.
+
+```mermaid
+flowchart TB
+    U(["작가"])
+    C["지휘<br/>SKILL.md"]
+    L[("원장<br/>00_RUN_STATUS.md")]
+
+    subgraph SA["단계 서브 에이전트"]
+        direction LR
+        S1["storyline"] --> S2["research"] --> S3["write"] --> S4["review"] --> S5["publish"]
+    end
+
+    subgraph P["페르소나"]
+        direction LR
+        B["BLACK<br/>작가"]
+        R["평가자 카드 13장<br/>reviewers.md"]
+    end
+
+    T["검사 도구<br/>lint · validate · lock"]
+
+    U <-- "게이트 질문 / 응답" --> C
+    C -- "맡김: 프로젝트, run, 목적, 응답 원문" --> SA
+    SA -- "done · need_user · blocked" --> C
+    C -- "gate · waiver · lock" --> L
+    SA -. "쓰기·수정" .-> B
+    SA -. "합평·리뷰" .-> R
+    T -- "기록 대조" --> L
 ```
-SKILL.md          지휘: 단계 고르기, 서브 에이전트에 맡기기, 사용자에게 묻기
-agents/           단계별 서브 에이전트 5개 (storyline, research, write, review, publish)
-references/       공통 규약(workflow.md), 원장 규칙(ledger.md), 평가자 카드(reviewers.md), 단계 절차(stage-*.md)
-scripts/          검증기, e북·docx 생성기, 린터, run 열기, 잠금, 출판 뒤 수정, 첫 작품 시작
-templates/        book-toc·storyline 양식, e북 기본 디자인
-tools/            설치 스크립트, 자가 시험
-examples/         예시 작품과 출판본
+
+| 구성 요소 | 하는 일 | 정의 |
+|---|---|---|
+| **지휘** | 단계 고르기, 서브 에이전트에 맡기기, 작가에게 묻기, 원장에 응답 원문 남기기 | `SKILL.md` |
+| **서브 에이전트 5** | 단계 하나씩 수행. 결정이 필요하면 멈추고 돌아온다 | `agents/novel-writing-*.md` |
+| **BLACK** | 본문을 쓰고 고치는 작가 페르소나. 평가 패널에는 들어가지 않는다 | 작품의 `book-toc.md` |
+| **평가자 카드 13장** | 스토리 합평과 본문 리뷰에서 각자의 관점으로 채점한다 | `references/reviewers.md` |
+| **원장** | 단계 완료, 작가의 선택, 예외, 잠금을 한 줄씩 쌓는 실행 기록 | `references/ledger.md` |
+
+서브 에이전트는 정해진 형식으로 돌아온다. 지휘는 이 형식만 보고 다음 행동을 정한다.
+
+```text
+상태: done | need_user | blocked
+질문 id: <게이트 id, 예: storyline-pass>
+질문: <작가에게 보여 줄 보고와 선택지>
+산출물: <새로 쓰거나 고친 파일 목록>
+다음: <다음 단계 또는 다시 부를 때 할 일>
 ```
 
-## 설치
+서브 에이전트가 없는 환경(Codex 등)에서는 지휘가 단계 문서 `references/stage-<단계>.md`를 직접 읽고 수행한다. 게이트 규칙은 같다.
+
+---
+
+## 서브 에이전트
+
+| 서브 에이전트 | 맡는 일 | 주요 산출물 | 작가에게 묻는 자리 |
+|---|---|---|---|
+| `novel-writing-storyline` | 스토리 설계도를 평가자 패널 합평으로 다듬어 통과본을 만든다 | `01_test/<run>/storyline.md` | 통과본 확정(`storyline-pass`), 라운드 상한 |
+| `novel-writing-research` | 본문에 필요한 사실·세계관 자료를 웹에서 모으고 출처 등급을 매긴다 | `01_research-notes.md` | 없음 |
+| `novel-writing-write` | 장면 설계서를 만들고 BLACK으로 장 단위 초안을 쓴다 | `02_outline.md`, `03_draft-v1.md` | 장마다 확인할지(`write-mode`) |
+| `novel-writing-review` | 첫인상, 4인 합평, 외부 리뷰, 최종 수정 사이클로 원고를 다듬는다 | `04~12`, `09_draft-final.md` | 라운드 상한, 작가 승인 문장 수정 |
+| `novel-writing-publish` | 품질 게이트를 통과한 최종본으로 웹 e북과 메타데이터를 만들고 잠근다 | `ebook.html`, `metadata.md` | 출판 정보 빈칸, 출처 미확인 제사 |
+
+### review 서브 에이전트
+
+review는 이 스킬의 중심이다. 리뷰 단계는 카드 인격으로, 수정 단계는 BLACK으로 번갈아 들어가며 아홉 단계를 거친다. 원고가 바뀌지 않았으면 채점하지 않는다(**점수 동결**). 그래서 같은 원고에 점수만 오르는 일이 생기지 않는다.
+
+```mermaid
+flowchart TB
+    D1(["03 초안"]) --> P1
+
+    subgraph IN["내부 합평 (1~6)"]
+        direction TB
+        P1["1 · PINK 첫인상"] --> W2["2 · BLACK 수정"]
+        W2 --> E3["3 · 합평 1<br/>RED · SILVER · BLUE · GOLD"]
+        E3 --> W4["4 · BLACK 수정"]
+        W4 --> E5{"5 · 합평 2<br/>평균 ≥ 통과선, 🔴 0"}
+        E5 -- "미통과" --> RK["라운드 k<br/>BLACK 수정 → 다시 합평"]
+        RK --> E5
+        E5 -- "라운드 상한" --> G{{"작가에게 묻기<br/>한 라운드 더 · 확정"}}
+        G -- "한 라운드 더" --> RK
+        E5 -- "통과" --> F6["6 · BLACK 통과 정리 → 09"]
+        G -- "확정 (open_red 기록)" --> F6
+    end
+
+    subgraph EX["외부 리뷰와 최종 수정 (7~9)"]
+        direction TB
+        X7["7 · EDITOR"] --> X8["8 · MARKETER · PROOF"]
+        X8 --> F9["9 · BLACK 최종 수정"]
+    end
+
+    F6 --> X7
+    F9 --> OUT(["09 최종본"])
+```
+
+| 단계 | 모드 | 입력 → 출력 | 무엇을 보나 |
+|:-:|---|---|---|
+| 1 | PINK | 03 → `04_review-pink.md` | 처음 읽는 독자의 첫인상. 첫 두 쪽과 호흡 |
+| 2 | BLACK | 03 + 04 → `05_draft-v2.md` | PINK 지적 반영 |
+| 3 | 합평 1 | 05 → `06_ensemble-1.md` | 4인 합평. 카드마다 10점에서 감점 |
+| 4 | BLACK | 05 + 06 → `07_draft-v3.md` | 🔴 전부, 🟡는 판단해 반영 |
+| 5 | 합평 2 | 07 → `08_ensemble-2.md` | 1라운드 🔴를 고친 효과를 검증 |
+| 6 | BLACK | 최신 원고 + 합평 → `09_draft-final.md` | 통과 원고 정리 |
+| 7 | EDITOR | 09 → `10_review-editor.md` | 출판 가능성, 군더더기와 빠진 장면 |
+| 8 | MARKETER, PROOF | 09 → `11`, `12` | 판매 카피·키워드(출판 입력), 교정 |
+| 9 | BLACK | 09 + 10 + 12 → `09_draft-final.md` | EDITOR·PROOF 반영, 검증기 FAIL 0 |
+
+**판정 규칙**
+
+- 통과: 4인 평균이 블록의 `review.body_pass` 이상이고 남은 🔴가 0건일 때. 🔴가 남으면 점수와 무관하게 다음 라운드다.
+- 라운드 상한(`review.rounds_before_user_check`)에 닿으면 멈추고 작가에게 묻는다. 확정을 고르면 남은 🔴를 숨기지 않고 `waiver: open_red`로 기록한다.
+- 합평 파일 맨 위에는 입력 파일, 입력 sha256, 판정 점수, 남은 🔴, 판정을 적는다. 입력 해시가 앞선 라운드와 같으면 채점하지 않고 직전 점수를 그대로 둔다.
+- 작가가 이미 승인한 문장(출판 뒤 수정 기록, 작가의 말과 서평)은 🔴가 고치라고 해도 바로 고치지 않고, 한 번에 모아 작가에게 묻는다.
+- MARKETER 리뷰는 본문에 반영하지 않고 publish 단계 메타데이터의 입력으로만 쓴다.
+
+### 평가자 카드
+
+| 카드 | 관점 | 스토리 합평 | 본문 리뷰 |
+|---|---|:-:|:-:|
+| **PINK** | 일반 독자. 첫 두 쪽에서 책을 살지 정한다 | ● | 1단계 |
+| **RED** | 비평가. 논리, 개연성, 근거 | ● | 합평 |
+| **SILVER** | 소설 편집자. 구조, 시점, 시제, 장 분량 균형 | ● | 합평 |
+| **BLUE** | 감정과 몰입. 독자가 인물 쪽으로 몸을 기울이는 자리 | ● | 합평 |
+| **GOLD** | 문장과 호흡. 시인 출신 편집자의 귀 | ● | 합평 |
+| **EDITOR** | 출판사 문학 편집자. 시장에 내보낼 수 있는가 | ● | 7단계 |
+| **MARKETER** | 출판 마케터. 카피, 키워드, 비교작 | ● | 8단계 (본문 미반영) |
+| **PROOF** | 교정교열. 감정 없이 사실만 | ● (가중치 낮음) | 8단계 |
+| **WRITER_SF** | 같은 장르의 동료 작가 | ● | |
+| **WRITER_SOCIAL** | 사회파 동료 작가. 제도와 사람 | ● | |
+| **WRITER_LITERARY** | 문학적 깊이. 언어의 결과 인간 존엄 | ● | |
+| **CRITIC** | 문학평론가. 절대 평가 | ● | |
+| **BLACK** | 작가. 패널에 들어가지 않고 쓰고 고친다 | 자기 검토만 | 수정 |
+
+스토리 합평 패널은 블록 `review.story_panel`로 고른다. `lite`는 앞의 8장, `standard`는 동료 작가 3장과 CRITIC을 더한 12장, `extended`는 여기에 작가가 지정한 게스트를 더한다. 스토리 합평은 모든 카드가 개연성, 재미, 갈등, 테마 깊이, 장면 박힘의 다섯 축을 카드별 가중치로 채점한다.
+
+---
+
+## 워크플로우
+
+한 번의 실행을 **run**(`YYYYMMDD_NN`)이라 부른다. run마다 다섯 단계를 차례로 거치고, 단계가 끝날 때마다 원장에 한 줄을 남긴다. 한 단계가 끝나기 전에는 다음 단계를 시작하지 않는다.
+
+```mermaid
+flowchart TB
+    IN[/"book-toc.md · storyline.md"/] --> ST
+    ST["storyline · 스토리 합평"] -- "gate: storyline-pass" --> RS["research · 자료 조사"]
+    RS --> WR["write · 장면 설계와 초안"]
+    WR -- "gate: write-mode" --> RV["review · 합평과 수정"]
+    RV --> PB["publish · 품질 게이트와 e북"]
+    PB --> OUT[/"ebook.html · metadata.md"/]
+    PB -. "lock" .-> PA["출판 뒤 수정 · republish.py"]
+    PA -. "다시 만들기 · 재잠금" .-> OUT
+```
+
+| 단계 | 들어가는 것 | 나오는 것 | 끝나는 조건 |
+|---|---|---|---|
+| storyline | `00_user_input/storyline.md` | `01_test/<run>/` 합평과 통과본 | 패널 점수 ≥ `review.story_pass`, 🔴 0, 작가의 통과 확인 |
+| research | 통과본 storyline | `02_draft/<run>/01_research-notes.md` | 범주별 자료와 출처 등급, 미해결 항목 정리 |
+| write | 통과본, 리서치 노트 | `02_outline.md`, `03_draft-v1.md` | 검증기 FAIL 0 |
+| review | 초안 | `04`~`12`, `09_draft-final.md` | 본문 합평 통과, 외부 리뷰 반영, 검증기 FAIL 0 |
+| publish | 최종본 | `03_output/<run>/ebook.html`, `metadata.md` | 품질 게이트 통과, 출판 감사 FAIL 0, 잠금 |
+
+### 기록과 잠금
+
+- **원장.** `02_draft/<run>/00_RUN_STATUS.md`에 단계 완료(`stage:`), 작가의 선택(`gate:`), 규칙 예외(`waiver:`), 잠금(`lock:`)을 쌓는다. 작가의 응답은 원문 그대로 남는다.
+- **블록.** 작품의 숫자, 이름, 통과선은 `book-toc.md` 안의 JSON 블록 한 곳에만 둔다. 스킬 문서와 스크립트는 이 값을 읽기만 한다.
+- **잠금.** 출판을 마치면 그 시점의 블록, 원고, 산출물 해시를 잠근다. 이후 승인 없이 바뀐 것이 있으면 린터가 FAIL을 낸다.
+- **작가 산출물 보호.** 원고 문장, e북, 메타데이터는 작가의 승인(`gate: remove-<대상>`) 없이 빼거나 옮기지 않는다. 정리는 삭제가 아니라 `_archive/` 이동이다.
+
+### 출판 뒤 수정
+
+출판한 작품을 고칠 때는 새 run을 열지 않고, 작가 승인부터 재잠금까지 한 절차로 처리한다. 한 run은 한 번에 한 세션만 고칠 수 있다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor A as 작가
+    participant C as 지휘
+    participant R as republish.py
+    participant L as 원장
+    A->>C: 수정 요청
+    C->>A: 바꿀 자리와 방법을 보여 주고 확인
+    A->>C: 승인
+    C->>L: gate: post-audit → approved "원문"
+    C->>R: --prepare
+    R->>L: 최종본 보관, owner 발급
+    C->>C: 원고 수정, 변경 기록 작성
+    C->>R: --owner 발급받은 owner
+    R->>L: e북 다시 만들기, 검증, 재잠금
+```
+
+---
+
+## 시작하기
 
 ```bash
-python3 -m pip install -r requirements.txt
-python3 tools/install_skill.py --target claude-user        # ~/.claude/skills, ~/.claude/agents (모든 프로젝트)
-python3 tools/install_skill.py --target claude-project --project ~/novels/my-book   # 한 작품 폴더에만
-python3 tools/install_skill.py --target codex              # ~/.codex/skills
-python3 tools/install_skill.py --target zip                # dist/novel-writing.zip (Claude 앱 업로드용)
+python3 tools/install_skill.py --target claude-user   # Claude Code. Codex는 --target codex
 ```
 
-설치는 `SKILL.md`, `agents`, `references`, `scripts`, `templates`, `requirements.txt`만 복사한다. Claude Code 대상이면 서브 에이전트를 agents 폴더에도 넣는다. Codex에는 서브 에이전트 형식이 없어서 지휘가 단계 문서를 직접 읽는다.
+작품 폴더에서 Claude Code나 Codex를 열고 **"소설 쓰자"** 라고 말한다. 지휘가 제목, 필명, 장르, 화자, 장 구성, 마지막 한 줄을 한 번에 묻고 작품 설정을 만든다. 그다음부터는 "스토리 합평하자", "초안 쓰자", "이북 만들자"처럼 말하면 원장을 보고 다음 단계로 간다.
 
-## 첫 작품 시작
+python3 3.9 이상이면 되고, 따로 설치할 패키지는 없다.
 
-1. 작품 폴더를 만들고 그 폴더에서 Claude Code(또는 Codex)를 연다.
-2. "소설 쓰자"라고 말한다. 지휘가 제목, 필명, 장르, 화자, 장 구성, 마지막 한 줄 같은 첫 질문을 한 번에 묻고 `book-toc.md`와 `00_user_input/storyline.md`를 만든다(`scripts/init_project.py`).
-3. storyline의 남은 빈칸(줄거리, 인물, 장별 사건)을 채운다. 어렵다면 "빈칸 같이 채우자"라고 한다.
-4. 이후 "스토리 합평하자", "초안 쓰자", "이북 만들자"처럼 말하면 지휘가 원장을 보고 다음 단계를 고른다.
+## 작품 폴더
 
-작품 폴더 구조:
-
-```
-book-toc.md                 작품 파라미터 블록 (숫자·이름·통과선의 정본)
-00_user_input/storyline.md  작가가 쓴 1차 콘셉트
-01_test/<run>/              스토리 합평과 통과본, 블록 스냅샷, 잠금 파일
-02_draft/<run>/             리서치, 초안, 합평, 최종본(09), 원장(00_RUN_STATUS.md)
-03_output/<run>/            출판본과 메타데이터
+```text
+book-toc.md                  작품 파라미터 블록 (숫자·이름·통과선의 정본)과 페르소나
+00_user_input/storyline.md   작가가 쓴 1차 콘셉트
+01_test/<run>/               스토리 합평, 통과본, 블록 스냅샷, 잠금 파일
+02_draft/<run>/              리서치, 장면 설계, 초안, 합평, 최종본(09), 원장
+03_output/<run>/             ebook.html, metadata.md, validate_report.txt
+_archive/                    옮겨 둔 이전 판과 MANIFEST.tsv
 ```
 
-## 단계
+## 스킬 구성
 
-| 단계 | 하는 일 |
+```text
+SKILL.md        지휘: 단계 고르기, 서브 에이전트에 맡기기, 작가에게 묻기
+agents/         단계 서브 에이전트 5개
+references/     공통 규약, 원장 규칙, 평가자 카드, 단계별 절차
+scripts/        검증기, e북 생성기, 린터, run 열기, 잠금, 출판 뒤 수정, 첫 작품 시작
+templates/      book-toc·storyline 양식, e북 기본 디자인
+tools/          설치 스크립트, 자가 시험
+examples/       예시 작품과 출판본
+```
+
+## 품질 장치
+
+| 도구 | 하는 일 |
 |---|---|
-| storyline | 평가자 패널이 storyline을 합평해 통과본을 만든다 |
-| research | 본문에 필요한 사실·세계관 자료를 모은다 |
-| write | 장면 설계와 장 단위 초안을 BLACK 페르소나로 쓴다 |
-| review | 첫인상, 4인 합평, 외부 리뷰, 최종 수정으로 다듬는다. 원고가 바뀌지 않으면 채점하지 않는다 |
-| publish | 품질 게이트를 통과한 최종본으로 출판본과 메타데이터를 만들고 잠근다 |
+| `scripts/validate_draft.py` | 원고와 e북의 품질 게이트. 헤딩과 순서, 분량, 마지막 줄, 시각 닻, 번역투·클리셰, 1인칭 시점, 폐기된 이름 |
+| `scripts/lint_project.py` | 문서와 블록, 폴더 규칙, run 감사(L1~L8). 합평 기록, 점수 동결, 게이트, waiver 짝, 잠금, 출판본 |
+| `scripts/lock_run.py`, `scripts/republish.py` | 출판본 잠금, 출판 뒤 수정의 보관과 재출판 |
 
-출판한 뒤에 고칠 때는 새 run이 아니라 출판 뒤 수정 절차를 쓴다: 작가 승인 → `scripts/republish.py --prepare`(보관, owner 발급) → 고치기와 변경 기록 → `scripts/republish.py --owner <owner>`(다시 만들기, 검증, 재잠금).
-
-## 용어
-
-| 용어 | 뜻 |
-|---|---|
-| 지휘 | `SKILL.md`를 읽고 단계를 고르고 사용자에게 묻는 에이전트(대화 중인 Claude·Codex). 단계 작업은 서브 에이전트에 맡긴다 |
-| BLACK | 작품을 쓰는 작가 페르소나. `book-toc.md`의 "페르소나" 절에 정의한다 |
-| 평가자 카드 | 합평에 들어가는 평자 13장(PINK, RED, SILVER, BLUE, GOLD, EDITOR, MARKETER, PROOF, 동료 작가 3장, CRITIC). `references/reviewers.md` |
-| 블록 | `book-toc.md` 안의 JSON. 숫자·이름·통과선의 유일한 정본 |
-| run | 한 번의 워크플로우 실행. `YYYYMMDD_NN` 폴더가 `01_test`, `02_draft`, `03_output`에 하나씩 생긴다 |
-| 원장 | `02_draft/<run>/00_RUN_STATUS.md`. 단계 완료(`stage:`), 사용자 선택(`gate:`), 예외 기록(`waiver:`), 잠금(`lock:`)을 남긴다 |
-| 게이트 | 사용자에게 묻고 답을 받아야 넘어가는 자리. 답은 원장에 `gate: <질문 id> → <선택> "<응답 원문>"`으로 남는다 |
-| waiver | 규칙 위반을 숨기지 않고 기록하는 줄. 사용자 승인 줄이 짝으로 있어야 인정된다 |
-| 잠금 | 원장의 `lock:` 줄. 그 시점의 블록·산출물 목록·원고·출판본 해시를 적어 둔다. 이후 승인 없이 바뀌면 린터가 FAIL을 낸다 |
-| 출판 뒤 수정 | 출판한 run을 작가 요청으로 고치는 절차. 한 run은 한 번에 한 세션만 고친다 |
-| owner | 출판 뒤 수정 하나를 시작한 쪽의 표시. `--prepare`가 발급하고 같은 owner로만 마친다. 비밀번호가 아니다 |
-| rework | 끝난 run을 물려받아 특정 단계부터 다시 하는 새 run |
-| 시각 닻 | 작품에서 반복해 돌아오는 장면·사물. 블록 `anchors`에 장 배치와 최소 횟수를 적고 검증기가 센다 |
-| 점수 동결 | 합평 입력 원고가 앞선 라운드와 같으면 채점하지 않고 그 점수를 그대로 둔다 |
-
-## 검사 도구
-
-```bash
-python3 scripts/lint_project.py --root <작품 폴더>      # 문서·블록·폴더·run 감사 (L1~L8)
-python3 scripts/validate_draft.py --run <run> --root <작품 폴더>   # 원고·출판본 품질 게이트
-bash tools/tests/selftest.sh                           # 스킬 회귀 시험 (examples/kimjang-day를 작품으로 쓴다)
-```
-
-린터 코드: L1 스킬 구조·설치, L2 작품 블록·양식 빈칸, L3 지난 작품 흔적, L4 숫자 중복, L5 블록과 스냅샷·storyline 일치, L6 폴더 규칙, L7 문서 크기, L8 run 감사(합평 기록, 게이트, 잠금, 출판본).
-
-도구는 기록끼리 맞는지를 검사한다. 합평 점수가 타당한지, 원장의 응답 원문이 실제 응답인지는 사람이 확인한다.
+도구는 기록끼리 맞는지를 검사한다. 합평 점수가 타당한지, 원장의 응답 원문이 실제 작가의 응답인지는 사람이 확인한다.
 
 ## 예시
 
-- `examples/care-robot-unit-1/ebook.html`: 이 스킬로 쓰고 출판한 단편 『돌봄로봇 1호기』(Care Robot Unit 1)의 웹 e북. 브라우저로 바로 열린다.
-- `examples/kimjang-day/`: 3장짜리 가족 드라마 예시 작품 폴더. 첫 run부터 출판, 출판 뒤 수정 한 번까지의 원장과 산출물이 들어 있다. 자가 시험이 이 폴더를 쓴다.
+- [`examples/care-robot-unit-1/ebook.html`](examples/care-robot-unit-1/ebook.html): 단편 『돌봄로봇 1호기』의 웹 e북. 브라우저로 바로 열린다.
+- [`examples/kimjang-day/`](examples/kimjang-day/): 3장짜리 가족 드라마 예시 작품. 첫 run부터 출판, 출판 뒤 수정까지의 원장과 산출물이 들어 있다. 자가 시험이 이 폴더를 쓴다.
+
+## 개발
+
+- 스킬을 고친 뒤에는 `bash tools/tests/selftest.sh`가 모두 통과해야 한다.
+- 작품 고유의 이름과 숫자는 스킬 문서와 스크립트에 넣지 않는다. 작품 값은 작품 폴더의 `book-toc.md` 블록에만 둔다.
+- 문서는 한국어로, 줄표(em dash) 없이 쓴다.
+
+## 라이선스
+
+[Apache License 2.0](LICENSE). Copyright 2026 ArgosLab.

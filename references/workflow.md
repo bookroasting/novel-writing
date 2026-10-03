@@ -16,7 +16,7 @@
 | `<스킬>/agents/novel-writing-<단계>.md` | 단계별 서브 에이전트 (Claude Code) | 아니오 |
 | `<스킬>/references/stage-<단계>.md` | 단계별 실행 절차. 서브 에이전트와 Codex가 읽는다 | 아니오 |
 | `<스킬>/references/reviewers.md` | 13장 평가자 카드. 작품 값은 블록과 storyline에서 읽는다 | 아니오 |
-| `<스킬>/scripts/*.py` | 검증기, docx·e북 생성기, 린터, new_run | 아니오 |
+| `<스킬>/scripts/*.py` | 검증기, e북 생성기, 린터, new_run | 아니오 |
 | `<스킬>/templates/` | 새 작품용 book-toc·storyline 양식, e북 디자인 | 아니오 |
 
 ## 2. 워크플로우
@@ -27,7 +27,7 @@
   → research 단계   → 02_draft/<run>/01_research-notes.md
   → write 단계      → 02_draft/<run>/02_outline.md, 03_draft-v1.md
   → review 단계     → 02_draft/<run>/04~12, 09_draft-final.md
-  → publish 단계    → 03_output/<run>/final.docx, metadata.md
+  → publish 단계    → 03_output/<run>/ebook.html, metadata.md
 ```
 
 한 단계가 끝나기 전에 다음 단계를 시작하지 않는다. 모든 단계는 끝날 때 원장(`02_draft/<run>/00_RUN_STATUS.md`)에 `stage: <스킬명> done YYYY-MM-DD` 한 줄을 남긴다.
@@ -44,7 +44,7 @@
   - `rework`: 지난 run의 결과를 물려받아 특정 단계부터 다시 한다(재리뷰 등). 지난 run의 storyline 통과본, 스냅샷, 리서치 노트를 새 run으로 복사하고, 물려받은 원고를 시작 파일로 둔다(재리뷰면 지난 `09_draft-final.md` → 새 `03_draft-v1.md`). 원장에 `inherit: <지난 run>`과 물려받은 단계마다 `stage: <스킬> done <날짜> (inherited)`를 남긴다. 그다음 스킬이 그 단계부터 이어서 시작한다.
 - 끝난 run을 다시 열지 않는다. 재작업은 새 run에서 한다. 이전 run을 닫으려면 사용자에게 묻고 `closed: superseded <날짜>`와 `gate: close-run → approved "<응답 원문>"` 두 줄을 남긴다.
 - 예외는 출판 뒤 수정(post-audit) 하나다. 끝난 run의 산출물에서 결함이 나오거나 작가가 고쳐 달라고 하면(윤문, 서평 빼기 등) 사용자 승인(`gate: post-audit → approved "<원문>"`)을 받은 뒤에만 고친다. 절차는 SKILL.md "출판 뒤 수정"과 `republish.py` 머리 주석이다: `republish.py --prepare`가 고치기 전 최종본을 `_archive/`에 보관하고, 고친 내용은 `02_draft/<run>/14_post-audit-changelog.md`에 적고, `republish.py --owner <owner>`가 다시 만들기, 메타 분량, 검증, `stage: post-audit-fix done`, 재잠금을 한다. 판을 새로 짜는 재합평이면 rework run을 연다.
-- **작가 산출물은 승인 없이 빼거나 옮기지 않는다.** 원고의 문장·섹션(작가의 말, 서평 포함), `03_output`의 산출물(docx, e북, 메타데이터)을 지우거나 `_archive/`로 옮기거나 다른 내용으로 갈아 끼우려면 먼저 사용자에게 묻고 `gate: remove-<대상> → approved "<원문>"`을 남긴다. 결함이 있으면 결함을 보고하고 고칠지 묻는다. 규칙과 어긋나 보여도 작가가 만든 것이면 먼저 묻는다.
+- **작가 산출물은 승인 없이 빼거나 옮기지 않는다.** 원고의 문장·섹션(작가의 말, 서평 포함), `03_output`의 산출물(e북, 메타데이터)을 지우거나 `_archive/`로 옮기거나 다른 내용으로 갈아 끼우려면 먼저 사용자에게 묻고 `gate: remove-<대상> → approved "<원문>"`을 남긴다. 결함이 있으면 결함을 보고하고 고칠지 묻는다. 규칙과 어긋나 보여도 작가가 만든 것이면 먼저 묻는다.
 - 새 run은 `python3 <스킬>/scripts/new_run.py`로 연다(사용법은 7절). 폴더, 원장, 스냅샷, rework 상속을 한 번에 만든다.
 - 각 단계는 시작할 때 "입력: … / 출력: …" 한 줄로 쓸 run을 알린다.
 
@@ -150,7 +150,7 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 
 ### 03_output/<run>/
 
-`metadata.md`, `validate_report.txt`, 그리고 블록 `publish.formats`에 있는 형식: `final.docx`(docx), `ebook.html`(ebook). 스크립트는 run 폴더에 복사하지 않고 `<스킬>/scripts/`의 범용본을 실행한다. e북 디자인은 블록 `publish.ebook.design`으로 고른다. 작품 전용 디자인은 프로젝트 폴더의 `designs/ebook/<이름>.html`(스킬의 `templates/ebook/plain.html`을 복사해 고친다), 공용 디자인은 `<스킬>/templates/ebook/`에 둔다. 생성기는 프로젝트 쪽을 먼저 찾는다. 스킬 폴더에 넣은 파일은 다시 설치할 때 지워지므로 작품 전용 디자인을 거기에 두지 않는다.
+`ebook.html`(웹 e북, 유일한 출판 형식), `metadata.md`, `validate_report.txt`. 블록 `publish.formats`는 `["ebook"]`이다(예전 작품의 `docx`는 출판 뒤 수정으로 빼고 보관함으로 옮긴다). 스크립트는 run 폴더에 복사하지 않고 `<스킬>/scripts/`의 범용본을 실행한다. e북 디자인은 블록 `publish.ebook.design`으로 고른다. 작품 전용 디자인은 프로젝트 폴더의 `designs/ebook/<이름>.html`(스킬의 `templates/ebook/plain.html`을 복사해 고친다), 공용 디자인은 `<스킬>/templates/ebook/`에 둔다. 생성기는 프로젝트 쪽을 먼저 찾는다. 스킬 폴더에 넣은 파일은 다시 설치할 때 지워지므로 작품 전용 디자인을 거기에 두지 않는다.
 
 ### 장편 (`structure_mode: "part"`)
 
@@ -173,13 +173,12 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 
 | 명령 | 용도 | 언제 |
 |---|---|---|
-| `python3 <스킬>/scripts/validate_draft.py --run <run>` | 원고·docx 품질 게이트 | write 단계 완료, review 9단계 후, publish 0·1단계 |
+| `python3 <스킬>/scripts/validate_draft.py --run <run>` | 원고·e북 품질 게이트 | write 단계 완료, review 9단계 후, publish 0·1단계 |
 | `python3 <스킬>/scripts/init_project.py --answers <답 JSON>` | 첫 작품의 book-toc.md와 storyline.md를 한 번에 만든다 | 처음 한 번 |
 | `python3 <스킬>/scripts/new_run.py --mode same\|updated\|rework --answer "<원문>" [--from <run> --stage <단계>]` | 새 run 열기(폴더, 원장, 스냅샷, rework 상속, 잠금) | storyline 단계 시작, 재작업 |
 | `python3 <스킬>/scripts/republish.py --run <run> --prepare` / `--owner <owner>` | 출판 뒤 수정: `--prepare`는 고치기 전 보관과 owner 발급, `--owner`는 다시 만들기·메타 분량·검증·재잠금 | post-audit 승인 뒤, 고치기 전과 후 |
 | `python3 <스킬>/scripts/lock_run.py --run <run>` | 원장에 잠금 줄을 남긴다(ledger.md "잠금") | 출판을 마칠 때, 승인받은 블록 변경 뒤 |
-| `python3 <스킬>/scripts/generate_docx.py --run <run> --trim <판형>` | Word 생성 | publish 1단계 |
-| `python3 <스킬>/scripts/generate_ebook.py --run <run>` | 웹 e북 생성 | publish 2단계 |
+| `python3 <스킬>/scripts/generate_ebook.py --run <run>` | 웹 e북 생성 | publish 1단계 |
 | `python3 <스킬>/scripts/lint_project.py` | 문서 정합성, 폴더 규칙, 점수 동결·게이트 로그 감사 | 스킬·book-toc 수정 후, 각 단계 종료 시 |
 | `bash tools/tests/selftest.sh` (이 스킬의 원본 저장소에서) | 다른 장르 픽스처로 범용성 회귀 시험 | 스크립트 수정 후 |
 

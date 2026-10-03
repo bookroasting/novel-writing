@@ -29,7 +29,7 @@ def main():
         raise SystemExit(f"잠그지 않았다. 원장 {open_pa[-1] + 1}줄의 출판 뒤 수정이 진행 중이다. 그 수정은 republish.py가 마치며 잠근다")
     meta = Path(a.root) / "03_output" / a.run / "metadata.md"
     if meta.exists() and not re.search(r"분량:\s*[\d,]+자", meta.read_text(encoding="utf-8")):
-        raise SystemExit("잠그지 않았다. metadata.md에 '분량: <글자 수>자' 줄이 없거나 형식이 다르다(stage-publish.md 3단계 형식)")
+        raise SystemExit("잠그지 않았다. metadata.md에 '분량: <글자 수>자' 줄이 없거나 형식이 다르다(stage-publish.md 2단계 형식)")
     bad = lock_violations(a.run, a.root)
     if bad:   # 다시 잠그는 것으로 승인 없는 변경을 덮지 못한다
         raise SystemExit("잠그지 않았다. 직전 잠금 이후 승인 없는 변경이 있다:\n  " + "\n  ".join(bad))

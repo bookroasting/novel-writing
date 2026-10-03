@@ -3,7 +3,7 @@
 사용:
   python3 <스킬>/scripts/validate_draft.py                    # 최신 02_draft/<run>/09_draft-final.md
   python3 <스킬>/scripts/validate_draft.py --run <run>          # 그 run의 블록 스냅샷으로 검사
-  python3 <스킬>/scripts/validate_draft.py --draft X.md --toc Y.md --docx Z.docx
+  python3 <스킬>/scripts/validate_draft.py --draft X.md --toc Y.md --ebook Z.html
   어느 명령이든 --root <프로젝트 폴더>를 줄 수 있다 (기본: 현재 폴더에서 위로 book-toc.md를 찾는다)
 
 모든 기준값은 book-toc.md의 작품 파라미터 블록에서 읽는다.
@@ -26,7 +26,7 @@ MANUAL = [
 ]
 
 
-def validate(draft_text, p, docx_path=None, ebook_path=None):
+def validate(draft_text, p, ebook_path=None):
     fails, warns, info = [], [], []
     chapters, extra = split_draft(draft_text, p)
     body = "\n".join(chapters[k] for k in sorted(chapters))
@@ -138,9 +138,7 @@ def validate(draft_text, p, docx_path=None, ebook_path=None):
         ls = [x.strip() for x in chapters[n].strip().split("\n") if x.strip()]
         info.append(f"{n}장 마지막 줄: {ls[-1] if ls else '(없음)'}")
 
-    # 10. docx 사후 검증 (원고와 산출물이 갈라지지 않았는지)
-    if docx_path:
-        fails += check_docx(docx_path, p, doc_last, doc_order(draft_text, p))
+    # 10. e북 사후 검증 (원고와 산출물이 갈라지지 않았는지)
     if ebook_path:
         ef, ew = check_ebook(ebook_path, p, doc_last, doc_order(draft_text, p))
         fails += ef
@@ -151,29 +149,6 @@ def validate(draft_text, p, docx_path=None, ebook_path=None):
 
 def narration_of(text):
     return strip_quotes(text)
-
-
-def check_docx(path, p, last, order=None):
-    try:
-        import docx
-    except ImportError:
-        return ["python-docx 미설치로 docx 검증 불가"]
-    path = Path(path)
-    if not path.exists():
-        return [f"docx 없음: {path}"]
-    paras = [x.text.strip() for x in docx.Document(str(path)).paragraphs if x.text.strip()]
-    out = []
-    if p["title"] not in paras[:3]:
-        out.append(f"docx 표지 제목 불일치: {paras[:3]}")
-    if p["publish"]["cover_label"] not in paras[:4]:
-        out.append(f"docx 표지 장르 표기 불일치: {paras[:4]} (기대 '{p['publish']['cover_label']}')")
-    want = [h[2:] for h in (order or [hh for _, hh in outline(p)])]
-    toc_block = paras[paras.index("목차") + 1: paras.index("목차") + 1 + len(want)] if "목차" in paras else []
-    if toc_block != want:
-        out.append(f"docx 목차 불일치: {toc_block} (기대 {want})")
-    if paras[-1] != last:
-        out.append(f"docx 마지막 문단 불일치: '{paras[-1][:40]}'")
-    return out
 
 
 def check_ebook(path, p, last=None, order=None):
@@ -223,7 +198,6 @@ def main():
     ap.add_argument("--draft", nargs="+", help="원고 파일. 장편 부 파일은 여러 개를 순서대로 준다")
     ap.add_argument("--toc", default=str(DEFAULT_TOC))
     ap.add_argument("--root", help="프로젝트 폴더 (기본: book-toc.md를 위로 찾아감)")
-    ap.add_argument("--docx")
     ap.add_argument("--ebook")
     a = ap.parse_args()
     run = a.run if a.draft else (a.run or latest_run())  # --run과 --draft를 함께 주면 그 run의 스냅샷으로 검사한다
@@ -234,12 +208,10 @@ def main():
         drafts = [Path(x) for x in a.draft]
     else:
         drafts = [ROOT / "02_draft" / run / final_draft_name(p)]
-        if not a.docx and (ROOT / "03_output" / run / "final.docx").exists():
-            a.docx = str(ROOT / "03_output" / run / "final.docx")
         if not a.ebook and (ROOT / "03_output" / run / "ebook.html").exists():
             a.ebook = str(ROOT / "03_output" / run / "ebook.html")
     text = "\n\n".join(d.read_text(encoding="utf-8") for d in drafts)
-    fails, warns, info = validate(text, p, a.docx, a.ebook)
+    fails, warns, info = validate(text, p, a.ebook)
 
     print("=" * 60)
     def shown(d):   # 보고서에 개인 경로가 남지 않게 프로젝트 폴더 기준으로 적는다
