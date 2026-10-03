@@ -61,8 +61,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
-if (REPO / "SKILL.md").exists():   # 스킬 저장소(루트가 스킬): 예시 작품 폴더를 프로젝트로 쓴다
-    SKILL, ROOT = REPO, REPO / "examples" / "kimjang-day"
+if (REPO / "SKILL.md").exists():   # 스킬 저장소(루트가 스킬): 시험용 기준 작품을 프로젝트로 쓴다
+    SKILL, ROOT = REPO, REPO / "tools" / "tests" / "fixtures" / "kimjang-day"
 else:                              # 작품 프로젝트 안의 스킬(novel-writing/ 하위 폴더)
     SKILL, ROOT = REPO / "novel-writing", REPO
 SCRIPTS = SKILL / "scripts"

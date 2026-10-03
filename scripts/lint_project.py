@@ -8,7 +8,7 @@
   L3 작품 중립성    규약·스킬·카드에 현재·과거 작품 고유 토큰이 '예시(' 라벨 없이 나오지 않음
   L4 숫자 단일화    규약·스킬·카드에 통과선·매수·위트 횟수 숫자, 'em dash 허용', 원칙 개수 불일치 없음
   L5 정본 동기화    진행 중 run: 블록 = run 스냅샷, 블록의 인물·장 제목·마지막 줄이 storyline 통과본에 있음
-  L6 폴더 규칙      run 이름, 00_storyline 단일 파일, run마다 01_test 짝·원장·스냅샷
+  L6 폴더 규칙      영문 폴더 이름, run 이름, 00_storyline 단일 파일, run마다 01_test 짝·원장·스냅샷
   L7 문서 크기      CLAUDE.md 6KB, AGENTS.md 20KB, SKILL.md 500줄
   L8 실행 감사      합평 머리(입력·sha256·판정 점수), 무결성, 점수 동결, 바뀐 자리, 게이트 로그,
                     출판 run의 원고·e북·metadata·게이트 보고서
@@ -475,6 +475,9 @@ def lint(root, skill_dir=None):
                     r.fail("L5", f"장 제목 '{c['no']}장. {c['title']}'이 통과본에 없음")
 
     # L6
+    for d in [root] + [x for x in root.rglob("*") if x.is_dir() and ".git" not in x.parts]:
+        if re.search(r"[가-힣ㄱ-ㅎㅏ-ㅣ]", d.name):
+            r.fail("L6", f"폴더 이름에 한글이 있다: {d.name}. 영문 소문자·숫자·하이픈·밑줄로 바꾼다 (작품 폴더는 projects/<영문-슬러그>/)")
     if (root / "00_user_input").exists():
         r.fail("L6", "옛 폴더 이름 00_user_input이 남아 있다. 00_storyline으로 이름을 바꾼다")
     ui =sorted(f.name for f in (root / "00_storyline").iterdir() if not f.name.startswith(".")) if (root / "00_storyline").exists() else []

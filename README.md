@@ -15,7 +15,7 @@
 | **팀** | 지휘 1, 단계 서브 에이전트 5, 작가 페르소나 1, 평가자 카드 13 |
 | **사람의 자리** | 스토리 통과, 집필 방식, 라운드 상한, 출판 정보, 출판 뒤 수정 같은 결정은 작가가 한다 |
 
-> 예시: 이 스킬로 쓰고 출판한 단편 『돌봄로봇 1호기』가 [`examples/care-robot-unit-1/ebook.html`](examples/care-robot-unit-1/ebook.html)에 있다.
+> 예시: 이 스킬로 쓰고 출판한 단편 『돌봄로봇 1호기』가 [`projects/care-robot-unit-1/ebook.html`](projects/care-robot-unit-1/ebook.html)에 있다.
 
 ---
 
@@ -241,8 +241,8 @@ agents/         단계 서브 에이전트 5개
 references/     공통 규약, 원장 규칙, 평가자 카드, 단계별 절차
 scripts/        검증기, e북 생성기, 린터, run 열기, 잠금, 출판 뒤 수정, 첫 작품 시작
 templates/      book-toc·storyline 양식, e북 기본 디자인
-tools/          설치 스크립트, 자가 시험
-examples/       예시 작품과 출판본
+tools/          설치 스크립트, 자가 시험(tests/fixtures/kimjang-day 기준 작품)
+projects/       작품 폴더 (영문 이름만). 예시 출판본 포함
 ```
 
 ## 품질 장치
@@ -257,8 +257,7 @@ examples/       예시 작품과 출판본
 
 ## 예시
 
-- [`examples/care-robot-unit-1/ebook.html`](examples/care-robot-unit-1/ebook.html): 단편 『돌봄로봇 1호기』의 웹 e북. 브라우저로 바로 열린다.
-- [`examples/kimjang-day/`](examples/kimjang-day/): 3장짜리 가족 드라마 예시 작품. 첫 run부터 출판, 출판 뒤 수정까지의 원장과 산출물이 들어 있다. 자가 시험이 이 폴더를 쓴다.
+- [`projects/care-robot-unit-1/ebook.html`](projects/care-robot-unit-1/ebook.html): 단편 『돌봄로봇 1호기』의 웹 e북. 브라우저로 바로 열린다.
 
 ## 개발
 
