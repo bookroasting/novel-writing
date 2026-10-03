@@ -10,9 +10,9 @@
 
 1. 블록을 읽는다. 특히 `review.*`, `chapters`, `wit`, `anchors`.
 2. `<스킬>/references/reviewers.md`의 카드 인덱스와 **스토리 모드** 섹션을 읽는다.
-3. `00_user_input/storyline.md`를 통독한다.
+3. `00_storyline/storyline.md`를 통독한다.
 4. run은 지휘(SKILL.md)가 이미 열어 두었다. 지휘가 알려 준 run을 쓴다. 끝나지 않은 run이 없는데 불렸다면 run을 직접 열지 말고 `need_user`(질문 id `new-run`)로 돌아간다. run을 여는 일(사용자에게 same/updated/rework를 묻고 `new_run.py`로 여는 일)은 지휘가 한다.
-5. 한 줄로 알린다: `입력: 00_user_input/storyline.md / 출력: 01_test/<run>/ / 패널: <story_panel>`.
+5. 한 줄로 알린다: `입력: 00_storyline/storyline.md / 출력: 01_test/<run>/ / 패널: <story_panel>`.
 
 패널 구성은 블록의 `review.story_panel`이 정한다. 사용자가 다른 구성을 원하면 블록을 고치고 원장에 `gate: story-panel → <값>`을 남긴다.
 

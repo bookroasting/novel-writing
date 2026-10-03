@@ -103,9 +103,9 @@ def make_draft(p, extra=""):
 
 
 def project_copy(td):
-    """린터에 필요한 최소 사본: 작품 파일, 진입 문서, 00_user_input, run 폴더, 보관 기록. 스킬은 원본을 그대로 쓴다."""
+    """린터에 필요한 최소 사본: 작품 파일, 진입 문서, 00_storyline, run 폴더, 보관 기록. 스킬은 원본을 그대로 쓴다."""
     t = Path(td)
-    for d in ("00_user_input", "01_test", "02_draft", "03_output", "designs"):
+    for d in ("00_storyline", "01_test", "02_draft", "03_output", "designs"):
         if (ROOT / d).exists():
             shutil.copytree(ROOT / d, t / d, ignore=shutil.ignore_patterns("__pycache__"))
     for f in ("AGENTS.md", "CLAUDE.md", "book-toc.md"):
@@ -211,7 +211,7 @@ def main():
     with tempfile.TemporaryDirectory() as td:
         t6 = project_copy(td)
         shutil.copy(FIX, t6 / "book-toc.md")
-        shutil.copy(HERE / "fixtures" / "family" / "storyline.md", t6 / "00_user_input" / "storyline.md")
+        shutil.copy(HERE / "fixtures" / "family" / "storyline.md", t6 / "00_storyline" / "storyline.md")
         r, j = lint_codes(t6)
         new6 = [x for x in r.fails if x not in BASELINE]
         check("T6 두 파일만 교체한 사본에서 새 린터 FAIL 0", not new6, " | ".join(new6)[:300])
@@ -503,7 +503,7 @@ def main():
     # T24
     with tempfile.TemporaryDirectory() as td:
         t24 = project_copy(td)
-        shutil.copy(SKILL / "templates" / "storyline.template.md", t24 / "00_user_input" / "storyline.md")
+        shutil.copy(SKILL / "templates" / "storyline.template.md", t24 / "00_storyline" / "storyline.md")
         _, j = lint_codes(t24)
         check("T24 storyline 양식 빈칸 탐지", "양식 빈칸" in j, j[:200])
 
@@ -600,7 +600,7 @@ def main():
         story_only = [x for x in r.fails if "storyline.md" not in x]
         check("T29 init 블록이 스키마를 통과 (남은 FAIL은 작가가 쓸 storyline 빈칸뿐)",
               p29["length"]["target_pages"] == 40 and p29["chapters"][2]["title"] == "식탁" and not story_only, " | ".join(story_only)[:300])
-        st = (t29 / "00_user_input" / "storyline.md").read_text(encoding="utf-8")
+        st = (t29 / "00_storyline" / "storyline.md").read_text(encoding="utf-8")
         check("T29 storyline에 장 골격과 마지막 줄이 들어감", "### 3장. 식탁 (12매)" in st and "나는 칼을 닦았다." in st, st[:200])
         try:
             init_project(t29, ans)

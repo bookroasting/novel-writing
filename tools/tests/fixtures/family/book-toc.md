@@ -1,4 +1,4 @@
-# 작품 설정 (이 파일과 00_user_input/storyline.md만 교체하면 다른 작품을 쓴다)
+# 작품 설정 (이 파일과 00_storyline/storyline.md만 교체하면 다른 작품을 쓴다)
 
 사용법: 시험용 픽스처다. 프로젝트 폴더의 `book-toc.md` 자리에 두고 쓴다.
 

@@ -8,7 +8,7 @@
   L3 작품 중립성    규약·스킬·카드에 현재·과거 작품 고유 토큰이 '예시(' 라벨 없이 나오지 않음
   L4 숫자 단일화    규약·스킬·카드에 통과선·매수·위트 횟수 숫자, 'em dash 허용', 원칙 개수 불일치 없음
   L5 정본 동기화    진행 중 run: 블록 = run 스냅샷, 블록의 인물·장 제목·마지막 줄이 storyline 통과본에 있음
-  L6 폴더 규칙      run 이름, 00_user_input 단일 파일, run마다 01_test 짝·원장·스냅샷
+  L6 폴더 규칙      run 이름, 00_storyline 단일 파일, run마다 01_test 짝·원장·스냅샷
   L7 문서 크기      CLAUDE.md 6KB, AGENTS.md 20KB, SKILL.md 500줄
   L8 실행 감사      합평 머리(입력·sha256·판정 점수), 무결성, 점수 동결, 바뀐 자리, 게이트 로그,
                     출판 run의 원고·e북·metadata·게이트 보고서
@@ -385,11 +385,11 @@ def lint(root, skill_dir=None):
         listed = [n for pt in p.get("parts", []) for n in pt["chapters"]]
         if sorted(listed) != sorted(c["no"] for c in p["chapters"]) or len(listed) != len(set(listed)):
             r.fail("L2", "structure_mode가 part인데 parts가 모든 장을 한 번씩 담지 않음")
-    ui = root / "00_user_input" / "storyline.md"
+    ui = root / "00_storyline" / "storyline.md"
     if ui.exists():
         utext = re.sub(r"`[^`\n]*`", lambda m: " " * len(m.group(0)), ui.read_text(encoding="utf-8"))
         for m in re.finditer(r"<[^<>\n`]*[가-힣][^<>\n`]*>", utext):
-            r.fail("L2", f"00_user_input/storyline.md:{utext.count(chr(10), 0, m.start()) + 1} 양식 빈칸 {m.group(0)[:40]} (채우거나 그 줄을 지운다)")
+            r.fail("L2", f"00_storyline/storyline.md:{utext.count(chr(10), 0, m.start()) + 1} 양식 빈칸 {m.group(0)[:40]} (채우거나 그 줄을 지운다)")
     if not p["characters"]:
         r.fail("L2", "characters가 비어 있다. 본문에 반드시 나올 이름·호칭을 넣는다")
     pub = p["publish"]
@@ -454,9 +454,9 @@ def lint(root, skill_dir=None):
     # L5
     open_runs = [d.name for d in run_dirs(root) if not is_finished(d.name, root)]
     if not open_runs:
-        ui_sl = root / "00_user_input" / "storyline.md"
+        ui_sl = root / "00_storyline" / "storyline.md"
         if ui_sl.exists() and p["last_line"].rstrip(".") not in ui_sl.read_text(encoding="utf-8"):
-            r.warn("L5", f"블록 last_line이 00_user_input/storyline.md에 없다: '{p['last_line']}'. 새 작품이면 초안의 마지막 문장을 적는다")
+            r.warn("L5", f"블록 last_line이 00_storyline/storyline.md에 없다: '{p['last_line']}'. 새 작품이면 초안의 마지막 문장을 적는다")
     else:
         run = open_runs[-1]
         snap = root / "01_test" / run / "book-toc.snapshot.md"
@@ -475,11 +475,13 @@ def lint(root, skill_dir=None):
                     r.fail("L5", f"장 제목 '{c['no']}장. {c['title']}'이 통과본에 없음")
 
     # L6
-    ui = sorted(f.name for f in (root / "00_user_input").iterdir() if not f.name.startswith(".")) if (root / "00_user_input").exists() else []
+    if (root / "00_user_input").exists():
+        r.fail("L6", "옛 폴더 이름 00_user_input이 남아 있다. 00_storyline으로 이름을 바꾼다")
+    ui =sorted(f.name for f in (root / "00_storyline").iterdir() if not f.name.startswith(".")) if (root / "00_storyline").exists() else []
     if ui != ["storyline.md"]:
-        how = (f"{sd / 'templates' / 'storyline.template.md'}를 00_user_input/storyline.md로 복사해 채운다"
+        how = (f"{sd / 'templates' / 'storyline.template.md'}를 00_storyline/storyline.md로 복사해 채운다"
                if "storyline.md" not in ui else "storyline.md 말고 다른 파일은 _archive/로 옮긴다")
-        r.fail("L6", f"00_user_input에는 storyline.md 하나만 둔다 (지금: {ui}). {how}")
+        r.fail("L6", f"00_storyline에는 storyline.md 하나만 둔다 (지금: {ui}). {how}")
     for stage in ("01_test", "02_draft", "03_output"):
         base = root / stage
         if base.exists():

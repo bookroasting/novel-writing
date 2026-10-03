@@ -1,4 +1,4 @@
-# 작품 설정 (이 파일과 00_user_input/storyline.md만 교체하면 다른 작품을 쓴다)
+# 작품 설정 (이 파일과 00_storyline/storyline.md만 교체하면 다른 작품을 쓴다)
 
 사용법: 이 파일을 **프로젝트 폴더**(작품 파일을 둘 폴더)에 `book-toc.md`라는 이름으로 복사하고 `<…>`를 채운다. 채운 뒤 `python3 <스킬>/scripts/lint_project.py`로 블록이 읽히는지 확인한다(`<스킬>`은 novel-writing 스킬 폴더). 블록 아래 서술 섹션은 사람이 읽는 부분이라 형식이 자유롭다.
 
@@ -40,7 +40,7 @@
       "pages": 12
     }
   ],
-  "last_line": "<지금은 00_user_input/storyline.md 초안의 마지막 문장을 적는다. storyline 단계의 통과 처리(stage-storyline.md 5단계)에서 통과본 기준으로 고친다>",
+  "last_line": "<지금은 00_storyline/storyline.md 초안의 마지막 문장을 적는다. storyline 단계의 통과 처리(stage-storyline.md 5단계)에서 통과본 기준으로 고친다>",
   "anchors": [
     {
       "name": "<시각 닻 이름>",

@@ -175,7 +175,7 @@ flowchart TB
 
 | 단계 | 들어가는 것 | 나오는 것 | 끝나는 조건 |
 |---|---|---|---|
-| storyline | `00_user_input/storyline.md` | `01_test/<run>/` 합평과 통과본 | 패널 점수 ≥ `review.story_pass`, 🔴 0, 작가의 통과 확인 |
+| storyline | `00_storyline/storyline.md` | `01_test/<run>/` 합평과 통과본 | 패널 점수 ≥ `review.story_pass`, 🔴 0, 작가의 통과 확인 |
 | research | 통과본 storyline | `02_draft/<run>/01_research-notes.md` | 범주별 자료와 출처 등급, 미해결 항목 정리 |
 | write | 통과본, 리서치 노트 | `02_outline.md`, `03_draft-v1.md` | 검증기 FAIL 0 |
 | review | 초안 | `04`~`12`, `09_draft-final.md` | 본문 합평 통과, 외부 리뷰 반영, 검증기 FAIL 0 |
@@ -226,7 +226,7 @@ python3 3.9 이상이면 되고, 따로 설치할 패키지는 없다.
 
 ```text
 book-toc.md                  작품 파라미터 블록 (숫자·이름·통과선의 정본)과 페르소나
-00_user_input/storyline.md   작가가 쓴 1차 콘셉트
+00_storyline/storyline.md    1차 콘셉트(스토리 설계도)
 01_test/<run>/               스토리 합평, 통과본, 블록 스냅샷, 잠금 파일
 02_draft/<run>/              리서치, 장면 설계, 초안, 합평, 최종본(09), 원장
 03_output/<run>/             ebook.html, metadata.md, validate_report.txt

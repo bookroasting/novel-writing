@@ -1,4 +1,4 @@
-"""첫 작품 시작: 사용자 답 한 묶음으로 book-toc.md와 00_user_input/storyline.md를 함께 만든다.
+"""첫 작품 시작: 사용자 답 한 묶음으로 book-toc.md와 00_storyline/storyline.md를 함께 만든다.
 
 사용: python3 <스킬>/scripts/init_project.py --answers answers.json [--root <프로젝트 폴더>]
 
@@ -84,7 +84,7 @@ def init(root, a):
     miss = [k for k in REQUIRED if not a.get(k)]
     if miss:
         raise SystemExit(f"답이 빠졌다: {miss}. 사용자에게 한 번에 묻고 다시 실행한다")
-    toc, story = root / "book-toc.md", root / "00_user_input" / "storyline.md"
+    toc, story = root / "book-toc.md", root / "00_storyline" / "storyline.md"
     exist = [str(f.relative_to(root)) for f in (toc, story) if f.exists()]
     if exist:
         raise SystemExit(f"이미 있다: {exist}. 덮어쓰지 않는다. 새 작품이면 사용자가 옮긴 뒤 다시 실행한다")

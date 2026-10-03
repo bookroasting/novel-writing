@@ -2,7 +2,7 @@
 
 이 파일은 `novel-writing` 스킬의 다섯 단계(storyline, research, write, review, publish)가 공통으로 따르는 규약이다. 스킬의 진입점은 `<스킬>/SKILL.md`, 작품 값은 프로젝트의 `book-toc.md` 작품 파라미터 블록(이하 "블록")이다.
 
-**경로 표기.** `<스킬>`은 이 스킬 폴더(`SKILL.md`가 있는 폴더)다. 그 밖의 경로(`book-toc.md`, `00_user_input/`, `01_test/` 등)는 모두 **프로젝트 폴더** 기준이다. 프로젝트 폴더는 `book-toc.md`가 있는 폴더이며, 스크립트는 현재 폴더에서 위로 올라가며 이 파일을 찾는다(`--root`로 직접 줄 수도 있다).
+**경로 표기.** `<스킬>`은 이 스킬 폴더(`SKILL.md`가 있는 폴더)다. 그 밖의 경로(`book-toc.md`, `00_storyline/`, `01_test/` 등)는 모두 **프로젝트 폴더** 기준이다. 프로젝트 폴더는 `book-toc.md`가 있는 폴더이며, 스크립트는 현재 폴더에서 위로 올라가며 이 파일을 찾는다(`--root`로 직접 줄 수도 있다).
 
 **숫자 규칙.** 이 파일과 단계 문서에는 작품 고유 값(인물명, 매수, 시각 닻, 마지막 줄)과 통과선 숫자를 적지 않는다. 블록의 키 이름으로만 가리킨다(예: `review.story_pass`). 설명용 예시를 둘 때는 줄 앞에 `예시(작품명):`를 붙인다. `lint_project.py`가 이 규칙을 검사한다.
 
@@ -10,7 +10,7 @@
 
 | 파일 | 역할 | 작품마다 교체 |
 |---|---|:-:|
-| `00_user_input/storyline.md` | 사용자가 쓴 1차 콘셉트. 날짜 폴더 없이 한 장 | 예 |
+| `00_storyline/storyline.md` | 1차 콘셉트(스토리 설계도). 날짜 폴더 없이 한 장 | 예 |
 | `book-toc.md` | 블록(숫자·이름·통과선) + 페르소나·문체 서술 | 예 |
 | `<스킬>/SKILL.md` | 지휘: 단계 선택, 서브 에이전트 위임, 사용자 확인 | 아니오 |
 | `<스킬>/agents/novel-writing-<단계>.md` | 단계별 서브 에이전트 (Claude Code) | 아니오 |
@@ -22,7 +22,7 @@
 ## 2. 워크플로우
 
 ```
-00_user_input/storyline.md
+00_storyline/storyline.md
   → storyline 단계  → 01_test/<run>/   (스토리 합평, 통과본 storyline.md)
   → research 단계   → 02_draft/<run>/01_research-notes.md
   → write 단계      → 02_draft/<run>/02_outline.md, 03_draft-v1.md
@@ -40,7 +40,7 @@
 - run 진행 중 블록을 고치면(예: storyline 5단계 동기화) 스냅샷도 같이 갱신하고 원장에 남긴다. 단계 작업의 동기화면 `note: block-change <무엇을>`, 사용자 요청이면 `gate: block-change → approved <무엇을> (날짜) "<원문>"`이다. 린터는 진행 중 run의 블록과 스냅샷이 다르면 FAIL을 낸다.
 - **끝난 run**은 원장에 `stage: publish done` 또는 `closed:`가 있는 run이다. 검증기·린터·스킬 모두 이 정의 하나를 쓴다.
 - 어느 run을 쓸지: 끝나지 않은 가장 최근 run을 이어 쓴다. 그런 run이 없으면 새 run을 연다. 지난 run이 하나라도 있으면 사용자에게 한 번 묻는다(same/updated/rework). 지난 run이 없는 첫 작품은 묻지 않고 same으로 연다. 어느 쪽이든 `new_run.py`가 원장에 `gate: new-run → <선택> "<원문>"`을 쓴다(첫 작품은 원문 자리에 "첫 run").
-  - `same`: 같은 storyline으로 처음부터. `updated`: `00_user_input/storyline.md`를 고친 뒤 처음부터.
+  - `same`: 같은 storyline으로 처음부터. `updated`: `00_storyline/storyline.md`를 고친 뒤 처음부터.
   - `rework`: 지난 run의 결과를 물려받아 특정 단계부터 다시 한다(재리뷰 등). 지난 run의 storyline 통과본, 스냅샷, 리서치 노트를 새 run으로 복사하고, 물려받은 원고를 시작 파일로 둔다(재리뷰면 지난 `09_draft-final.md` → 새 `03_draft-v1.md`). 원장에 `inherit: <지난 run>`과 물려받은 단계마다 `stage: <스킬> done <날짜> (inherited)`를 남긴다. 그다음 스킬이 그 단계부터 이어서 시작한다.
 - 끝난 run을 다시 열지 않는다. 재작업은 새 run에서 한다. 이전 run을 닫으려면 사용자에게 묻고 `closed: superseded <날짜>`와 `gate: close-run → approved "<응답 원문>"` 두 줄을 남긴다.
 - 예외는 출판 뒤 수정(post-audit) 하나다. 끝난 run의 산출물에서 결함이 나오거나 작가가 고쳐 달라고 하면(윤문, 서평 빼기 등) 사용자 승인(`gate: post-audit → approved "<원문>"`)을 받은 뒤에만 고친다. 절차는 SKILL.md "출판 뒤 수정"과 `republish.py` 머리 주석이다: `republish.py --prepare`가 고치기 전 최종본을 `_archive/`에 보관하고, 고친 내용은 `02_draft/<run>/14_post-audit-changelog.md`에 적고, `republish.py --owner <owner>`가 다시 만들기, 메타 분량, 검증, `stage: post-audit-fix done`, 재잠금을 한다. 판을 새로 짜는 재합평이면 rework run을 연다.

@@ -9,7 +9,7 @@
   1. 오늘 날짜(또는 --date)로 다음 run 이름(YYYYMMDD_NN)을 정하고 01_test·02_draft·03_output 폴더를 만든다.
   2. 블록 스냅샷 01_test/<run>/book-toc.snapshot.md를 만든다 (rework는 지난 run의 스냅샷을 물려받는다).
   3. 원장 02_draft/<run>/00_RUN_STATUS.md에 status, gate: new-run 줄(응답 원문)을 남긴다.
-  4. same·updated: 00_user_input/storyline.md를 01_test/<run>/storyline.md로 복사한다. 다음 단계는 storyline (지휘가 /novel-writing으로 이어 간다).
+  4. same·updated: 00_storyline/storyline.md를 01_test/<run>/storyline.md로 복사한다. 다음 단계는 storyline (지휘가 /novel-writing으로 이어 간다).
      rework: 지난 run의 결과를 --stage 직전 단계까지 물려받는다.
        research  storyline 통과본
        write     + 리서치 노트
@@ -100,8 +100,8 @@ def open_run(root, mode, answer, src_run=None, stage=None, date=None, protect="r
             need.append(sd / final_draft_name(p0))
         if missing := [str(x.relative_to(root)) for x in need if not x.exists()]:
             raise SystemExit(f"rework에 필요한 파일이 없다: {missing}. 아무 폴더도 만들지 않았다")
-    elif not (root / "00_user_input" / "storyline.md").exists():
-        raise SystemExit("00_user_input/storyline.md가 없다. 아무 폴더도 만들지 않았다")
+    elif not (root / "00_storyline" / "storyline.md").exists():
+        raise SystemExit("00_storyline/storyline.md가 없다. 아무 폴더도 만들지 않았다")
     run = next_run(root, date)
     t, d, o = (root / s / run for s in ("01_test", "02_draft", "03_output"))
     for x in (t, d, o):
@@ -110,7 +110,7 @@ def open_run(root, mode, answer, src_run=None, stage=None, date=None, protect="r
 
     if mode in ("same", "updated"):
         shutil.copy(root / "book-toc.md", t / "book-toc.snapshot.md")
-        shutil.copy(root / "00_user_input" / "storyline.md", t / "storyline.md")
+        shutil.copy(root / "00_storyline" / "storyline.md", t / "storyline.md")
         nxt = "storyline 단계 (/novel-writing \"스토리 합평하자\")"
     else:
         st, sd = root / "01_test" / src_run, root / "02_draft" / src_run

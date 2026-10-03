@@ -1,6 +1,6 @@
 ---
 name: novel-writing-storyline
-description: "스토리 설계도(00_user_input/storyline.md)를 평가자 패널 합평으로 다듬어 통과본을 만든다. novel-writing 스킬의 storyline 단계를 맡는다."
+description: "스토리 설계도(00_storyline/storyline.md)를 평가자 패널 합평으로 다듬어 통과본을 만든다. novel-writing 스킬의 storyline 단계를 맡는다."
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
