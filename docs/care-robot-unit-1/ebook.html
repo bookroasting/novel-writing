@@ -281,14 +281,13 @@
     justify-content: space-between;
     padding: 76px 56px 70px;
     z-index: 3;
-    text-align: center;
+    text-align: left;
   }
   .back-tag {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: #e8d4a8;
-    opacity: 0.78;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #9a9a9a;
   }
   .back-text-overlay .back-mid {
     display: flex;
@@ -298,62 +297,49 @@
   }
   .back-text-overlay .back-quote {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-style: italic;
-    font-size: 17px;
-    line-height: 1.7;
-    font-weight: 500;
-    color: #f4e8c8;
+    font-size: 20px;
+    line-height: 1.55;
+    font-weight: 300;
+    color: #ffffff;
     margin: 0 0 12px;
     word-break: keep-all;
   }
-  /* 예전 '.page.back-cover .back-quote' 규칙(본문 잉크색 #1a1a1a)이 같은 우선순위로 뒤에 있어 짙은 남색 그림 위 인용문을 검게 덮었다. 그 규칙을 지웠다 */
+  /* 예전 '.page.back-cover .back-quote' 규칙(본문 잉크색 #1a1a1a)이 같은 우선순위로 뒤에 있어 짙은 바탕 그림 위 인용문을 검게 덮었다. 그 규칙을 지웠다 */
   .back-quote-attr {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-size: 10px;
-    color: #e8d4a8;
-    letter-spacing: 0.1em;
-    opacity: 0.7;
+    font-size: 11px;
+    color: #00aba9;
+    letter-spacing: 0.05em;
     margin-bottom: 38px;
   }
   .back-synopsis {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-size: 12px;
+    font-size: 12.5px;
     line-height: 1.95;
-    color: #e8d4a8;
-    opacity: 0.85;
+    color: #bdbdbd;
   }
   .back-author-line {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
     font-size: 12px;
     letter-spacing: 0.25em;
     font-weight: 600;
-    color: #f4e8c8;
+    color: #ffffff;
     margin-bottom: 14px;
   }
   .back-text-overlay .back-publisher {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
-    color: #e8d4a8;
-    font-size: 9.5px;
-    letter-spacing: 0.24em;
+    color: #9a9a9a;
+    font-size: 10px;
+    letter-spacing: 0.15em;
     font-weight: 500;
-    opacity: 0.82;
   }
   .back-publisher .pub-mark {
     width: 9px;
     height: 9px;
-    border-radius: 50%;
-    border: 0.7px solid #e8d4a8;
-    position: relative;
-  }
-  .back-publisher .pub-mark::before {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    background: #e8d4a8;
-    border-radius: 50%;
+    background: #00aba9;
   }
 
   .cover-spine {
@@ -838,6 +824,15 @@
   /* StPageFlip override */
   .stf__parent { perspective: 2400px; }
   .stf__block { box-shadow: 0 4px 24px var(--shadow); }
+  /* 앞표지·뒤표지처럼 한 쪽만 보일 때: 양면 폭 그림자를 지우고(빈 왼쪽 면처럼 보인다) 그 쪽에만 그림자를 준다. 책은 JS가 반 쪽 옮겨 가운데 둔다 */
+  #book { position: relative; transition: transform 0.35s ease; }
+  #book.single-left .stf__block, #book.single-right .stf__block { box-shadow: none; }
+  #book.single-left::before, #book.single-right::before {
+    content: ''; position: absolute; top: 0; width: 50%; height: 100%;
+    box-shadow: 0 4px 24px var(--shadow); pointer-events: none;
+  }
+  #book.single-right::before { left: 50%; }
+  #book.single-left::before { left: 0; }
   
   /* 책 크기는 JS가 화면에 맞춰 정한다(PAGE_W·PAGE_H). CSS로 축소하지 않는다: 축소하면 쪽 나누기 계산과 실제 크기가 어긋난다 */
   #book-wrap { transform: none; }
@@ -1681,6 +1676,8 @@ AI 학습 데이터의 윤리, 1인 가구 노인 돌봄의 빈틈, 절차와 �
         this.el.addEventListener('click', e => {
           if (e.target.closest('a, button, li[data-page]')) return;
           const r = this.el.getBoundingClientRect();
+          // 표지만 보일 때는 그 쪽 어디를 눌러도 책 안쪽으로 넘긴다 (책이 반 쪽 옮겨져 있어 절반 기준이 맞지 않다)
+          if (this.spread() && this.view(this.cur).length === 1) { this.cur === 0 ? this.flipNext() : this.flipPrev(); return; }
           (e.clientX - r.left < r.width / 2 ? this.flipPrev() : this.flipNext());
         });
         this.render();
@@ -1976,113 +1973,81 @@ AI 학습 데이터의 윤리, 1인 가구 노인 돌봄의 빈틈, 절차와 �
     const html = `
       <div class="cover-fullart">
         <svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="cv-bg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#0d1a2b"/>
-              <stop offset="55%" stop-color="#2a3f55"/>
-              <stop offset="100%" stop-color="#5b738a"/>
-            </linearGradient>
-            <radialGradient id="cv-halo" cx="50%" cy="40%" r="42%">
-              <stop offset="0%" stop-color="#f0e0c0" stop-opacity="0.18"/>
-              <stop offset="60%" stop-color="#f0e0c0" stop-opacity="0.05"/>
-              <stop offset="100%" stop-color="#f0e0c0" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="cv-pen" x="-3%" y="-3%" width="106%" height="106%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="3" result="n"/>
-              <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/>
-            </filter>
-            <filter id="cv-grain" x="0" y="0" width="100%" height="100%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7"/>
-              <feColorMatrix values="0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0 0.74  0 0 0 0.10 0"/>
-            </filter>
-            <pattern id="cv-hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
-              <line x1="0" y1="0" x2="0" y2="5" stroke="#0d1a2b" stroke-width="0.6" opacity="0.35"/>
-            </pattern>
-          </defs>
-
-          <!-- 배경 그라디언트 -->
-          <rect width="460" height="720" fill="url(#cv-bg)"/>
-          <rect width="460" height="720" fill="url(#cv-halo)"/>
-
-          <!-- 1호기 흉상 (어두운 배경에 맞춘 옅은 본체) -->
-          <g>
-            <!-- 본체 컬러 (옅은 베이지빛 흰색) -->
-            <path d="M 175 195 Q 175 158 205 158 L 255 158 Q 285 158 285 195 L 285 290 Q 285 325 255 325 L 205 325 Q 175 325 175 290 Z" fill="#e8d4a8" opacity="0.92"/>
-            <!-- 머리 좌측 그림자 (cross-hatching 음영 대신 단순 면) -->
-            <path d="M 175 195 Q 175 158 205 158 L 222 158 L 222 325 L 205 325 Q 175 325 175 290 Z" fill="url(#cv-hatch)" opacity="0.6"/>
-            <!-- 어깨 -->
-            <path d="M 145 358 Q 175 340 230 342 Q 285 340 315 358 L 312 470 L 148 470 Z" fill="#e0c898" opacity="0.92"/>
-            <path d="M 145 358 Q 175 340 230 342 L 230 470 L 148 470 Z" fill="url(#cv-hatch)" opacity="0.55"/>
-            <!-- 가슴 패널 -->
-            <rect x="200" y="395" width="60" height="36" rx="3" fill="#c8a87a"/>
-          </g>
-
-          <!-- 펜 라인 (어두운 외곽선) -->
-          <g filter="url(#cv-pen)" stroke="#0d1a2b" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <!-- 머리 -->
-            <path d="M 175 195 Q 175 158 205 158 L 255 158 Q 285 158 285 195 L 285 290 Q 285 325 255 325 L 205 325 Q 175 325 175 290 Z"/>
-            <!-- 안테나 -->
-            <line x1="230" y1="158" x2="230" y2="138" stroke-width="2"/>
-            <circle cx="230" cy="132" r="4.5" fill="#0d1a2b"/>
-            <!-- 카메라 -->
-            <circle cx="208" cy="232" r="9" fill="#0d1a2b"/>
-            <circle cx="252" cy="232" r="9" fill="#0d1a2b"/>
-            <circle cx="210" cy="229" r="2.5" fill="#e8d4a8"/>
-            <circle cx="254" cy="229" r="2.5" fill="#e8d4a8"/>
-            <!-- 입선 -->
-            <line x1="208" y1="280" x2="252" y2="280" stroke-width="1.5"/>
-            <line x1="214" y1="291" x2="246" y2="291" stroke-width="1.3"/>
-            <!-- 목 -->
-            <line x1="212" y1="325" x2="212" y2="358" stroke-width="2"/>
-            <line x1="248" y1="325" x2="248" y2="358" stroke-width="2"/>
-            <!-- 어깨/가슴 -->
-            <path d="M 145 358 Q 175 340 230 342 Q 285 340 315 358 L 312 470 L 148 470 Z" stroke-width="2.4"/>
-            <!-- 가슴 패널 -->
-            <rect x="200" y="395" width="60" height="36" rx="3" stroke-width="1.8"/>
-            <line x1="208" y1="408" x2="252" y2="408" stroke-width="1"/>
-            <line x1="208" y1="420" x2="244" y2="420" stroke-width="1"/>
-            <text x="220" y="427" font-family="monospace" font-size="13" fill="#0d1a2b" stroke="none" font-weight="700">01</text>
-            <!-- 어깨 라인 (cross-hatching 시그니처) -->
-            <line x1="155" y1="372" x2="160" y2="465" stroke-width="0.7" opacity="0.5"/>
-            <line x1="162" y1="372" x2="167" y2="465" stroke-width="0.5" opacity="0.4"/>
-          </g>
-
-          <!-- 머리 음영 hatching -->
-          <g filter="url(#cv-pen)" opacity="0.45">
-            <line x1="184" y1="208" x2="208" y2="282" stroke="#0d1a2b" stroke-width="0.6"/>
-            <line x1="192" y1="202" x2="216" y2="278" stroke="#0d1a2b" stroke-width="0.5"/>
-            <line x1="200" y1="206" x2="222" y2="282" stroke="#0d1a2b" stroke-width="0.4"/>
-          </g>
+          <!-- 메트로 스타일: 짙은 회색 바탕, 청록 단색 타일 그리드, 선 아이콘, 가는 대형 글씨, 왼쪽 정렬 -->
+          <rect width="460" height="720" fill="#1a1a1a"/>
 
           <!-- 위쪽: 장르 표기 -->
-          <text x="230" y="76" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="10" fill="#e8d4a8" letter-spacing="7" font-weight="500" opacity="0.78">단편 소설</text>
-          <line x1="208" y1="92" x2="252" y2="92" stroke="#e8d4a8" stroke-width="0.3" opacity="0.4"/>
+          <text x="40" y="70" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#9a9a9a" letter-spacing="3" font-weight="500">단편 소설</text>
+
+          <!-- 타일 그리드 (4열, 칸 89, 간격 8) -->
+          <rect x="40" y="110" width="186" height="186" fill="#00aba9"/>
+          <rect x="234" y="110" width="89" height="89" fill="#2b2b2b"/>
+          <rect x="331" y="110" width="89" height="89" fill="#007a78"/>
+          <rect x="234" y="207" width="186" height="89" fill="#333333"/>
+          <rect x="40" y="304" width="89" height="89" fill="#2b2b2b"/>
+          <rect x="137" y="304" width="89" height="89" fill="#008f8d"/>
+          <rect x="234" y="304" width="186" height="89" fill="#3a3a3a"/>
+
+          <!-- 큰 타일: 1호기 -->
+          <g stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="133" y1="140" x2="133" y2="128"/>
+            <rect x="108" y="140" width="50" height="44" rx="6"/>
+            <line x1="124" y1="174" x2="142" y2="174"/>
+            <line x1="126" y1="184" x2="126" y2="192"/>
+            <line x1="140" y1="184" x2="140" y2="192"/>
+            <path d="M 98 246 L 98 206 Q 98 192 112 192 L 154 192 Q 168 192 168 206 L 168 246"/>
+            <rect x="121" y="208" width="24" height="16" rx="2"/>
+          </g>
+          <circle cx="133" cy="125" r="3.5" fill="#ffffff"/>
+          <circle cx="124" cy="160" r="4" fill="#ffffff"/>
+          <circle cx="142" cy="160" r="4" fill="#ffffff"/>
+          <text x="50" y="284" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">1호기</text>
+
+          <!-- 목소리 -->
+          <g stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+            <line x1="254" y1="144" x2="254" y2="152"/>
+            <line x1="262" y1="136" x2="262" y2="160"/>
+            <line x1="270" y1="128" x2="270" y2="168"/>
+            <line x1="278" y1="138" x2="278" y2="158"/>
+            <line x1="286" y1="132" x2="286" y2="164"/>
+            <line x1="294" y1="142" x2="294" y2="154"/>
+            <line x1="302" y1="145" x2="302" y2="151"/>
+          </g>
+          <text x="244" y="187" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">목소리</text>
+
+          <!-- 기기 번호 -->
+          <text x="341" y="158" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="36" fill="#ffffff" font-weight="300">01</text>
+          <text x="341" y="187" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">기기 번호</text>
+
+          <!-- 마지막 통화 -->
+          <path d="M 250 226 q 0 -4 4 -4 l 6 0 l 4 10 l -5 4 q 4 9 13 13 l 4 -5 l 10 4 l 0 6 q 0 4 -4 4 q -32 -1 -32 -32 Z" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linejoin="round"/>
+          <text x="410" y="250" text-anchor="end" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="26" fill="#ffffff" font-weight="300">5년 전</text>
+          <text x="244" y="284" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">마지막 통화</text>
+
+          <!-- 집 -->
+          <path d="M 62 342 L 84 324 L 106 342 M 68 337 L 68 360 L 100 360 L 100 337 M 80 360 L 80 348 L 88 348 L 88 360" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="50" y="381" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">집</text>
+
+          <!-- 돌봄 -->
+          <polyline points="150,342 166,342 172,330 180,354 188,322 195,342 214,342" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="147" y="381" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">돌봄</text>
+
+          <!-- 시범사업 6주 -->
+          <text x="244" y="350" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="36" fill="#ffffff" font-weight="300">6주</text>
+          <text x="244" y="381" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" font-weight="500">시범사업</text>
 
           <!-- 큰 제목 -->
-          <text x="230" y="510" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="42" fill="#f4e8c8" font-weight="800" letter-spacing="-1.5">돌봄로봇</text>
-          <text x="230" y="558" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="42" fill="#f4e8c8" font-weight="800" letter-spacing="-1.5">1호기</text>
+          <text x="36" y="486" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="58" fill="#ffffff" font-weight="300" letter-spacing="-2">돌봄로봇</text>
+          <text x="36" y="552" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="58" fill="#ffffff" font-weight="300" letter-spacing="-2">1호기</text>
 
           <!-- 한 줄 카피 -->
-          <text x="230" y="602" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#e8d4a8" font-style="italic" letter-spacing="0.5" opacity="0.85">&quot;그 로봇이 자꾸 우리 딸 흉내를 내요.&quot;</text>
+          <text x="40" y="596" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="13" fill="#bdbdbd" font-weight="400">&quot;그 로봇이 자꾸 우리 딸 흉내를 내요.&quot;</text>
+          <rect x="40" y="616" width="40" height="4" fill="#00aba9"/>
 
-          <!-- 가는 분리선 -->
-          <line x1="208" y1="628" x2="252" y2="628" stroke="#e8d4a8" stroke-width="0.4" opacity="0.45"/>
-
-          <!-- 작가 -->
-          <text x="230" y="660" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#e8d4a8" letter-spacing="5" font-weight="600" opacity="0.92">AI ROASTING</text>
-
-          <!-- 출판사 (블록 publisher가 비면 넣지 않는다) -->
-          <g transform="translate(230, 698)">
-            <g transform="translate(-52, 0)">
-              <circle cx="0" cy="0" r="5" fill="none" stroke="#e8d4a8" stroke-width="0.6" opacity="0.78"/>
-              <circle cx="0" cy="0" r="2.6" fill="none" stroke="#e8d4a8" stroke-width="0.4" opacity="0.65"/>
-              <circle cx="0" cy="0" r="1" fill="#e8d4a8" opacity="0.85"/>
-            </g>
-            <text x="-40" y="3.5" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="9" fill="#e8d4a8" letter-spacing="2.4" font-weight="500" opacity="0.82">ArgosLab</text>
-          </g>
-
-          <!-- 종이 그레인 -->
-          <rect width="460" height="720" filter="url(#cv-grain)" opacity="0.45" pointer-events="none"/>
+          <!-- 작가, 출판사 -->
+          <text x="40" y="680" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="12" fill="#ffffff" letter-spacing="3" font-weight="600">AI ROASTING</text>
+          <rect x="350" y="671" width="9" height="9" fill="#00aba9"/>
+          <text x="420" y="680" text-anchor="end" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="10" fill="#9a9a9a" letter-spacing="1.5" font-weight="500">ArgosLab</text>
         </svg>
       </div>
     `;
@@ -2195,38 +2160,11 @@ AI 학습 데이터의 윤리, 1인 가구 노인 돌봄의 빈틈, 절차와 �
     const html = `
       <div class="back-fullart">
         <svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="bk-bg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#0d1a2b"/>
-              <stop offset="55%" stop-color="#2a3f55"/>
-              <stop offset="100%" stop-color="#5b738a"/>
-            </linearGradient>
-            <radialGradient id="bk-halo" cx="50%" cy="60%" r="50%">
-              <stop offset="0%" stop-color="#f0e0c0" stop-opacity="0.14"/>
-              <stop offset="100%" stop-color="#f0e0c0" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="bk-grain" x="0" y="0" width="100%" height="100%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="11"/>
-              <feColorMatrix values="0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0 0.74  0 0 0 0.10 0"/>
-            </filter>
-          </defs>
-
-          <!-- 배경 -->
-          <rect width="460" height="720" fill="url(#bk-bg)"/>
-          <rect width="460" height="720" fill="url(#bk-halo)"/>
-
-          <!-- 가는 사각 프레임 (단정함) -->
-          <rect x="40" y="40" width="380" height="640" fill="none" stroke="#e8d4a8" stroke-width="0.4" opacity="0.32"/>
-
-          <!-- 미니멀 모티프 (가운데 가는 동심원, 표지와 호응) -->
-          <g transform="translate(230, 360)" stroke="#e8d4a8" fill="none" stroke-linecap="round" opacity="0.4">
-            <circle cx="0" cy="0" r="22" stroke-width="0.5"/>
-            <circle cx="0" cy="0" r="12" stroke-width="0.5"/>
-            <circle cx="0" cy="0" r="3" fill="#e8d4a8" stroke="none"/>
-          </g>
-
-          <!-- 종이 그레인 -->
-          <rect width="460" height="720" filter="url(#bk-grain)" opacity="0.4" pointer-events="none"/>
+          <!-- 메트로 스타일 뒤표지: 앞표지와 같은 바탕, 오른쪽 위 작은 타일 묶음만 둔다 -->
+          <rect width="460" height="720" fill="#1a1a1a"/>
+          <rect x="331" y="40" width="40" height="40" fill="#00aba9"/>
+          <rect x="379" y="40" width="40" height="40" fill="#007a78"/>
+          <rect x="379" y="88" width="40" height="40" fill="#333333"/>
         </svg>
 
         <div class="back-text-overlay">
@@ -2374,8 +2312,20 @@ AI 학습 데이터의 윤리, 1인 가구 노인 돌봄의 빈틈, 절차와 �
       const pct = total > 1 ? (idx / (total - 1)) * 100 : 0;
       progressBar.style.width = pct + '%';
     }
+    // 양면 보기에서 앞표지(오른쪽 칸)나 뒤표지(왼쪽 칸)만 보이면 책을 반 쪽 옮겨 그 쪽을 화면 가운데 둔다
+    function centerSinglePage() {
+      const book = document.getElementById('book');
+      const idx = pageFlip.getCurrentPageIndex(), n = pageFlip.getPageCount();
+      const portrait = IS_PORTRAIT || (pageFlip.getOrientation && pageFlip.getOrientation() === 'portrait');
+      const side = portrait ? '' : idx === 0 ? 'right' : (idx === n - 1 && n % 2 === 0) ? 'left' : '';
+      book.classList.toggle('single-right', side === 'right');
+      book.classList.toggle('single-left', side === 'left');
+      book.style.transform = side ? 'translateX(' + (side === 'right' ? -PAGE_W / 2 : PAGE_W / 2) + 'px)' : '';
+    }
     pageFlip.on('flip', updateCounter);
+    pageFlip.on('flip', centerSinglePage);
     updateCounter();
+    centerSinglePage();
 
     // 폰트 크기 토글 (s ↔ m ↔ l)
     const FS_STEPS = ['s', 'm', 'l'];

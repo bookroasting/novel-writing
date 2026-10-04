@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>이의신청 · AI ROASTING</title>
+<meta name="description" content="2032년 서울, 공공임대주택 이의신청은 AI가 심사하고 사람은 기각 결정서에 도장만 찍는다. 9년차 심사관 한서진은 같은 문장을 아홉 번 보낸 신청서 한 장 앞에서 처음으로 손을 멈춘다.">
+<meta name="author" content="AI ROASTING">
+<meta property="og:type" content="book">
+<meta property="og:title" content="이의신청">
+<meta property="og:description" content="AI가 쓴 기각서에 도장만 찍던 사람이, 처음으로 손을 멈췄다.">
+<meta property="og:site_name" content="ArgosLab">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="이의신청">
+<meta name="twitter:description" content="단편 소설 · AI ROASTING">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><polygon points="6,6 58,6 32,32" fill="%23d0473a"/><polygon points="58,6 58,58 32,32" fill="%23ad3226"/><polygon points="58,58 6,58 32,32" fill="%238c251b"/><polygon points="6,58 6,6 32,32" fill="%23c43c2e"/><rect x="13" y="13" width="38" height="38" fill="none" stroke="%23f7efe3" stroke-width="3"/></svg>'>
+<!-- 글꼴 CSS가 응답하지 않아도 화면을 막지 않게 print로 받아 두었다가 다 받으면 켠다. 쪽을 나눈 뒤에 도착하면 켜지 않는다(쪽 나눔이 어긋나지 않게). 못 받으면 시스템 글꼴로 읽는다 -->
+<link rel="stylesheet" crossorigin media="print" onload="if (!window.__ebookPaginated) { this.media='all'; window.__fontCss = true; }" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- 표지·뒤표지용 명조. 표지는 절대 배치라 늦게 도착해도 쪽 나눔에 영향이 없다 -->
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&display=swap">
+<noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></noscript>
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --ink: #1d1b1a;
+    --ink-soft: #6b625a;
+    --accent: #c23a2b;
+    --bg: #ddd5c8;
+    --shadow: rgba(60, 30, 20, 0.22);
+    --toolbar-bg: rgba(246, 241, 231, 0.9);
+    --toolbar-border: #cbbfae;
+  }
+  [data-theme="dark"] {
+    --paper: #24201d;
+    --ink: #e3dbcf;
+    --ink-soft: #9d9184;
+    --accent: #e2584a;
+    --bg: #141210;
+    --shadow: rgba(0, 0, 0, 0.55);
+    --toolbar-bg: rgba(36, 32, 29, 0.92);
+    --toolbar-border: #463d36;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    overscroll-behavior: none;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0;
+  }
+
+  .toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: var(--toolbar-bg);
+    border: 1px solid var(--toolbar-border);
+    border-radius: 24px;
+    padding: 6px 10px;
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    box-shadow: 0 2px 8px var(--shadow);
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  .toolbar button {
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 18px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .toolbar button:hover { background: rgba(194, 58, 43, 0.15); }
+  .toolbar button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .toolbar .counter {
+    font-size: 13px;
+    color: var(--ink-soft);
+    min-width: 60px;
+    text-align: center;
+  }
+  .toolbar .divider {
+    width: 1px;
+    height: 18px;
+    background: var(--toolbar-border);
+  }
+
+  /* 우측 슬라이드 목차 패널 */
+  #toc-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    max-width: 80vw;
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: -8px 0 32px var(--shadow);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  #toc-panel.open { transform: translateX(0); }
+  #toc-panel .toc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 18px;
+    border-bottom: 1px solid var(--toolbar-border);
+  }
+  #toc-panel .toc-head h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--ink);
+  }
+  #toc-panel .toc-close {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+  }
+  #toc-panel .toc-close:hover { color: var(--ink); }
+  #toc-panel ul {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
+  #toc-panel li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 24px;
+    cursor: pointer;
+    border-bottom: 1px dashed var(--toolbar-border);
+    transition: background 0.15s, color 0.15s;
+  }
+  #toc-panel li:hover {
+    background: rgba(194, 58, 43, 0.12);
+    color: var(--accent);
+  }
+  #toc-panel .toc-name { font-size: 14px; font-weight: 500; }
+  #toc-panel .toc-page { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; }
+  #toc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #toc-overlay.open { opacity: 1; pointer-events: auto; }
+
+  #book-wrap {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #book {
+    width: 920px;
+    height: 720px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* StPageFlip 자체 컨테이너도 가운데 */
+  .stf__parent {
+    margin: 0 auto !important;
+  }
+
+  .page {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 56px 58px 88px;  /* 위 56(쪽 머리까지), 아래 88 = 쪽 번호 아래 여백 56 + 번호 높이 + 본문과의 간격. 위아래 바깥 여백을 56으로 맞춘다 */
+    overflow: hidden !important;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .page-body {
+    flex: 1 1 0;
+    overflow: hidden !important;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .page-body > * {
+    flex: 0 0 auto;
+  }
+  /* StPageFlip 내부 요소: 클론된 페이지에서도 콘텐츠 클립 */
+  .stf__block, .stf__item, .stf__wrapper {
+    overflow: hidden !important;
+  }
+
+  .page.cover {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .cover-fullart {
+    position: absolute;
+    inset: 0;
+  }
+  .cover-fullart > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+/* 표지 텍스트는 이제 SVG 내부에 통합됨 */
+  .page.back-cover {
+    background: #120f1a;
+    padding: 0;
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .back-fullart {
+    position: absolute;
+    inset: 0;
+  }
+  .back-fullart > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .back-text-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 44px 46px;
+    z-index: 3;
+    text-align: left;
+    word-break: keep-all;
+  }
+  .back-top {
+    border-bottom: 1.6px solid rgba(246, 241, 255, 0.85);
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .back-top::after {
+    content: '2032 · 서울';
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: #b3abcf;
+  }
+  .back-tag {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    font-weight: 700;
+    color: #b3abcf;
+  }
+  .back-text-overlay .back-mid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    padding: 18px 0;
+    margin-top: 2.5px;
+    border-top: 0.5px solid rgba(246, 241, 255, 0.85);
+  }
+  .back-text-overlay .back-quote {
+    font-family: 'Noto Serif KR', 'Nanum Myeongjo', AppleMyungjo, Batang, serif;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1.5;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #f7f4ff;
+    margin: 0 0 14px;
+    position: relative;
+    padding-top: 46px;
+  }
+  .back-text-overlay .back-quote::before {
+    content: '\201C';
+    position: absolute;
+    top: -6px;
+    left: -4px;
+    font-family: 'Noto Serif KR', 'Nanum Myeongjo', AppleMyungjo, Batang, serif;
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+    color: #c8281e;
+    opacity: 0.9;
+  }
+  .back-quote-attr {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 10px;
+    color: #b3abcf;
+    letter-spacing: 0.15em;
+    margin-bottom: 30px;
+    padding-bottom: 26px;
+    border-bottom: 0.5px solid rgba(246, 241, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .back-quote-attr::after {
+    content: '';
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border: 1.6px solid #c8281e;
+    outline: 0.8px dashed #c8281e;
+    outline-offset: -6px;
+    box-sizing: border-box;
+  }
+  .back-synopsis {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #d9d4ea;
+  }
+  .back-bottom {
+    border-top: 1.6px solid rgba(246, 241, 255, 0.85);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .back-author-line {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    font-weight: 700;
+    color: #f7f4ff;
+  }
+  .back-text-overlay .back-publisher {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #b3abcf;
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+    font-weight: 600;
+  }
+  .back-publisher .pub-mark {
+    width: 7px;
+    height: 7px;
+    background: #c8281e;
+  }
+
+  /* 홀로그래픽 빛줄기: 표지와 뒤표지 위를 천천히 지나간다. 움직임 줄이기 설정이면 멈춘다 */
+  .holo-sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 25%, rgba(255, 255, 255, 0.55) 38%, rgba(160, 235, 255, 0.4) 43%, rgba(255, 170, 225, 0.4) 48%, rgba(255, 240, 180, 0.3) 52%, transparent 65%);
+    background-size: 260% 260%;
+    mix-blend-mode: soft-light;
+    animation: holo-move 14s ease-in-out infinite alternate;
+  }
+  .holo-sheen.dark {
+    mix-blend-mode: screen;
+    opacity: 0.10;
+  }
+  .cover-edge {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 1.5px solid rgba(27, 21, 48, 0.8);
+  }
+  @keyframes holo-move {
+    from { background-position: 100% 0%; }
+    to { background-position: 0% 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .holo-sheen { animation: none; background-position: 50% 50%; }
+  }
+
+  .cover-spine {
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+    margin: 12px auto 18px;
+  }
+  .cover-title {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin: 14px 0 18px;
+    letter-spacing: -0.02em;
+  }
+  .cover-subtitle {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    letter-spacing: 0.3em;
+    margin-bottom: 12px;
+  }
+  .cover-author {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 14px 0 4px;
+    letter-spacing: 0.2em;
+    text-align: center;
+    width: 100%;
+  }
+  .cover-mark {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    width: 100%;
+  }
+
+  .page.toc {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+  }
+  .page.toc .toc-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .page.toc .toc-list {
+    width: 100%;
+  }
+  .page.toc h2 {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 32px;
+    text-align: center;
+    letter-spacing: 0.4em;
+  }
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  .toc-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 4px;
+    border-bottom: 1px dashed var(--toolbar-border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .toc-list li:hover { background: rgba(194, 58, 43, 0.08); }
+  .toc-list .toc-name { font-size: 15px; }
+  .toc-list .toc-page {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  h1.chapter {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 28px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  /* 표지 다음 인용 페이지 (epigraph) */
+  .page.epigraph {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+  }
+  .page.epigraph .epigraph-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 120px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .page.epigraph .epigraph-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .page.epigraph .epigraph-line {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: 0.02em;
+    opacity: 0.88;
+  }
+  .page.epigraph .epigraph-attr {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin: 0;
+    letter-spacing: 0.06em;
+    opacity: 0.75;
+  }
+  .page.epigraph .running-head,
+  .page.epigraph .page-number { display: none; }
+
+  /* 챕터 제목 별도 페이지 디자인 */
+  .page.chapter-title-page {
+    background: var(--paper);
+    padding: 0;
+    position: relative;
+    display: block;
+  }
+  .chapter-title-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    width: calc(100% - 120px);
+    text-align: center;
+  }
+  .chapter-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+  .chapter-rule-top, .chapter-rule-bottom {
+    position: relative;
+  }
+  .chapter-rule-top::before, .chapter-rule-bottom::before,
+  .chapter-rule-top::after, .chapter-rule-bottom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateY(-50%);
+  }
+  .chapter-rule-top::before, .chapter-rule-bottom::before { left: -10px; }
+  .chapter-rule-top::after, .chapter-rule-bottom::after { right: -10px; }
+  .chapter-num {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 64px;
+    font-weight: 200;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .chapter-num::after {
+    content: '장';
+    font-size: 18px;
+    font-weight: 400;
+    margin-left: 8px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    vertical-align: super;
+  }
+  .chapter-name {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.4em;
+    text-indent: 0.4em;
+  }
+  .chapter-name.extra-section {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 0.5em;
+    text-indent: 0.5em;
+    margin: 30px 0;
+  }
+  .page.chapter-title-page .running-head,
+  .page.chapter-title-page .page-number { display: none; }
+
+  .page p {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.85;
+    margin: 0 0 0.7em;
+    text-indent: 1em;
+    word-break: keep-all;
+    line-break: strict;
+  }
+  .page-body p:last-child { margin-bottom: 0; }
+  .page-body h1.chapter:first-child { margin-top: 0; }
+
+  .page-number {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+  .page.cover .page-number,
+  .page.back-cover .page-number,
+  .page.title-page .page-number,
+  .page.toc .page-number { display: none; }
+
+  .running-head {
+    flex: 0 0 auto;
+    text-align: center;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.25em;
+    margin-bottom: 22px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--toolbar-border);
+  }
+  .running-head.running-head-art {
+    position: relative;
+    letter-spacing: 0;
+    color: transparent;
+  }
+  .running-head.running-head-art > svg {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    display: block;
+    color: var(--ink-soft);
+  }
+  .page.cover .running-head,
+  .page.back-cover .running-head,
+  .page.title-page .running-head,
+  .page.toc .running-head,
+  .page.chapter-start .running-head { display: none; }
+
+  .page.title-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 50px;
+  }
+  .title-page-inner {
+    text-align: center;
+  }
+  .title-page-title {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 24px;
+  }
+  .title-page-author {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.15em;
+  }
+
+  .page.copyright-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 50px;
+  }
+  .page.copyright-page .running-head,
+  .page.copyright-page .page-number { display: none; }
+  .copyright-inner {
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  }
+  .copyright-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .copyright-meta {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    margin-bottom: 28px;
+  }
+  .copyright-rule {
+    width: 36px;
+    height: 1px;
+    background: var(--toolbar-border);
+    margin: 18px auto;
+  }
+  .copyright-credits {
+    font-size: 12px;
+    line-height: 2;
+    color: var(--ink);
+  }
+  .copyright-isbn {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Monaco, monospace;
+  }
+  .copyright-c {
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+  }
+  .copyright-note {
+    margin-top: 10px;
+  }
+
+  /* 본문 페이지 종이 질감 (옅게) */
+  .page-body {
+    position: relative;
+  }
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0.06 0'/></filter><rect width='120' height='120' filter='url(%23g)'/></svg>");
+    opacity: 0.18;
+    z-index: 0;
+  }
+  [data-theme="dark"] .page::before { opacity: 0.10; }
+  .page.cover::before,
+  .page.back-cover::before { display: none; }
+  .page > * { position: relative; z-index: 1; }
+  /* 쪽 번호는 본문 흐름과 무관하게 하단에 고정한다 (.page > * 규칙이 덮어쓰지 않게 더 구체적으로) */
+  .page > .page-number { position: absolute; bottom: 56px; left: 0; right: 0; z-index: 2; pointer-events: none; }
+  @media (max-width: 768px) { .page > .page-number { bottom: 40px; } }
+  /* 쪽을 넘어 이어지는 문단: 앞 조각은 아래 간격 없이, 뒤 조각은 들여쓰기 없이 */
+  .page p.split { margin-bottom: 0; }
+  .page p.cont { text-indent: 0; }
+  .page > .cover-fullart,
+  .page > .back-fullart,
+  .page > .back-text-overlay { position: absolute; }
+
+  /* 챕터 첫 단락 드롭캡 */
+  .page-body h1.chapter + p::first-letter {
+    float: left;
+    font-size: 3.2em;
+    line-height: 0.9;
+    padding: 4px 8px 0 0;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* 진도 바 */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    width: 0%;
+    z-index: 90;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 4px rgba(194, 58, 43, 0.4);
+  }
+
+  /* 폰트 크기 단계 */
+  .page-body[data-fs="s"] p { font-size: 13px; line-height: 1.75; }
+  .page-body[data-fs="m"] p { font-size: 14px; line-height: 1.8; }
+  .page-body[data-fs="l"] p { font-size: 16px; line-height: 1.85; }
+
+  /* 모바일 단일 페이지 모드 */
+  @media (max-width: 768px) {
+    #book { width: 100% !important; height: 100vh !important; }
+    .page { padding: 40px 28px 68px !important; }
+    .toolbar { top: 8px; right: 8px; padding: 4px 6px; }
+    .toolbar button { padding: 5px 8px; font-size: 12px; }
+    .toolbar .counter { min-width: 50px; font-size: 11px; }
+  }
+
+  .page.back-cover .back-text {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 13px;
+    line-height: 1.85;
+    text-align: center;
+    color: #f8e6dc;
+    margin: 24px 0;
+    word-break: keep-all;
+  }
+  .page.back-cover .back-meta {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    font-size: 11px;
+    color: #f2c4b8;
+    letter-spacing: 0.1em;
+    margin-top: auto;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Loading state */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: var(--ink-soft);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    transition: opacity 0.4s;
+  }
+  #loader.hidden { opacity: 0; pointer-events: none; }
+
+  /* StPageFlip override */
+  .stf__parent { perspective: 2400px; }
+  .stf__block { box-shadow: 0 4px 24px var(--shadow); }
+  
+  /* 책 크기는 JS가 화면에 맞춰 정한다(PAGE_W·PAGE_H). CSS로 축소하지 않는다: 축소하면 쪽 나누기 계산과 실제 크기가 어긋난다 */
+  #book-wrap { transform: none; }
+  /* 낮은 가로 화면(휴대폰 가로): 여백을 줄이고 책을 도구막대 아래로 */
+  @media (max-height: 519px) {
+    .page { padding: 20px 36px 44px !important; }
+    .page > .page-number { bottom: 14px; }
+    .running-head { margin-bottom: 8px; padding-bottom: 4px; }
+    .toolbar { flex-direction: column; top: 50%; right: 8px; transform: translateY(-50%); gap: 4px; padding: 6px 4px; }
+    .toolbar .divider { display: none; }
+    .toolbar .counter { min-width: 0; font-size: 10px; }
+  }
+  .page > .title-page-inner,
+  .page > .copyright-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 100px);
+  }
+  .page > .copyright-inner { max-width: 320px; }
+
+  #book { transition: transform 0.45s ease; }
+  #book-wrap.at-front #book { transform: translateX(calc(var(--half, 230px) * -1)); }
+  #book-wrap.at-back #book { transform: translateX(var(--half, 230px)); }
+  #book-wrap.at-front .stf__block,
+  #book-wrap.at-back .stf__block { box-shadow: none; background: transparent; }
+  .page.cover, .page.back-cover { box-shadow: 0 8px 30px var(--shadow); }
+  /* 휴대폰 폭: 뒤표지 소개가 필명 줄에 붙지 않게 간격을 줄여 공간을 만든다 */
+  @media (max-width: 600px) {
+    .back-text-overlay { padding: 40px 30px 34px; }
+    .back-text-overlay .back-quote { font-size: 20px; padding-top: 38px; margin-bottom: 10px; }
+    .back-text-overlay .back-quote::before { font-size: 60px; }
+    .back-quote-attr { margin-bottom: 18px; padding-bottom: 16px; }
+    .back-synopsis { font-size: 11px; line-height: 1.75; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loader">책장을 펼치는 중…</div>
+
+<div id="progress-bar" aria-hidden="true"></div>
+
+<div class="toolbar">
+  <button id="prev-btn" title="이전 페이지 (← / PageUp)">◀</button>
+  <span class="counter" id="counter">0 / 0</span>
+  <button id="next-btn" title="다음 페이지 (→ / PageDown / Space)">▶</button>
+  <span class="divider"></span>
+  <button id="toc-btn" title="목차">목차</button>
+  <span class="divider"></span>
+  <button id="fs-btn" title="글자 크기">가</button>
+  <span class="divider"></span>
+  <button id="theme-btn" title="라이트·다크 모드 토글">🌙</button>
+</div>
+
+<div id="toc-overlay"></div>
+<aside id="toc-panel" aria-hidden="true">
+  <div class="toc-head">
+    <h2>목 차</h2>
+    <button class="toc-close" id="toc-close" aria-label="닫기">×</button>
+  </div>
+  <ul id="toc-panel-list"></ul>
+</aside>
+
+<div id="book-wrap">
+  <div id="book"></div>
+</div>
+
+<div id="pages-src" style="display:none;"></div>
+
+<script type="text/markdown" id="manuscript"># 1장. 접수
+
+"제 점수 말고 제 집을 봐 주세요."
+
+기각 결정서 뒷장에는 신청인이 낸 서류의 사본이 한 장씩 붙어 온다. 그 서류의 사유 칸은 다들 인쇄 글자로 채우는데, 이 한 줄만 볼펜으로 쓰여 있었다. 획마다 가장자리가 짙었다. 꾹꾹 눌러 쓴 글씨 같아서 엄지로 쓸어 보았지만, 복사한 종이는 매끈하기만 했다.
+
+월요일 오후 한 시 반, 점심을 먹고 와서 화면 맨 아래 탭의 한 건을 출력했을 때였다. 탭 이름은 "마지막 확인(9회차): 다음 신청부터 자동 종결"이었다. 이 탭에 대기 건수가 1이라도 뜨는 날은 한 달에 한 번이 될까 말까다. 그 결정서에 도장을 찍으려다, 마지막이라는 말이 걸려 이번에는 뒷장을 넘겨 보았다.
+
+신청인 칸에는 "조옥순, 여, 79세". 이름 석 자를 한 자씩 떼어 쓴 서명도 그 한 줄과 같은 손으로 쓴 것이었다.
+
+앞장으로 넘기니 결정서는 오전의 것들과 다르지 않았다. 주소는 내가 맡은 구 안이었고, 세대원 수 칸에는 1이 찍혀 있었다. 첫 줄도 똑같이 "위 신청인의 이의신청을 기각한다."였다. 맨 위의 처리기한은 2032년 7월 19일. 그날까지 날인이 없으면 위원회로 넘어간다는 말이 괄호 안에 작게 붙어 있었다.
+
+도장을 다시 들었지만, 날인란 위 한 뼘 높이에서 손이 내려가지 않았다. 오전 내내 쉬지 않고 내려찍던 도장이었다.
+
+오전은 여느 월요일과 같았다.
+
+여덟 시 반에 사무실 문을 열자 프린터가 마지막 몇 장을 밀어내고 있었다. 받침대에는 밤사이 AI가 써 둔 결정서 200장이 쌓여 있었고, 맨 위의 종이들은 아직 따뜻했다. 벽에 걸린 현황판에도 같은 숫자가 떠 있었다. 맨 윗줄에는 "팀장 민정훈"과 팀 처리율이 있고, 그 아래로 팀원 이름마다 오늘 건수가 붙는다. 내 이름 옆은 200이었다. 맨 아랫줄에서는 "인용률 0.3%"가 깜박였다.
+
+내 이름 옆의 숫자를 오후 네 시 전에 0으로 만들면, 그날은 아무도 내 자리에 오지 않는다. 그래서 출근하면 오른쪽 서랍 맨 위 칸부터 연다. 거기에는 나무 뚜껑을 씌운 도장이 인주 통, 흰 손수건과 함께 들어 있고, 도장을 꺼낸 뒤에는 그 칸을 퇴근할 때까지 반쯤 열어 둔다. 옆자리들은 기관에서 나눠 준 만년도장을 쓴다. 내 몫도 받았지만, 그 만년도장은 비닐도 뜯기지 않은 채 맨 위 칸 안쪽에 누워 있다. 나무 도장은 100장쯤 찍으면 획 사이에 인주가 차서 글자가 뭉개진다. 그럴 때 손수건을 접어 바닥을 문지르면, 옆면에 작게 새긴 '한씨도장포 23.3.'이 손끝에 오돌토돌 걸린다. 손잡이는 엄지가 놓이는 자리만 닳아서 색이 옅다.
+
+프린터 옆 벽에는 테이프 한 귀퉁이가 들뜬 공문이 붙어 있다. "[2030. 3. 법원 판결 반영] 화면 확인은 검토로 보지 않음. 기각 결정은 출력 후 담당 심사관이 날인. 신청을 받아들이는 인용 결정은 화면 처리."
+
+그날도 나는 머리를 다시 묶고 인주 통을 열었다. 결정서마다 이유 칸의 첫 문장은 같았다. "주거취약도 산정 결과 신청인의 배정 점수가 기준 점수에 미달하므로." 거기까지만 읽고, 뚜껑을 뺀 도장을 날인란에 지그시 눌렀다. 붉은 원 안에 한서진 세 글자가 남았다. '진' 자의 마지막 획은 언제나 둥근 테두리에 닿는다. 처음 찍은 날부터 그랬다.
+
+날인란 바로 밑에는 "본 결정은 담당 심사관의 날인으로 효력이 생깁니다."가 작게 인쇄되어 있었다. 나는 그 글자를 장마다 지나쳤다. 누르고, 왼손으로 넘기고, 또 누르고, 넘기고. 뒷장에 붙은 사본은 한 장도 넘겨 보지 않았다. 옆자리들의 만년도장 소리는 내 소리보다 짧은 간격으로 이어졌다.
+
+열한 시 반에 마지막 장을 찍어 복도 끝 스캔함에 넣자 현황판의 내 숫자가 0이 되었다.
+
+다시 오후 한 시 반. 그 도장은 아직 날인란 위 한 뼘 높이에 떠 있었다. 나는 도장을 인주 통 옆에 세워 두고 그 한 줄을 한 번 더 읽었다. 그사이 도장 바닥의 인주가 말라 검붉게 변했다. 날인란이 빈 결정서는 키보드 왼쪽에 따로 내려놓았다.
+
+남은 오후에는 보완 서류가 딸린 건들을 처리했다. 건마다 사진과 고지서 사본이 두세 장씩 붙어 있어서, 도장 소리 사이로 스테이플러 소리가 끼어들었다. 따로 둔 결정서는 뒷장의 사본이 위로 오게 뒤집혀 있었다. 화면에서 고개를 돌릴 때마다 그 손글씨가 먼저 보였다. 다섯 시가 넘자 만년도장 소리가 하나씩 그쳤고, 옆자리들이 가방을 챙겨 나갔다.
+
+다섯 시 반, 사무실이 비었다. 9회차라면 앞의 여덟 번에도 누군가 도장을 찍었을 것이다. 날인 대장을 열려고 의자를 당겨 앉다가 무릎이 서랍 맨 아래 칸에 부딪혔다. 안에서 끈에 묶인 공책 묶음이 밀리는 소리가 났다. 2023년부터 2029년까지 손으로 쓰던 업무 일지였다. 화면의 날인 대장은 그다음 해인 2030년부터 시작했다.
+
+검색 칸에 조옥순을 넣자 줄이 여덟 개 떴다. 접수일은 5월 10일부터 6월 28일까지, 한 주도 거르지 않은 월요일들이었다. 클립 표시는 가장 오래된 두 줄에만 붙어 있었다.
+
+그 신청서 사본들을 화면에 나란히 띄웠다. 복사 농도만 조금씩 다를 뿐, 사유 칸의 한 줄은 모두 같은 자리에서 같은 크기, 같은 기울기로 나를 보고 있었다. 결정서 쪽으로 넘겨 날인란을 하나씩 확대했다. 맨 아래 줄부터 위로, 확대 단추를 누를 때마다 붉은 원이 화면을 가득 채웠다.
+
+여덟 장 모두 내 도장이 찍혀 있었다.
+
+# 2장. 점수
+
+화요일 아침, 조옥순 씨의 결정서를 펴 놓고 화면에서 점수 상세를 열었다. 주거취약도 줄에 막대 두 개가 위아래로 맞붙어 있었다. 위는 "지하층 가점 +4", 아래는 그보다 긴 "냉난방 충분 감점 -7"이었다.
+
+감점의 근거는 막대 밑의 판정문 한 줄이었다. "전력 사용량으로 보아 냉난방이 충분한 가구로 판단됨." 판정문 아래 그래프에서, 이 집의 7월과 8월 전력 막대는 해마다 겨울 막대의 두 배쯤 솟아 있었다. 이력을 눌러 앞의 여덟 건도 열어 보았다. 아홉 장 모두, 판정문은 물론 그 밑의 설명 세 줄까지 쉼표 하나 다르지 않았다.
+
+이력 화면에서 가장 오래된 두 신청서의 맨 아래에는 접힌 표시가 하나씩 붙어 있었다. "비정형 첨부: 산출 변수 아님." 첫 표시를 눌러 펼치자 공책을 복사한 종이 여섯 쪽이 떴다. 두 번째 표시 밑에도 같은 여섯 쪽이 들어 있었다. 쪽마다 아래 귀퉁이에는 물에 젖었다 마른 얼룩이 누렇게 번져 있었다.
+
+맨 위에는 누군가 칸 이름을 연필로 써 두었다. 날짜, 방 수위, 양수기. 글씨는 반듯했고, 획 끝마다 잠깐 멈춘 작은 점이 찍혀 있었다. 줄마다 숫자가 이어지다가, 가끔 숫자 옆에 짧은 문장이 따라붙었다.
+
+"28.7.2. 6센티. 양수기 3시간. 집사람이 감기라 창을 닫았다."
+
+결정서 앞장으로 넘겨 세대원 수 칸의 1을 확인했다. 그러고는 공책 사본에서 이듬해 여름을 읽었다.
+
+"29.8.10. 9센티. 양수기 5시간. 새벽 세 시에 퍼냈다. 집사람은 깨우지 않았다."
+
+새벽 시각이 든 줄은 그 뒤로도 몇 번 더 나왔다.
+
+넷째 쪽 중간에서 한 줄이 비어 있었다. 그 바로 위의 줄은 이랬다.
+
+"30.12.4. 2센티. 양수기 1시간. 새벽 네 시에 퍼냈다. 집사람은 깨우지 않았다."
+
+빈 줄 아래, "31.1.19."부터는 글씨가 달라졌다. 앞쪽처럼 곧게 세우려 애쓴 자국은 보이는데, 획 끝이 잘게 떨렸다. 칸은 그전 순서를 그대로 따랐지만 숫자 옆의 문장은 그 줄부터 없었다. 방 수위가 가장 높았던 날은 다섯째 쪽에 있었다. "31.8.11. 19센티. 양수기 9시간." 마지막 줄은 올해 4월이었다.
+
+전력 그래프를 다시 띄워, 막대가 솟은 여름 달의 날짜들을 공책에서 하나씩 찾아보았다. 7월이든 8월이든, 전기를 많이 쓴 날의 줄에는 빠짐없이 양수기 시간이 적혀 있었다.
+
+신청서 사본을 공책 사본 옆에 띄웠다. 사유 칸의 "제 점수 말고 제 집을 봐 주세요."도 획 끝이 똑같이 떨렸다. 나는 공책 여섯 쪽을 출력해 결정서 밑에 끼워 두었다.
+
+금요일 점심 무렵, 현황판의 내 이름 옆에 빨간 1이 떴다. 날인하지 않은 건은 처리기한이 열흘 남은 날부터 빨갛게 잡힌다. 다른 이름 옆은 전부 0이었다. 머리가 희끗한 민 팀장이 안경을 이마로 밀어 올리고 그 숫자를 한참 보더니 내 자리로 왔다. 그는 따로 놓인 결정서의 모서리를 들어 빈 날인란을 확인하고 내려놓았다.
+
+"서진 씨, 이거 왜 아직 안 찍었어요?"
+
+"보완 확인 중입니다."
+
+민 팀장은 화면에 뜬 공책 사본을 들여다보았다.
+
+"첨부는 점수에 반영이 안 돼요. 처리기한만 넘기지 마세요."
+
+자리로 가려던 그가 화면의 점수 상세 쪽으로 턱을 들었다.
+
+"기준 판정은 건드리지 말고요. 하나 고치면 그 기준 쓴 집들 순번이 통째로 다시 돌아요."
+
+그는 안경을 내리며 자기 자리로 갔다.
+
+나는 아직 신청인에게 보완을 요청한 적이 없었다.
+
+다음 주 목요일 저녁 일곱 시, 사무실에는 내 자리 위의 불만 남아 있었다. 복도 끝에서 청소 카트 바퀴 소리가 멀어져 갔다. 손수건으로 도장을 닦아 서랍에 넣으려는데 화면 구석에 알림이 올라왔다. "주말 장마 예보: 토요일 오전부터 강한 비." 이어서 구 이름이 줄줄이 흘러갔고, 그중에 내가 맡은 구도 있었다.
+
+나는 조옥순 씨의 점수 상세를 다시 띄웠다. 주거취약도 줄 끝에 작은 단추가 하나 붙어 있었다. "기준 판정." AI가 들어온 2028년부터 나는 그걸 한 번도 누르지 않았다.
+
+눌렀다. "냉난방 충분 감점 -7" 막대 바로 옆으로 한 줄이 펼쳐졌다.
+
+"판정 근거: 기준 판정 2027-05-12(현장 조사, 양호) / 유사 근거: 2027년 조사 당시와 이 집의 전력 사용 패턴 94% 일치"
+
+판정 근거 아래로 스캔한 종이 한 장이 열렸다. 가장자리가 누렇게 바랜 그 종이는 2027년 5월 12일, 이 주소의 현장 조사서였다. 칸은 위에서부터 문턱 높이, 배수구, 창, 침수 흔적, 판정 순이었고, 침수 흔적 칸 아래에는 "문턱·바닥의 물 자국으로 판단"이라고 작게 인쇄되어 있었다. 위에서부터 읽어 내려갔다. "15센티", "이상 없음", "이상 없음", "없음", "양호". 볼펜으로 쓴 "양호"에는 동그라미가 쳐져 있었다.
+
+맨 아래 조사자 날인란은 회색 네모로 덮여 있었다. 네모 밑의 작은 글씨는 "2029년 일괄 가림, 해제: 감사부서."였다. 눌러 보았지만 아무것도 열리지 않았다. 서식의 마지막 줄에는 "2부 작성. 1부 가구 보관."이 인쇄되어 있었다.
+
+스캔 화면 아래에는 단추가 하나 더 있었다. "동일 기준 참조 가구: 목록 보기." 그 단추는 누르지 않고, 조사일 날짜를 메모지에 옮겨 적었다.
+
+강수량 기록 화면을 열어 그 날짜와 구 이름을 넣었다. 그날 칸에는 한 단어만 떴다.
+
+맑음.
+
+공책 사본 첫 쪽을 다시 펴 보니 맨 위 다섯 줄이 2027년 5월이었고, 방 수위는 모두 0이었다. 같은 쪽 아래쪽에는 이런 줄이 있었다. "27.7.14. 11센티. 양수기 6시간." 강수량 화면에 그 날짜를 넣자 막대가 화면 위쪽까지 솟았다. 마우스에서 손을 떼고 그 막대를 한참 보았다.
+
+신청인 정보 화면에서 주소를 읽었다. 번지 끝에 B01이 붙어 있었다. 지하 1층 1호라는 뜻이었다. 주소 옆에는 빨간 글씨가 따라붙어 있었다. "심사 중: 신청인 주거지 방문 금지(위반 시 징계)." 화면 구석의 알림은 어느새 "호우 예비특보: 토요일 오전 여섯 시부터"로 바뀌어 있었다.
+
+퇴근하기 전에 신청서 사본과 공책 사본을 따로 출력해, 서랍 맨 위 칸의 손수건과 함께 가방에 챙겼다.
+
+나는 주소를 포스트잇에 옮겨 적어 지갑 안쪽에 넣었다.
+
+# 3장. 현장
+
+계단 밑에서 양수기가 돌고 있었다. 몇 초 웅웅거리다 끊기고, 잠깐 조용하다가, 다시 웅웅.
+
+토요일 오전, 나는 우산을 접고 건물 옆 계단으로 내려섰다. 양수기 호스 하나가 난간을 타고 길 쪽 하수구까지 뻗어 있었다. 아래 칸으로 갈수록 모서리의 물때가 짙어졌다. 계단 끝에서는 철문 두 개가 마주 보고 있었는데, 벗겨져 가는 페인트 글씨로 한쪽은 B01, 다른 쪽은 B02였다. B02 문 앞에는 작은 장화 한 켤레가 나란히 서 있었다.
+
+B01 문을 두드리자 안에서 누구냐고 묻는 목소리가 났다.
+
+"공공주택배정원에서 나온 한서진입니다. 그 결정서들은…"
+
+말이 끝나기 전에 문이 안쪽으로 반쯤 열렸다.
+
+"알아요. 기각서마다 도장으로 찍혀 있던 이름이잖아요."
+
+조옥순 씨가 문을 마저 열고 옆으로 비켜섰다. 흰머리를 짧게 친 작은 노인이었다. 회색 카디건 소매를 팔꿈치까지 접어 올렸고, 귀에는 볼펜 뚜껑을 끼워 늘인 몽당연필을 꽂았다.
+
+신발을 벗자 장판이 발바닥에 눅눅하게 달라붙었다. 내 눈은 문턱에서 배수구로, 배수구에서 창으로 옮겨 갔다. 문턱 양옆에는 물막이판을 끼우는 쇠 홈이 박혀 있었고, 부엌 바닥의 배수구에는 철망이 덮여 있었다. 길바닥 높이로 난 창에서는 빗방울이 튀어 올랐다. 방 안쪽에서 제습기 세 대가 낮게 돌며 미지근한 바람을 내보냈지만, 젖은 시멘트 냄새는 가시지 않았다.
+
+냉장고와 장롱은 벽돌을 두 장씩 괴고 올라앉아 있었다. 현관 옆 못에는 남자 작업복 한 벌이 걸려 있었고, 그 아래 뒤축이 닳은 작업화 한 켤레가 코를 문 쪽으로 향한 채 가지런히 놓여 있었다.
+
+식탁 뒤 냉장고 문에는 자석 하나가 종이 한 장을 누르고 있었다. "반지하 이주 지원 안내." 여러 번 접었다 편 자국이 있었고, 날짜는 올해 4월이었다. 가운데 문장 아래로 연필 밑줄이 그어져 있었다. "주거취약도 '양호'로 지원 대상에서 제외됩니다."
+
+조옥순 씨는 문간에 선 채, 내가 집 안을 둘러보는 동안 아무 말도 하지 않았다. 그러다 미리 빼 둔 식탁 의자에 앉으며 맞은편 의자를 턱으로 가리켰다. 식탁에는 컵 자국이 두 개 있었다. 믹스커피가 반쯤 남은 컵이 그중 한쪽만 덮고 있었다.
+
+내가 앉자 그녀가 먼저 물었다.
+
+"이번 건은 왜 아직 안 와요? 이번이 마지막이라던데."
+
+"미뤄 두었습니다."
+
+"봐주는 거면 안 받아요. 정확하게 보고 정하세요."
+
+"여기서 본 건 결정서에 쓸 수 없습니다."
+
+"그럼 보기만 하고 가요."
+
+조옥순 씨는 일어나 문 앞으로 가서 검지로 문턱을 짚었다. 그다음은 부엌 바닥의 배수구, 그다음은 창틀이었다. 조금 전 내 눈이 옮겨 간 순서였고, 목요일 저녁 화면에서 본 조사서의 칸 순서였다. 그녀가 나를 돌아보았다.
+
+"벽은요?"
+
+검지가 부엌 옆 벽을 가리켰다. 무릎 높이까지 벽지가 뜯겨 나가 시멘트가 드러나 있었고, 그 위로 연필 가로선이 층층이 그어져 있었다. 선마다 오른쪽 끝에 날짜와 센티가 적혀 있었다. 벽의 못에는 30센티 쇠자가 걸려 있었다.
+
+가방에서 공책 사본을 꺼내 들고 벽 앞에 쪼그려 앉았다. 쇠자를 내려 맨 아래 선에 대고 눈금을 읽은 다음, 선 끝의 날짜를 사본에서 찾았다. 공책에 적힌 숫자도 그 높이였다. 다음 선도, 그다음 선도 그랬다. 내가 하나를 맞춰 볼 때마다 조옥순 씨는 말없이 다음 선에 검지를 갖다 댔다. 그 검지가 지나간 자리마다 연필 가루가 묻어났다.
+
+공책에 없는 날짜도 있었다. 벽의 선은 공책보다 여러 해 앞에서 시작했다. 가장 높은 선 끝에는 "24.7.2. 31센티"라고 적혀 있었다. 나는 사본을 접어 넣고 쇠자를 못에 걸었다.
+
+빗소리가 굵어지더니 길 쪽에서 물 흘러내리는 소리가 났다. 조옥순 씨가 문 옆에 세워 둔 물막이판을 가리켰다.
+
+"홈에 끼워요."
+
+판을 문턱 홈에 끼우자마자 바깥에서 흙물이 판 높이의 절반까지 차올라 찰랑거렸다. 배수구 철망 위로는 물이 거꾸로 올라와 장판에 얇게 번졌다. 조옥순 씨는 작업화부터 두 손으로 들어 선반에 올려놓고서야 양수기 스위치를 눌렀다. 끊겼다 이어지던 소리가 이제 멎지 않았다.
+
+그녀가 멀티탭을 벽돌 위로 올리는 동안 나는 싱크대 밑의 바가지로 물을 퍼서 고무 대야에 담았고, 대야가 차면 그녀가 화장실로 끌고 가 비우고 왔고, 나는 또 퍼 담았다. 세 번째로 대야를 비우고 왔을 때 그녀의 바짓단은 튄 구정물에 정강이까지 젖어 있었다.
+
+물은 내 발목에 닿기 전에 멈췄다.
+
+한동안 그 높이에 머물다가 조금씩 빠졌다. 장판에는 흙물 자국이, 벽에는 물이 스민 자리가 한 줄로 남았다. 나는 사무실 서랍에서 챙겨 온 손수건을 꺼내 손을 닦았다.
+
+비가 잦아들자 양수기는 다시 켜졌다 꺼졌다 했다. 조옥순 씨는 행주로 식탁의 물기를 훔치고, 장롱 옆 서랍에서 모서리가 하얗게 닳은 비닐 파일을 꺼내 식탁에 놓았다. 파일에서 노란 종이 한 장이 나왔다.
+
+2027년 현장 조사서의 먹지 사본이었다. 칸 글씨는 흐렸지만 "15센티"도, "양호"에 쳐진 동그라미도 읽혔다.
+
+흐린 글씨들 가운데 조사자 날인란 한 군데만 인주로 붉었다. 둥근 테두리 안에 한서진 세 글자. '진' 자의 마지막 획이 테두리에 닿아 있었다.
+
+그해 5월, 나는 이 문턱 앞에 쪼그려 앉아 자를 댔다.
+
+날인란 옆 입회인 칸에는 연필로 쓴 서명이 있었다. 배용수.
+
+판정 칸 오른쪽 여백에도 연필 글씨로 한 줄이 적혀 있었다. 사본 위에 직접 눌러 써서, 종이 뒷면까지 자국이 도드라져 있었다.
+
+"제 점수 말고 제 집을 봐 주세요."
+
+가방에서 신청서 사본을 꺼내 노란 종이 옆에 놓았다. 나란히 보니 여백의 획이 신청서의 획보다 곧았다. 내 눈은 날인란에, 조옥순 씨의 눈은 여백에 가 있었다.
+
+"우리 집 양반 글씨예요."
+
+나는 노란 종이의 모서리에 손끝을 얹었다.
+
+"이걸 왜 안 보내셨어요?"
+
+"보내면 종이만 보잖아요. 조사서 쓴 사람이 와서 봐야지요."
+
+그녀는 반 잔짜리 컵을 들었다가, 마시지 않고 원래 자리의 자국 위에 내려놓았다.
+
+"그날은 맑았어요. 그때는 머리를 뒤로 길게 묶은 아가씨였는데."
+
+나는 대답하지 않았다.
+
+2027년의 그날, 일지 맨 윗줄에는 "조사 14건"이 적혀 있었고 이 집 다음으로 세 집이 더 남아 있었다. 입회인 칸에 서명을 마친 배용수 씨는 연필을 귀에 다시 꽂았다. 그가 손을 들어 무언가를 가리키며 말을 꺼냈을 때, 나는 손목시계와 일지의 다음 주소를 번갈아 보며 고개를 끄덕였다.
+
+삐, 하고 방 안쪽의 제습기 한 대가 물통이 찼다는 소리를 냈다. 조옥순 씨가 일어나 물통을 빼 싱크대에 비우고 다시 끼웠다.
+
+그러고는 못에서 쇠자를 내려 벽 앞에 무릎을 굽혔다. 오늘 물이 스민 자리는 곧은 글씨로 날짜를 적은 옛 선 하나에 거의 닿아 있었다. 그녀가 귀에서 몽당연필을 뺐다. 자를 세워 물 자국의 끝을 재고, 그 높이에 가로로 댔다. 옛 선 바로 아래, 새 선을 천천히 그었다. 다 그은 뒤 그녀는 볼펜 뚜껑을 끼운 그 몽당연필을 내 쪽으로 내밀었다.
+
+나는 연필을 받아 벽에 오늘 날짜를 적었다.
+
+# 4장. 결정
+
+월요일 새벽 여섯 시 반, 빈 사무실에는 프린터 대기음만 들렸다. 자리 위의 불만 켜고, 흙물 자국이 남은 손수건을 서랍 위 칸 앞쪽에 개어 두었다. 그러고는 조옥순 씨의 기준 판정 화면을 열어, 목요일에 누르지 않은 "목록 보기"를 눌렀다.
+
+화면이 주소로 차올랐다.
+
+줄마다 왼쪽에 엄지손톱만 한 그림이 붙어 있었다. 모두 같은 한 장, 2027년 5월의 그 조사서를 줄인 것이었다. 날인란 자리는 하나같이 회색 네모가 가렸다. 주소는 대부분 B01이나 B02로 끝났다. 스크롤을 내리다 한 줄에서 손을 뗐다. 토요일에 간 건물 번지 끝에 B02가 붙은 줄이었다. 나는 다시 끝까지 내렸다.
+
+합계 칸의 숫자는 1,284였다.
+
+1,284줄이 모두 한 날짜로 거슬러 올라갔다. 나는 서랍 맨 아래 칸을 열고 끈을 풀어 그해의 일지를 꺼냈다. 5월 12일 쪽을 펴자 맨 윗줄 오른쪽의 "배정 확인(팀장)" 네모에 붉은 도장이 찍혀 있었다. 민정훈. 그 아래로 내 손글씨 주소들이 방문 순서대로 적혀 있었다. 열한 번째 줄이 조옥순 씨의 집 주소였고, 그 줄 끝에 연필로 쓴 내 글씨가 한 글자 있었다.
+
+벽.
+
+일괄 출력이 돌기 전에, 펼친 쪽 그대로 일지를 프린터 유리판에 엎어 복사했다. 팀장 네모의 붉은 도장은 복사본에서 검게 나왔다. 강수량과 전력 기록을 겹친 그래프도 뽑아, 비가 온 날짜마다 그 아래에 공책의 방 수위를 연필로 적어 넣었다.
+
+규정집에서 정정 의견서 서식을 찾아 뜯었다. 정정 근거 칸과 확인 경위 칸 아래에 "원 조사자 서명(본인에 한함)"란이 있었고, 서명란 아래에는 작은 글씨가 인쇄되어 있었다. "위원회 이관 서류에 첨부하여 낸다. 날인을 마친 결정서에는 첨부할 수 없다."
+
+정정 근거 칸에는 두 문장을 썼다.
+
+"2027년 5월 12일 조사에서 벽의 연필 수위선을 보았으나, 서식에 해당 칸이 없어 판정에 넣지 않았다. 침수 흔적 없음은 잘못된 판정이다."
+
+확인 경위 칸 앞에서는 볼펜이 잠깐 머뭇거렸다. 거기에는 토요일 날짜를 적었다. "2032. 7. 17. 현장 확인." 꾹 눌러 쓴 자국이 종이 뒷면까지 도드라졌다. 원 조사자 서명란에는 내 이름을 썼다.
+
+결정서 위에 그래프와 공책 사본을 얹었다. 그 위에는 "제 점수 말고 제 집을 봐 주세요."가 보이도록 신청서 사본을 올렸다. 일지 복사본과 의견서까지 얹은 다음, 클립으로 물려 미날인함에 넣었다.
+
+여덟 시 반이 되자 받침대에는 여느 월요일처럼 200장이 쌓였고, 나는 오전 내내 찍었다. 열두 시를 조금 넘겼을 때 현황판의 내 숫자는 빨간 1에서 더 줄지 않았다. 화면의 처리 목록에서는 조옥순 씨 줄이 "오늘 자정 위원회 이관 예정"을 달고 깜박이기 시작했다.
+
+오후 네 시, 옆자리들의 도장 소리가 뜸해질 무렵이었다. 모니터에는 새벽에 띄운 참조 가구 목록이 그대로 떠 있었다. 태블릿을 옆구리에 낀 민 팀장이 미날인함에서 묶음을 꺼내 내 앞에 내려놓았다. 안경은 이마 위에 올라가 있었다. 그가 인주 통 뚜껑을 열어 묶음 옆으로 밀었다.
+
+"서진 씨, 찍고 퇴근하세요."
+
+그는 의견서를 집어 들고, 확인 경위 칸의 날짜를 손톱으로 한 번 짚었다. 의견서를 내려놓고는 그 밑의 일지 복사본을 빼 들었다. 그의 눈이 맨 윗줄 오른쪽 네모에서 움직이지 않았다. 그는 아무 말 없이 복사본을 의견서 밑에 다시 밀어 넣었다.
+
+인주 통 뚜껑이 열린 채로 몇 초가 지났다.
+
+민 팀장은 태블릿을 켜서 대기 순번 화면을 내 쪽으로 돌려 세웠다. 윗줄 몇 개에 초록색 "입주 예정"이 붙어 있었다. 그가 턱으로 모니터의 참조 가구 목록을 가리켰다.
+
+"말했지요. 정정이 들어가면 저 목록 집들 점수를 다시 매기고, 그러면 여기 순번이 바뀐다고."
+
+그의 손톱 끝이 "입주 예정" 한 줄 위에 가서 섰다.
+
+"이 집은 지난주에 이삿짐 계약까지 했어요."
+
+"그 집 좀 열어 주세요."
+
+민 팀장이 그 줄을 눌러 상세 화면을 열고 태블릿을 내 쪽으로 밀었다. 현 거주지 칸에는 옆 구의 주소와 "지하 1층"이, 세대원 칸에는 "3(만 7세 1)"이 떠 있었다.
+
+그가 화면에서 눈을 들어 나를 보았다.
+
+"이 집 애한테는 뭐라고 해요?"
+
+나는 모니터의 참조 가구 목록을 내려, 토요일에 간 건물의 B02 줄을 짚었다.
+
+"B02 문 앞에도 작은 장화가 있었어요."
+
+옆자리에서 의자 바퀴가 바닥을 긁고 지나갈 때까지 둘 다 말이 없었다. 민 팀장이 목소리를 낮췄다.
+
+"이게 접수되면 2027년 조사 건으로 감사 나와요. 서진 씨 이름도, 제 도장도요."
+
+책상 모서리를 잡은 내 손바닥이 축축해졌다.
+
+나는 묶음 맨 아래에서 결정서를 빼내 놓고, 인주를 묻힌 도장을 종이에 닿기 직전까지 내렸다. 그대로 들고 있었다. 날인란 바로 위로 이유 칸의 첫 문장이 보였다. "주거취약도 산정 결과 신청인의 배정 점수가 기준 점수에 미달하므로." 결정서 옆의 태블릿에서는 그 집 상세 화면 맨 위의 초록색 "입주 예정"이 아직 꺼지지 않고 있었다. 손을 거두는 사이 도장 테두리 한쪽이 기울며 여백을 스쳤고, 붉은 반달 자국 하나가 남았다.
+
+날인란은 비어 있었다.
+
+민 팀장의 눈이 빈 날인란에 잠깐 머물렀다. 그는 의견서 모서리를 들어 그 밑의 복사본을 다시 내려다보았다.
+
+"그날 14건, 제가 배정했지요."
+
+그는 모서리를 내려놓고, 열어 두었던 인주 통 뚜껑을 엄지로 닫았다. 그러고는 태블릿을 집어 자기 자리로 갔다.
+
+결정서를 묶음 맨 아래에 다시 끼우고 클립을 고쳐 물려 미날인함에 넣었다. 반쯤 열린 서랍 앞쪽에 그 손수건을 펴고, 도장을 눕혔다.
+
+나는 도장을 찍지 않고 서랍을 닫았다.
+
+# 작가의 말
+
+"최종 확인은 사람이 합니다."
+
+요즘은 인공지능이 무언가를 판정하는 곳마다 이 문장이 붙어 있습니다. 기계가 정해도 끝에는 사람이 있다는 말입니다. 읽으면 마음이 조금 놓입니다.
+
+이 소설은 그 끝자리에 앉은 사람을 따라갑니다. 그 사람의 책상에는 아침마다 결정서가 200장씩 쌓입니다. 한 장에 도장 한 번, 1초도 걸리지 않습니다. 이유 칸은 첫 문장만 읽고 넘깁니다. 그래도 저 문장이 거짓말이 되지는 않습니다. 확인은 분명 사람이 했고, 날인란마다 붉은 도장이 남아 있습니다.
+
+다만 그 사람이 볼 수 있는 건 서식에 칸이 있는 것뿐입니다. 문턱 높이를 적는 칸은 있어도, 벽에 연필로 그은 선을 적는 칸은 없습니다. 칸 밖을 보려면 종이에서 고개를 들어야 하는데, 그러는 사이에도 처리기한은 하루씩 줄어듭니다.
+
+저는 그 사람이 궁금했습니다. 오늘 몇 장을 넘겼는지, 그중 몇 장에서 고개를 들었는지.
+
+소설에 나오는 기관과 제도, 사람과 주소는 모두 지어낸 것입니다. 반지하의 습기며 양수기, 장마철 풍경은 현실의 자료를 참고했습니다. 2032년에도 장마는 아마 비슷한 무렵에 와서 한 달쯤 머물 겁니다.
+</script>
+
+<script>
+// CDN 다중 폴백 로더
+(function loadStPageFlip() {
+  const sources = [
+    'https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js',
+    'https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js',
+    'https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js'
+  ];
+  // 오프라인 대체: 라이브러리를 못 불러오면(네트워크 없음, 차단, 5초 초과) 넘김 효과 없이 같은 쪽 구성으로 읽는다
+  function useOfflineReader() {
+    if (window.St && window.St.PageFlip) return;
+    class SimpleFlip {
+      constructor(el, o) { this.el = el; this.o = o; this.cur = 0; this.h = {}; this.pages = []; }
+      loadFromHTML(nodes) {
+        this.pages = Array.from(nodes);
+        this.el.innerHTML = '';
+        Object.assign(this.el.style, { position: 'relative', height: this.o.height + 'px', width: (this.spread() ? 2 * this.o.width : this.o.width) + 'px' });
+        // #book이 화면 높이를 차지하는 휴대폰에서도 쪽을 세로 가운데에 둔다
+        const top = Math.max(0, (this.el.clientHeight - this.o.height) / 2);
+        this.pages.forEach(p => { Object.assign(p.style, { position: 'absolute', top: top + 'px', width: this.o.width + 'px', height: this.o.height + 'px' }); this.el.appendChild(p); });
+        // 밀어 넘기기와 탭: 왼쪽 절반은 앞 쪽, 오른쪽 절반은 다음 쪽
+        let sx = null;
+        this.el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+        this.el.addEventListener('touchend', e => {
+          if (sx === null) return;
+          const dx = e.changedTouches[0].clientX - sx; sx = null;
+          if (Math.abs(dx) > 30) (dx < 0 ? this.flipNext() : this.flipPrev());
+        }, { passive: true });
+        this.el.addEventListener('click', e => {
+          if (e.target.closest('a, button, li[data-page]')) return;
+          const r = this.el.getBoundingClientRect();
+          (e.clientX - r.left < r.width / 2 ? this.flipPrev() : this.flipNext());
+        });
+        this.render();
+      }
+      spread() { return !this.o.usePortrait; }
+      view(i) {
+        if (!this.spread()) return [i];
+        if (this.o.showCover && i === 0) return [0];
+        const l = this.o.showCover ? (i % 2 === 1 ? i : i - 1) : (i % 2 === 0 ? i : i - 1);
+        return [l, l + 1].filter(x => x < this.pages.length);
+      }
+      render() {
+        const v = this.view(this.cur), W = this.o.width;
+        this.pages.forEach((p, k) => {
+          const at = v.indexOf(k);
+          p.style.display = at < 0 ? 'none' : '';
+          if (at >= 0) p.style.left = (this.spread() ? (v.length === 1 ? (k === 0 ? W : 0) : at * W) : Math.max(0, (this.el.clientWidth - W) / 2)) + 'px';
+        });
+        (this.h.flip || []).forEach(f => f({ data: this.cur }));
+      }
+      getCurrentPageIndex() { return this.cur; }
+      getPageCount() { return this.pages.length; }
+      turnToPage(n) { this.cur = Math.max(0, Math.min(n, this.pages.length - 1)); this.render(); }
+      flip(n) { this.turnToPage(n); }
+      flipNext() { const v = this.view(this.cur); if (v[v.length - 1] + 1 < this.pages.length) this.turnToPage(v[v.length - 1] + 1); }
+      flipPrev() { const v = this.view(this.cur); if (v[0] > 0) this.turnToPage(this.view(v[0] - 1)[0]); }
+      on(ev, f) { (this.h[ev] = this.h[ev] || []).push(f); return this; }
+    }
+    window.St = { PageFlip: SimpleFlip, offline: true };
+    window.dispatchEvent(new Event('stpageflip-ready'));
+  }
+  setTimeout(useOfflineReader, 5000);
+  let i = 0;
+  function tryNext() {
+    if (i >= sources.length) { useOfflineReader(); return; }
+    const s = document.createElement('script');
+    s.src = sources[i++];
+    // 200이어도 라이브러리가 아닐 수 있다(공용 와이파이 로그인 페이지 등). 실제로 St.PageFlip이 생겼을 때만 준비 완료로 본다
+    s.onload = () => (window.St && window.St.PageFlip) ? window.dispatchEvent(new Event('stpageflip-ready')) : tryNext();
+    s.onerror = tryNext;
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
+<script>
+(function () {
+  // 쪽 나누기는 실제로 보여 줄 글자 크기로 계산한다. 글자 크기를 바꾸면 다시 나눈다
+  const FS_ALLOWED = ['s', 'm', 'l'];
+  const CUR_FS = (() => { try { const v = localStorage.getItem('ebook-fs'); return FS_ALLOWED.includes(v) ? v : 'm'; } catch (e) { return 'm'; } })();
+  // 쪽 크기: 기준 460×720 비율을 지키며 지금 화면에 들어가는 크기로 정한다.
+  // 휴대폰(폭 768 미만)은 한 쪽, 그 이상은 양면. 쪽 나누기도 이 크기로 계산한다.
+  const BASE_W = 460, BASE_H = 720, RATIO = BASE_W / BASE_H;
+  // 한 쪽 보기: 폭 768 미만(휴대폰 세로) 또는 높이 520 미만(휴대폰 가로)
+  function pageSize() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const single = vw < 768 || vh < 520;
+    const availH = vh - 72;                                     // 위 도구막대 자리
+    const availW = single ? vw - 16 : (vw - 48) / 2;
+    if (vh < 520) {                                             // 낮은 가로 화면: 도구막대를 옆으로 빼고, 비율보다 읽을 폭을 지킨다
+      const w = Math.min(BASE_W, Math.max(280, vw - 2 * 84));   // 양옆에 세로 도구막대 자리(84)를 남긴다
+      return { single, w: Math.round(w), h: Math.round(Math.max(240, vh - 16)) };
+    }
+    const h = Math.max(260, Math.min(BASE_H, availH, Math.floor(availW / RATIO)));
+    return { single, w: Math.round(h * RATIO), h };
+  }
+  const PS = pageSize();
+  const IS_PORTRAIT = PS.single;
+  const PAGE_H = PS.h;
+  const PAGE_W = PS.w;
+  const PADDING_V = 32;
+  const PADDING_H = 50;
+  const RUNHEAD_RESERVE = 50;   // running-head + margin + border
+  const PAGENUM_RESERVE = 44;   // page-number + margin + padding
+  const INNER_W = PAGE_W - PADDING_H * 2;
+  const INNER_H = PAGE_H - PADDING_V * 2 - RUNHEAD_RESERVE - PAGENUM_RESERVE;
+
+  function parseMarkdown(text) {
+    const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    const segs = [];
+    for (const b of blocks) {
+      if (b.startsWith('# ')) segs.push({ type: 'chapter', title: b.slice(2).trim() });
+      else segs.push({ type: 'paragraph', text: b });
+    }
+    return segs;
+  }
+
+  function makeSamplePage() {
+    // 실제 페이지와 동일한 구조의 측정용 페이지 (오프스크린)
+    const page = document.createElement('div');
+    page.className = 'page';
+    page.style.width = PAGE_W + 'px';
+    page.style.height = PAGE_H + 'px';
+    page.style.position = 'absolute';
+    page.style.left = '-10000px';
+    page.style.top = '0';
+    page.style.visibility = 'hidden';
+
+    const head = document.createElement('div');
+    head.className = 'running-head';
+    head.textContent = "이의신청";
+    page.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'page-body';
+    body.dataset.fs = CUR_FS;
+    page.appendChild(body);
+
+    const num = document.createElement('div');
+    num.className = 'page-number';
+    num.textContent = '00';
+    page.appendChild(num);
+
+    document.body.appendChild(page);
+    return { page, body };
+  }
+
+  function appendItem(body, item) {
+    if (item.type === 'h1') {
+      const h = document.createElement('h1');
+      h.className = 'chapter';
+      h.textContent = item.text;
+      body.appendChild(h);
+    } else {
+      const p = document.createElement('p');
+      p.textContent = item.text;
+      if (item.split) p.classList.add('split');
+      if (item.cont) p.classList.add('cont');
+      body.appendChild(p);
+    }
+    return body.lastChild;
+  }
+
+  function fits(body, item, availH) {
+    const node = appendItem(body, item);
+    const ok = body.scrollHeight <= availH;
+    body.removeChild(node);
+    return ok;
+  }
+
+  function paginate(segments) {
+    const { page: sample, body: sampleBody } = makeSamplePage();
+    // 가용 높이 = page-body clientHeight 와 명시 계산값 중 큰 값
+    // 명시: PAGE_H - padding(36*2=72) - runhead(45) - pagenum(42) = 561
+    // 쪽 번호는 absolute라 흐름에 끼지 않는다. 측정값이 비정상일 때만 계산값을 쓴다
+    const measuredH = sampleBody.clientHeight;
+    const explicitH = PAGE_H - 56 - 88 - 45;
+    const availH = measuredH > 200 ? measuredH : explicitH;
+
+    const pages = [];
+    let buf = [];
+    let isChapter = false;
+
+    function flush() {
+      if (buf.length) {
+        pages.push({ items: buf.slice(), isChapter });
+        buf = [];
+        isChapter = false;
+      }
+      sampleBody.innerHTML = '';
+      // restore items already pushed back to buf
+      for (const it of buf) appendItem(sampleBody, it);
+    }
+
+    for (const seg of segments) {
+      if (seg.type === 'chapter') {
+        flush();
+        // 챕터 제목은 별도 한 페이지
+        pages.push({ items: [{ type: 'chapter-title', text: seg.title }], isChapterTitle: true });
+        sampleBody.innerHTML = '';
+      } else {
+        // 문단이 남은 자리에 다 들어가지 않으면 들어가는 만큼(어절 단위)만 이 쪽에 두고 나머지를 다음 쪽으로 넘긴다
+        let text = seg.text, cont = false;
+        while (text) {
+          const whole = { type: 'p', text, cont };
+          if (fits(sampleBody, whole, availH)) {
+            appendItem(sampleBody, whole);
+            buf.push(whole);
+            break;
+          }
+          const words = text.split(' ');
+          let lo = 1, hi = words.length - 1, best = 0;
+          while (lo <= hi) {
+            const mid = (lo + hi) >> 1;
+            if (fits(sampleBody, { type: 'p', text: words.slice(0, mid).join(' '), cont, split: true }, availH)) { best = mid; lo = mid + 1; }
+            else hi = mid - 1;
+          }
+          if (best === 0 && buf.length === 0) {  // 빈 쪽에도 한 어절이 안 들어가는 극단: 그대로 둔다
+            buf.push(whole);
+            break;
+          }
+          if (best > 0) {
+            buf.push({ type: 'p', text: words.slice(0, best).join(' '), cont, split: true });
+            text = words.slice(best).join(' ');
+            cont = true;
+          }
+          flush();
+        }
+      }
+    }
+    flush();
+    sample.remove();
+    return pages;
+  }
+
+  function makePageEl(content, opts = {}) {
+    const page = document.createElement('div');
+    page.className = 'page' + (opts.cls ? ' ' + opts.cls : '');
+    if (opts.html) page.innerHTML = content;
+    else page.appendChild(content);
+    return page;
+  }
+
+  function buildBodyPage(items, idx, totalBody, chapterLabel, isChapter, isChapterTitle) {
+    const page = document.createElement('div');
+    page.className = 'page';
+    if (isChapterTitle) page.classList.add('chapter-title-page');
+
+    if (isChapterTitle) {
+      // 챕터 제목 페이지: 선 디자인 + 큰 제목 + 페이지 번호 없음
+      const title = items[0].text;
+      const m = title.match(/^(\d+)장\.\s*(.+)$/);
+      const inner = document.createElement('div');
+      inner.className = 'chapter-title-inner';
+      if (m) {
+        inner.innerHTML = `
+          <div class="chapter-rule chapter-rule-top"></div>
+          <div class="chapter-num">${m[1]}</div>
+          <div class="chapter-name">${m[2]}</div>
+          <div class="chapter-rule chapter-rule-bottom"></div>
+        `;
+      } else {
+        // "서평" 같은 비-장 헤더
+        inner.innerHTML = `
+          <div class="chapter-rule chapter-rule-top"></div>
+          <div class="chapter-name extra-section">${title}</div>
+          <div class="chapter-rule chapter-rule-bottom"></div>
+        `;
+      }
+      page.appendChild(inner);
+      return page;
+    }
+
+    const head = document.createElement('div');
+    head.className = 'running-head';
+    const isRightPage = (idx % 2 === 1);
+    if (false && isRightPage) {
+      head.classList.add('running-head-art');
+      const seed = idx % 13;
+      head.innerHTML = ` <svg width="22" height="28" viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg" aria-label="이의신청" focusable="false">
+        <defs>
+          <filter id="rh-pen-${idx}" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="${seed}" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="1.1"/>
+          </filter>
+        </defs>
+        <g filter="url(#rh-pen-${idx})" stroke="currentColor" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="30" y1="10" x2="30" y2="3"/>
+          <circle cx="30" cy="2" r="1.6" fill="currentColor" stroke="none"/>
+          <path d="M 5 22 Q 5 10 17 10 L 43 10 Q 55 10 55 22 L 55 64 Q 55 73 45 73 L 15 73 Q 5 73 5 64 Z"/>
+          <circle cx="20" cy="36" r="3.2" fill="currentColor" stroke="none"/>
+          <circle cx="40" cy="36" r="3.2" fill="currentColor" stroke="none"/>
+          <line x1="20" y1="55" x2="40" y2="55" stroke-width="0.8"/>
+          <line x1="23" y1="61" x2="37" y2="61" stroke-width="0.7"/>
+        </g>
+      </svg>`;
+    } else {
+      head.textContent = "이의신청";
+    }
+    page.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'page-body';
+    body.dataset.fs = CUR_FS;
+    for (const it of items) {
+      const p = document.createElement('p');
+      p.textContent = it.text;
+      if (it.split) p.classList.add('split');
+      if (it.cont) p.classList.add('cont');
+      body.appendChild(p);
+    }
+    page.appendChild(body);
+
+    const num = document.createElement('div');
+    num.className = 'page-number';
+    num.textContent = idx;
+    page.appendChild(num);
+
+    return page;
+  }
+
+  function buildCover() {
+    // 홀로그래픽 표지: 무지갯빛 포일 바탕, 짙은 무지갯빛 명조 제목, 비어 있는 날인란, 장 목차 띠. 빛줄기는 CSS(.holo-sheen)가 천천히 지나간다
+    const html = `
+      <div class="cover-fullart">
+        <svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="cv-holo" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#efe6ff"/>
+              <stop offset="0.22" stop-color="#d3f3f7"/>
+              <stop offset="0.45" stop-color="#fbe0f0"/>
+              <stop offset="0.68" stop-color="#e8e8f0"/>
+              <stop offset="0.85" stop-color="#d8f6e6"/>
+              <stop offset="1" stop-color="#dfe3ff"/>
+            </linearGradient>
+            <radialGradient id="cv-g1" cx="0.15" cy="0.18" r="0.55"><stop offset="0" stop-color="#9fe8ff" stop-opacity="0.45"/><stop offset="1" stop-color="#9fe8ff" stop-opacity="0"/></radialGradient>
+            <radialGradient id="cv-g2" cx="0.95" cy="0.62" r="0.5"><stop offset="0" stop-color="#ffb8e2" stop-opacity="0.45"/><stop offset="1" stop-color="#ffb8e2" stop-opacity="0"/></radialGradient>
+            <radialGradient id="cv-g3" cx="0.2" cy="0.88" r="0.55"><stop offset="0" stop-color="#c9b8ff" stop-opacity="0.45"/><stop offset="1" stop-color="#c9b8ff" stop-opacity="0"/></radialGradient>
+            <radialGradient id="cv-g4" cx="0.9" cy="0.95" r="0.45"><stop offset="0" stop-color="#b6f5d8" stop-opacity="0.4"/><stop offset="1" stop-color="#b6f5d8" stop-opacity="0"/></radialGradient>
+            <linearGradient id="cv-streak" x1="0" y1="0" x2="1" y2="0.6">
+              <stop offset="0.30" stop-color="#ffffff" stop-opacity="0"/>
+              <stop offset="0.36" stop-color="#ffffff" stop-opacity="0.25"/>
+              <stop offset="0.40" stop-color="#ffffff" stop-opacity="0"/>
+              <stop offset="0.58" stop-color="#ffffff" stop-opacity="0"/>
+              <stop offset="0.61" stop-color="#ffffff" stop-opacity="0.18"/>
+              <stop offset="0.66" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="cv-damp" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4a5866" stop-opacity="0"/>
+              <stop offset="1" stop-color="#4a5866" stop-opacity="0.18"/>
+            </linearGradient>
+            <linearGradient id="cv-title" gradientUnits="userSpaceOnUse" x1="30" y1="90" x2="340" y2="420">
+              <stop offset="0" stop-color="#2b1f63"/>
+              <stop offset="0.3" stop-color="#3f2a8c"/>
+              <stop offset="0.52" stop-color="#2f3a86"/>
+              <stop offset="0.75" stop-color="#6a1f6e"/>
+              <stop offset="1" stop-color="#24173f"/>
+            </linearGradient>
+            <filter id="cv-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+              <feColorMatrix values="0 0 0 0 0.4  0 0 0 0 0.35  0 0 0 0 0.5  0 0 0 0.07 0"/>
+            </filter>
+          </defs>
+
+          <!-- 포일 바탕 -->
+          <rect width="460" height="720" fill="url(#cv-holo)"/>
+          <rect width="460" height="720" fill="url(#cv-g1)"/>
+          <rect width="460" height="720" fill="url(#cv-g2)"/>
+          <rect width="460" height="720" fill="url(#cv-g3)"/>
+          <rect width="460" height="720" fill="url(#cv-g4)"/>
+          <rect width="460" height="720" fill="url(#cv-streak)"/>
+
+          <!-- 마스트헤드 -->
+          <text x="44" y="58" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="10" fill="#4b2fa0" letter-spacing="4" font-weight="700">단편 소설</text>
+          <text x="416" y="58" text-anchor="end" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="10" fill="#1b1530" letter-spacing="3" font-weight="500">2032 · 서울</text>
+          <rect x="44" y="70" width="372" height="1.6" fill="#1b1530"/>
+          <rect x="44" y="74" width="372" height="0.5" fill="#1b1530"/>
+
+          <!-- 제목 -->
+          <text x="38" y="232" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="148" font-weight="900" fill="url(#cv-title)" letter-spacing="-4">이의</text>
+          <text x="38" y="398" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="148" font-weight="900" fill="url(#cv-title)" letter-spacing="-4">신청</text>
+
+          <!-- 비어 있는 날인란: 무지갯빛 판 위에서 유일한 단색(인주) -->
+          <g transform="translate(374 170)">
+            <text x="0" y="-12" text-anchor="middle" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="10" fill="#c8281e" letter-spacing="3" font-weight="700">날인</text>
+            <rect x="-36" y="0" width="72" height="72" fill="none" stroke="#c8281e" stroke-width="2.4"/>
+            <rect x="-29" y="7" width="58" height="58" fill="none" stroke="#c8281e" stroke-width="1" stroke-dasharray="2.5 3"/>
+          </g>
+
+          <!-- 한 줄 카피 -->
+          <rect x="44" y="446" width="372" height="0.6" fill="#1b1530"/>
+          <text x="44" y="486" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="17" font-weight="500" fill="#1b1530">2032년, AI가 판정하고 사람은 도장을 찍는다.</text>
+
+          <!-- 장 목차 띠 (한 줄) -->
+          <rect x="44" y="524" width="372" height="0.6" fill="#1b1530"/>
+          <g font-family="Pretendard Variable, Pretendard, sans-serif">
+            <text x="44" y="551" font-size="9" fill="#4b2fa0" letter-spacing="2" font-weight="700">01</text>
+            <text x="64" y="551" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="12.5" fill="#1b1530" font-weight="700">접수</text>
+            <text x="149" y="551" font-size="9" fill="#4b2fa0" letter-spacing="2" font-weight="700">02</text>
+            <text x="169" y="551" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="12.5" fill="#1b1530" font-weight="700">점수</text>
+            <text x="242" y="551" font-size="9" fill="#4b2fa0" letter-spacing="2" font-weight="700">03</text>
+            <text x="262" y="551" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="12.5" fill="#1b1530" font-weight="700">현장</text>
+            <text x="335" y="551" font-size="9" fill="#4b2fa0" letter-spacing="2" font-weight="700">04</text>
+            <text x="355" y="551" font-family="Noto Serif KR, Nanum Myeongjo, AppleMyungjo, Batang, serif" font-size="12.5" fill="#1b1530" font-weight="700">결정</text>
+            <rect x="137" y="536" width="0.5" height="22" fill="#1b1530" opacity="0.35"/>
+            <rect x="230" y="536" width="0.5" height="22" fill="#1b1530" opacity="0.35"/>
+            <rect x="323" y="536" width="0.5" height="22" fill="#1b1530" opacity="0.35"/>
+          </g>
+          <rect x="44" y="570" width="372" height="0.6" fill="#1b1530"/>
+
+          <!-- 습기 띠와 연필 수위선: 반지하 벽 -->
+          <rect x="0" y="590" width="460" height="130" fill="url(#cv-damp)"/>
+          <path d="M44 614.6 C 92 613.4, 140 615.8, 188 614.2 S 284 613.2, 332 615.0 S 396 614.0, 416 614.6" fill="none" stroke="#6e6e74" stroke-width="0.9" stroke-linecap="round" opacity="0.85"/>
+          <path d="M44 615.4 C 110 615.0, 170 616.2, 236 615.2 S 360 614.8, 416 615.6" fill="none" stroke="#6e6e74" stroke-width="0.4" opacity="0.5"/>
+
+          <!-- 작가와 출판사 -->
+          <rect x="44" y="652" width="372" height="1.6" fill="#1b1530"/>
+          <text x="44" y="678" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="11" fill="#1b1530" letter-spacing="4" font-weight="700">AI ROASTING</text>
+          <!-- 출판사 (블록 publisher가 비면 넣지 않는다) -->
+          <g>
+            <rect x="409" y="671" width="7" height="7" fill="#c8281e"/>
+            <text x="402" y="678" text-anchor="end" font-family="Pretendard Variable, Pretendard, sans-serif" font-size="9.5" fill="#1b1530" letter-spacing="2.4" font-weight="600">ArgosLab</text>
+          </g>
+
+          <!-- 포일 결 -->
+          <rect width="460" height="720" filter="url(#cv-grain)" opacity="0.5" pointer-events="none"/>
+        </svg>
+        <div class="holo-sheen"></div>
+        <div class="cover-edge"></div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'cover', html: true });
+  }
+
+  function buildHalfTitle() {
+    const html = `
+      <div class="title-page-inner">
+        <div class="cover-spine" style="margin: 0 auto 30px;"></div>
+        <div class="title-page-title">이의신청</div>
+        <div class="cover-spine" style="margin: 30px auto;"></div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'title-page', html: true });
+  }
+
+  function buildTitle() {
+    const html = `
+      <div class="title-page-inner">
+        <div style="font-family:'Pretendard Variable','Pretendard',sans-serif;font-size:11px;color:var(--ink-soft);letter-spacing:0.3em;margin-bottom:24px;">단편 소설</div>
+        <div class="title-page-title">이의신청</div>
+        <div class="cover-spine" style="margin: 24px auto;"></div>
+        <div class="title-page-author">AI ROASTING</div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'title-page', html: true });
+  }
+
+  function buildCopyright() {
+    const html = `
+      <div class="copyright-inner">
+        <div class="copyright-title">이의신청</div>
+        <div class="copyright-meta">단편 소설</div>
+        <div class="copyright-rule"></div>
+        <div class="copyright-credits">
+          <div>지은이 · AI ROASTING</div>
+          <div>2026년 10월 발행</div>
+          <div>발행 · ArgosLab</div>
+        </div>
+        <div class="copyright-rule"></div>
+        
+        <div class="copyright-c">© 2026 ArgosLab</div>
+        <div class="copyright-c">All rights reserved.</div>
+        <div class="copyright-c copyright-note">이 책은 Anthropic의 Claude Opus 5.5로 썼습니다.</div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'copyright-page', html: true });
+  }
+
+  function buildEpigraph() {
+    const html = `
+      <div class="epigraph-inner">
+        <div class="epigraph-rule"></div>
+        <p class="epigraph-line">우리는 아직 컴퓨터를 지혜롭게 만들 방법을 모른다.<br>그러니 지금은 지혜가 필요한 일을 컴퓨터에게 맡겨서는 안 된다.</p>
+        <div class="epigraph-rule"></div>
+        <p class="epigraph-attr">요제프 바이첸바움<br>최초의 챗봇으로 꼽히는 ELIZA(1966)를 만든 MIT 컴퓨터과학자<br>『컴퓨터의 힘과 인간의 이성』(1976)에서</p>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'epigraph', html: true });
+  }
+
+  function tocItem(ch) {
+    const li = document.createElement('li');
+    li.dataset.page = ch.pageIdx;
+    li.innerHTML = `<span class="toc-name">${ch.title}</span><span class="toc-page">${ch.pageIdx}</span>`;
+    return li;
+  }
+
+  // 목차를 쪽 높이에 맞춰 여러 쪽으로 나눈다 (낮은 화면에서도 잘리지 않게)
+  function buildTocPages(entries) {
+    const probe = document.createElement('div');
+    probe.className = 'page toc';
+    probe.style.cssText = `width:${PAGE_W}px;height:${PAGE_H}px;position:absolute;left:-10000px;top:0;visibility:hidden;`;
+    document.body.appendChild(probe);
+    const limit = PAGE_H - 48;
+    const pages = [];
+    let i = 0;
+    do {
+      const wrap = document.createElement('div');
+      wrap.className = 'toc-wrap';
+      const h2 = document.createElement('h2');
+      h2.textContent = pages.length ? '목 차 (계속)' : '목 차';
+      wrap.appendChild(h2);
+      const ul = document.createElement('ul');
+      ul.className = 'toc-list';
+      wrap.appendChild(ul);
+      probe.innerHTML = '';
+      probe.appendChild(wrap);
+      let placed = 0;
+      while (i < entries.length) {
+        const li = tocItem(entries[i]);
+        ul.appendChild(li);
+        if (wrap.offsetHeight > limit && placed > 0) { ul.removeChild(li); break; }
+        placed++;
+        i++;
+      }
+      probe.removeChild(wrap);
+      pages.push(makePageEl(wrap, { cls: 'toc' }));
+    } while (i < entries.length);
+    probe.remove();
+    return pages;
+  }
+
+
+  function buildBlank() {
+    return makePageEl('', { cls: '', html: true });
+  }
+
+  function buildBackCover() {
+    // 홀로그래픽 뒤표지: 짙은 바탕 위 무지갯빛 번짐과 포일 빛줄기, 무지갯빛 따옴표
+    const html = `
+      <div class="back-fullart">
+        <svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="bk-g1" cx="0.1" cy="0.15" r="0.6"><stop offset="0" stop-color="#6f8fa6" stop-opacity="0.38"/><stop offset="1" stop-color="#6f8fa6" stop-opacity="0"/></radialGradient>
+            <radialGradient id="bk-g2" cx="0.98" cy="0.5" r="0.55"><stop offset="0" stop-color="#ff4fb8" stop-opacity="0.16"/><stop offset="1" stop-color="#ff4fb8" stop-opacity="0"/></radialGradient>
+            <radialGradient id="bk-g3" cx="0.2" cy="0.95" r="0.6"><stop offset="0" stop-color="#7b5cff" stop-opacity="0.42"/><stop offset="1" stop-color="#7b5cff" stop-opacity="0"/></radialGradient>
+            <radialGradient id="bk-g4" cx="0.85" cy="0.05" r="0.4"><stop offset="0" stop-color="#7dffc8" stop-opacity="0.18"/><stop offset="1" stop-color="#7dffc8" stop-opacity="0"/></radialGradient>
+            <linearGradient id="bk-streak" x1="0" y1="0" x2="1" y2="0.6">
+              <stop offset="0.42" stop-color="#ffffff" stop-opacity="0"/>
+              <stop offset="0.47" stop-color="#ffffff" stop-opacity="0.08"/>
+              <stop offset="0.52" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="bk-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11"/>
+              <feColorMatrix values="0 0 0 0 0.9  0 0 0 0 0.85  0 0 0 0 1  0 0 0 0.06 0"/>
+            </filter>
+          </defs>
+          <rect width="460" height="720" fill="#120f1a"/>
+          <rect width="460" height="720" fill="url(#bk-g1)"/>
+          <rect width="460" height="720" fill="url(#bk-g2)"/>
+          <rect width="460" height="720" fill="url(#bk-g3)"/>
+          <rect width="460" height="720" fill="url(#bk-g4)"/>
+          <rect width="460" height="720" fill="url(#bk-streak)"/>
+          <rect width="460" height="720" filter="url(#bk-grain)" opacity="0.6" pointer-events="none"/>
+        </svg>
+        <div class="holo-sheen dark"></div>
+
+        <div class="back-text-overlay">
+          <div class="back-top">
+            <div class="back-tag">단편 소설</div>
+          </div>
+
+          <div class="back-mid">
+            <div class="back-quote">나는 도장을 찍지 않고<br>서랍을 닫았다.</div>
+            <div class="back-quote-attr">4장 「결정」에서</div>
+
+            <div class="back-synopsis">
+              2032년 서울, 공공임대주택 이의신청은<br>
+              AI가 심사하고 사람은 도장만 찍는다.<br>
+              <br>
+              9년차 심사관 한서진은 하루 200장을 찍는다.<br>
+              어느 월요일, 같은 문장을 아홉 번 보낸<br>
+              신청서 한 장에서 손이 멈춘다.<br>
+              앞의 여덟 장에는 모두 서진의 도장이 찍혀 있었다.<br>
+              <br>
+              처리기한은 14일, 규정은 현장 방문을 금지한다.<br>
+              장맛비가 내리는 토요일,<br>
+              서진은 계단 아래 그 집의 문을 두드린다.
+            </div>
+          </div>
+
+          <div class="back-bottom">
+            <div class="back-author-line">AI ROASTING</div>
+            <div class="back-publisher">
+              <span class="pub-mark"></span>
+              <span>ArgosLab</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return makePageEl(html, { cls: 'back-cover', html: true });
+  }
+
+  // Theme
+  function initTheme() {
+    let saved = 'light';
+    try { saved = localStorage.getItem('ebook-theme') || 'light'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', saved);
+    document.getElementById('theme-btn').textContent = saved === 'dark' ? '☀' : '🌙';
+  }
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
+    const nxt = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', nxt);
+    document.getElementById('theme-btn').textContent = nxt === 'dark' ? '☀' : '🌙';
+    try { localStorage.setItem('ebook-theme', nxt); } catch (e) {}
+  }
+
+  function init() {
+    initTheme();
+    document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+
+    const md = document.getElementById('manuscript').textContent.trim();
+    const segs = parseMarkdown(md);
+    const bodyPages = paginate(segs);
+
+    // Determine chapter starts
+    const chapterPages = [];
+    
+    const src = document.getElementById('pages-src');
+
+    // Front matter: Cover → Title → Copyright → Epigraph → TOC
+    src.appendChild(buildCover());           // 1: cover
+    src.appendChild(buildTitle());           // 2: title page
+    src.appendChild(buildCopyright());       // 3: copyright
+    if (true) src.appendChild(buildEpigraph());        // 4: epigraph
+
+    // 목차 쪽 수를 먼저 센 뒤 본문 시작 쪽을 정한다 (1부터 세는 쪽 번호: 앞부분 + 목차 쪽 수 + 1)
+    const chapterTitles = bodyPages.map((bp, i) => (bp.isChapterTitle ? { title: bp.items[0].text, i } : null)).filter(Boolean);
+    const tocCount = buildTocPages(chapterTitles.map(c => ({ title: c.title, pageIdx: 999 }))).length;
+    const bodyStartIdx = src.children.length + tocCount + 1;
+    chapterTitles.forEach(c => chapterPages.push({ title: c.title, pageIdx: bodyStartIdx + c.i }));
+
+    buildTocPages(chapterPages).forEach(pg => src.appendChild(pg)); // 목차 (여러 쪽일 수 있다)
+
+    bodyPages.forEach((bp, i) => {
+      const idx = bodyStartIdx + i;
+      src.appendChild(buildBodyPage(bp.items, idx, bodyPages.length, '', false, !!bp.isChapterTitle));
+    });
+
+    // Back matter
+    src.appendChild(buildBackCover());
+
+    // Even page count for spread
+    const totalPages = src.children.length;
+    if (totalPages % 2 !== 0) {
+      src.insertBefore(buildBlank(), src.lastChild);
+    }
+
+    // StPageFlip
+    const book = document.getElementById('book');
+    const isMobile = IS_PORTRAIT;
+    const pageFlip = new St.PageFlip(book, {
+      width: PAGE_W,
+      height: PAGE_H,
+      size: 'stretch',
+      minWidth: PAGE_W,
+      maxWidth: PAGE_W,
+      minHeight: PAGE_H,
+      maxHeight: PAGE_H,
+      drawShadow: true,
+      flippingTime: 650,
+      usePortrait: isMobile,  // 모바일은 단일 페이지, 데스크톱은 spread
+      startZIndex: 0,
+      autoSize: true,
+      maxShadowOpacity: 0.22,
+      showCover: true,
+      mobileScrollSupport: false,
+      swipeDistance: 30
+    });
+
+    pageFlip.loadFromHTML(document.querySelectorAll('#pages-src .page'));
+    // 창 크기가 크게 바뀌면(한 쪽↔양면, 높이 변화) 쪽을 다시 나눈다. 읽던 위치는 유지한다
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const ps = pageSize();
+        if (ps.single !== IS_PORTRAIT || Math.abs(ps.h - PAGE_H) > 24 || Math.abs(ps.w - PAGE_W) > 24) {
+          try { sessionStorage.setItem('ebook-progress', String(pageFlip.getCurrentPageIndex() / Math.max(1, pageFlip.getPageCount() - 1))); } catch (e) {}
+          location.reload();
+        }
+      }, 300);
+    });
+    try {
+      const prog = parseFloat(sessionStorage.getItem('ebook-progress'));
+      if (!isNaN(prog)) {
+        sessionStorage.removeItem('ebook-progress');
+        pageFlip.turnToPage(Math.round(prog * (pageFlip.getPageCount() - 1)));
+      }
+    } catch (e) {}
+
+    // Counter + Progress
+    const counter = document.getElementById('counter');
+    const progressBar = document.getElementById('progress-bar');
+    const total = pageFlip.getPageCount();
+    function updateCounter() {
+      const idx = pageFlip.getCurrentPageIndex();
+      counter.textContent = (idx + 1) + ' / ' + total;
+      if (!isMobile) {
+        const wrap = document.getElementById('book-wrap');
+        wrap.style.setProperty('--half', (PAGE_W / 2) + 'px');
+        wrap.classList.toggle('at-front', idx === 0);
+        wrap.classList.toggle('at-back', idx >= total - 1);
+      }
+      document.getElementById('prev-btn').disabled = idx === 0;
+      document.getElementById('next-btn').disabled = idx >= total - 1;
+      const pct = total > 1 ? (idx / (total - 1)) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }
+    pageFlip.on('flip', updateCounter);
+    updateCounter();
+
+    // 폰트 크기 토글 (s ↔ m ↔ l)
+    const FS_STEPS = ['s', 'm', 'l'];
+    const FS_LABELS = { s: '가', m: '가', l: '가' };
+    let fsIdx = FS_STEPS.indexOf(CUR_FS);
+    if (fsIdx < 0) fsIdx = 1;
+    function applyFontSize() {
+      const cur = FS_STEPS[fsIdx];
+      document.querySelectorAll('.page .page-body').forEach(b => b.dataset.fs = cur);
+      const btn = document.getElementById('fs-btn');
+      btn.textContent = cur === 's' ? '가⁻' : cur === 'l' ? '가⁺' : '가';
+      btn.title = '글자 크기 (현재 ' + (cur === 's' ? '작게' : cur === 'l' ? '크게' : '보통') + ')';
+      try { localStorage.setItem('ebook-fs', cur); } catch (e) {}
+    }
+    document.getElementById('fs-btn').addEventListener('click', () => {
+      fsIdx = (fsIdx + 1) % FS_STEPS.length;
+      applyFontSize();
+      // 글자 크기가 바뀌면 쪽 나누기를 다시 한다. 읽던 위치(전체 진행률)는 유지한다
+      try { sessionStorage.setItem('ebook-progress', String(pageFlip.getCurrentPageIndex() / Math.max(1, pageFlip.getPageCount() - 1))); } catch (e) {}
+      location.reload();
+    });
+    applyFontSize();
+    setTimeout(applyFontSize, 200); // StPageFlip이 DOM 재배치 후 재적용
+
+    // Controls
+    document.getElementById('prev-btn').addEventListener('click', () => pageFlip.flipPrev());
+    document.getElementById('next-btn').addEventListener('click', () => pageFlip.flipNext());
+    // 목차 사이드 패널 동적 생성
+    const tocList = document.getElementById('toc-panel-list');
+    tocList.innerHTML = '';
+    chapterPages.forEach((cp) => {
+      const li = document.createElement('li');
+      li.dataset.page = cp.pageIdx;
+      li.innerHTML = `<span class="toc-name">${cp.title}</span><span class="toc-page">${cp.pageIdx}쪽</span>`;
+      tocList.appendChild(li);
+    });
+
+    const tocPanel = document.getElementById('toc-panel');
+    const tocOverlay = document.getElementById('toc-overlay');
+    function openToc() {
+      tocPanel.classList.add('open');
+      tocOverlay.classList.add('open');
+      tocPanel.setAttribute('aria-hidden', 'false');
+    }
+    function closeToc() {
+      tocPanel.classList.remove('open');
+      tocOverlay.classList.remove('open');
+      tocPanel.setAttribute('aria-hidden', 'true');
+    }
+    function toggleToc() {
+      if (tocPanel.classList.contains('open')) closeToc();
+      else openToc();
+    }
+
+    document.getElementById('toc-btn').addEventListener('click', toggleToc);
+    document.getElementById('toc-close').addEventListener('click', closeToc);
+    tocOverlay.addEventListener('click', closeToc);
+
+    // 사이드 패널 챕터 클릭 → 페이지 점프 + 패널 닫기
+    tocList.addEventListener('click', (e) => {
+      const li = e.target.closest('li');
+      if (li && li.dataset.page) {
+        pageFlip.flip(parseInt(li.dataset.page) - 1);
+        closeToc();
+      }
+    });
+
+    // ESC 키로 패널 닫기
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tocPanel.classList.contains('open')) closeToc();
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      // 입력 필드에 포커스 있으면 단축키 무시
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        pageFlip.flipPrev();
+      } else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        pageFlip.flipNext();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        pageFlip.flip(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        pageFlip.flip(total - 1);
+      }
+    });
+
+    // 책 안 목차 페이지 클릭 → 페이지 점프
+    // StPageFlip이 내부 클릭을 가로채기 때문에 캡처 단계에서 먼저 처리하고
+    // 드래그-플립으로 오인되지 않도록 pointerdown 단계에서 전파 차단.
+    function bindTocClicks() {
+      document.querySelectorAll('.page.toc .toc-list li').forEach((li) => {
+        if (li.dataset.tocBound === '1') return;
+        li.dataset.tocBound = '1';
+        ['pointerdown', 'mousedown', 'touchstart'].forEach((ev) => {
+          li.addEventListener(ev, (e) => e.stopPropagation());
+        });
+        li.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const target = parseInt(li.dataset.page, 10);
+          if (!isNaN(target)) pageFlip.flip(target - 1);
+        });
+      });
+    }
+    bindTocClicks();
+    // StPageFlip이 DOM을 재구성한 직후 다시 바인딩 (안전망)
+    setTimeout(bindTocClicks, 100);
+
+    // Hide loader
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+      setTimeout(() => document.getElementById('loader').remove(), 500);
+    }, 200);
+  }
+
+  function start() {
+    const begin = () => {
+      if (window.__ebookStarted) return;
+      window.__ebookStarted = true;
+      // 웹폰트 로드 완료 후 페이지네이션 (사이즈 정확도)
+      const fontsReady = document.fonts && document.fonts.ready
+        ? document.fonts.ready
+        : Promise.resolve();
+      // 응답 없는 요청이 문서 로드를 붙잡아 fonts.ready가 끝나지 않을 수 있다. 1.5초 넘게 기다리지 않는다
+      // 글꼴 CSS를 최대 2초 기다린 뒤, 글꼴 자체를 최대 1.5초 더 기다린다. 그 뒤에 도착한 글꼴은 쓰지 않는다
+      const cssReady = new Promise(r => { const t0 = Date.now(); (function poll() { (window.__fontCss || Date.now() - t0 > 2000) ? r() : setTimeout(poll, 50); })(); });
+      cssReady
+        .then(() => Promise.race([document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]))
+        .then(() => { window.__ebookPaginated = true; init(); });
+    };
+    if (typeof St === 'undefined' || !St.PageFlip) {
+      window.addEventListener('stpageflip-ready', begin, { once: true });
+      setTimeout(() => { if (!window.__ebookStarted && window.St && window.St.PageFlip) begin(); }, 5200);
+    } else {
+      begin();
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+
+<!-- 디자인 전용 조각: 생성기가 값을 넣어 슬롯 자리에 옮기고 이 자리에서는 지운다 -->
+</body>
+</html>
