@@ -80,6 +80,8 @@ def build(draft_text, p, out):
         "ISBN_LINE": f'<div class="copyright-isbn">ISBN {e(pub["isbn"])}</div>' if pub.get("isbn") else "",
         "COPYRIGHT_LINE": (f'<div class="copyright-c">© {e(str(pub["copyright_year"]))} {e(pub.get("copyright_holder") or p["pen_name"])}</div>'
                            if pub.get("copyright_year") else ""),
+        "COLOPHON_NOTE_LINE": (f'<div class="copyright-c copyright-note">{e(pub["colophon_note"])}</div>'
+                               if pub.get("colophon_note") else ""),
         "HAS_EPIGRAPH": "true" if epi else "false",
         "EPIGRAPH_TEXT": lines_html(epi["lines"]) if epi else "",
         "EPIGRAPH_ATTR": lines_html(epi.get("attr_lines") or [epi.get("attr", "")]) if epi else "",

@@ -4,7 +4,7 @@
 
 **경로 표기.** `<스킬>`은 이 스킬 폴더(`SKILL.md`가 있는 폴더)다. 그 밖의 경로(`book-toc.md`, `00_storyline/`, `01_test/` 등)는 모두 **프로젝트 폴더** 기준이다. 프로젝트 폴더는 `book-toc.md`가 있는 폴더이며, 스크립트는 현재 폴더에서 위로 올라가며 이 파일을 찾는다(`--root`로 직접 줄 수도 있다).
 
-**폴더 이름 규칙.** 새로 만드는 폴더는 영문 소문자·숫자·하이픈·밑줄로만 짓는다. 한글 폴더 이름은 쓰지 않는다. 작품 폴더는 `projects/<영문-슬러그>/`다. `lint_project.py`가 L6에서 검사한다.
+**폴더 이름 규칙.** 새로 만드는 폴더는 영문 소문자·숫자·하이픈·밑줄로만 짓는다. 한글 폴더 이름은 쓰지 않는다. 작품 폴더는 `docs/<영문-슬러그>/`다. `lint_project.py`가 L6에서 검사한다.
 
 **숫자 규칙.** 이 파일과 단계 문서에는 작품 고유 값(인물명, 매수, 시각 닻, 마지막 줄)과 통과선 숫자를 적지 않는다. 블록의 키 이름으로만 가리킨다(예: `review.story_pass`). 설명용 예시를 둘 때는 줄 앞에 `예시(작품명):`를 붙인다. `lint_project.py`가 이 규칙을 검사한다.
 
@@ -17,7 +17,9 @@
 | `<스킬>/SKILL.md` | 지휘: 단계 선택, 서브 에이전트 위임, 사용자 확인 | 아니오 |
 | `<스킬>/agents/novel-writing-<단계>.md` | 단계별 서브 에이전트 (Claude Code) | 아니오 |
 | `<스킬>/references/stage-<단계>.md` | 단계별 실행 절차. 서브 에이전트와 Codex가 읽는다 | 아니오 |
-| `<스킬>/references/reviewers.md` | 13장 평가자 카드. 작품 값은 블록과 storyline에서 읽는다 | 아니오 |
+| `<스킬>/references/reviewers.md` | 14장 평가자 카드. 작품 값은 블록과 storyline에서 읽는다 | 아니오 |
+| `<스킬>/references/reader-check.md` | 처음 읽는 독자 점검표(R1~R12)와 재독 로그 | 아니오 |
+| `<스킬>/references/purple-loop.md` | PURPLE 4R 루프(설명충·중언부언·주제 전달) | 아니오 |
 | `<스킬>/scripts/*.py` | 검증기, e북 생성기, 린터, new_run | 아니오 |
 | `<스킬>/templates/` | 새 작품용 book-toc·storyline 양식, e북 디자인 | 아니오 |
 
@@ -28,7 +30,7 @@
   → storyline 단계  → 01_test/<run>/   (스토리 합평, 통과본 storyline.md)
   → research 단계   → 02_draft/<run>/01_research-notes.md
   → write 단계      → 02_draft/<run>/02_outline.md, 03_draft-v1.md
-  → review 단계     → 02_draft/<run>/04~12, 09_draft-final.md
+  → review 단계     → 02_draft/<run>/04~13, 09_draft-final.md
   → publish 단계    → 03_output/<run>/ebook.html, metadata.md
 ```
 
@@ -41,8 +43,7 @@
 - 스냅샷은 그 run의 숫자 정본이다. 검증기와 린터는 run을 검사할 때 스냅샷을 쓴다. 그래서 다음 작품으로 book-toc를 갈아 끼워도 지난 run 검사는 깨지지 않는다.
 - run 진행 중 블록을 고치면(예: storyline 5단계 동기화) 스냅샷도 같이 갱신하고 원장에 남긴다. 단계 작업의 동기화면 `note: block-change <무엇을>`, 사용자 요청이면 `gate: block-change → approved <무엇을> (날짜) "<원문>"`이다. 린터는 진행 중 run의 블록과 스냅샷이 다르면 FAIL을 낸다.
 - **끝난 run**은 원장에 `stage: publish done` 또는 `closed:`가 있는 run이다. 검증기·린터·스킬 모두 이 정의 하나를 쓴다.
-- 어느 run을 쓸지: 끝나지 않은 가장 최근 run을 이어 쓴다. 그런 run이 없으면 새 run을 연다. 지난 run이 하나라도 있으면 사용자에게 한 번 묻는다(same/updated/rework). 지난 run이 없는 첫 작품은 묻지 않고 same으로 연다. 어느 쪽이든 `new_run.py`가 원장에 `gate: new-run → <선택> "<원문>"`을 쓴다(첫 작품은 원문 자리에 "첫 run").
-  - `same`: 같은 storyline으로 처음부터. `updated`: `00_storyline/storyline.md`를 고친 뒤 처음부터.
+- 어느 run을 쓸지와 새 run을 여는 법(same/updated/rework 선택)은 SKILL.md "새 run 열기"가 정본이다. `new_run.py`가 원장에 `gate: new-run → <선택> "<원문>"`을 쓴다. rework는 다음과 같이 물려받는다.
   - `rework`: 지난 run의 결과를 물려받아 특정 단계부터 다시 한다(재리뷰 등). 지난 run의 storyline 통과본, 스냅샷, 리서치 노트를 새 run으로 복사하고, 물려받은 원고를 시작 파일로 둔다(재리뷰면 지난 `09_draft-final.md` → 새 `03_draft-v1.md`). 원장에 `inherit: <지난 run>`과 물려받은 단계마다 `stage: <스킬> done <날짜> (inherited)`를 남긴다. 그다음 스킬이 그 단계부터 이어서 시작한다.
 - 끝난 run을 다시 열지 않는다. 재작업은 새 run에서 한다. 이전 run을 닫으려면 사용자에게 묻고 `closed: superseded <날짜>`와 `gate: close-run → approved "<응답 원문>"` 두 줄을 남긴다.
 - 예외는 출판 뒤 수정(post-audit) 하나다. 끝난 run의 산출물에서 결함이 나오거나 작가가 고쳐 달라고 하면(윤문, 서평 빼기 등) 사용자 승인(`gate: post-audit → approved "<원문>"`)을 받은 뒤에만 고친다. 절차는 SKILL.md "출판 뒤 수정"과 `republish.py` 머리 주석이다: `republish.py --prepare`가 고치기 전 최종본을 `_archive/`에 보관하고, 고친 내용은 `02_draft/<run>/14_post-audit-changelog.md`에 적고, `republish.py --owner <owner>`가 다시 만들기, 메타 분량, 검증, `stage: post-audit-fix done`, 재잠금을 한다. 판을 새로 짜는 재합평이면 rework run을 연다.
@@ -52,7 +53,7 @@
 
 ### 이어하기
 
-1순위는 원장의 `stage:`·`reopen:` 줄이다. `reopen:`은 되돌릴 단계를 적는다(`reopen: storyline <사유>`, `reopen: review-9 <사유>`). 린터의 게이트 검사도 단계별로 센다: 스토리 게이트는 마지막 `reopen: storyline` 뒤, 본문 게이트는 마지막 `reopen: review-1`~`review-5` 뒤만 본다. `review-6`~`review-9`로 되돌리는 것(통과 정리, 외부 리뷰, 최종 수정)은 본문 합평 통과를 무르지 않는다. `reopen: <단계> <사유>`가 마지막 `stage:`보다 뒤에 있으면 그 단계부터 다시 한다. 원장에 기록이 없을 때만 파일 존재로 판단한다. 같은 파일을 두 번 쓰지 않고, 부분 작성 파일은 마지막 지점부터 이어 붙인다.
+1순위는 원장의 `stage:`·`reopen:` 줄이다. `reopen:`은 되돌릴 단계를 적는다(`reopen: storyline <사유>`, `reopen: review-9 <사유>`). 린터의 게이트 검사도 단계별로 센다: 스토리 게이트는 마지막 `reopen: storyline` 뒤, 본문 게이트는 마지막 `reopen: review-1`~`review-5` 뒤만 본다. `review-6`~`review-9`로 되돌리는 것(통과 정리, 외부 리뷰, 최종 수정)은 본문 합평 통과를 무르지 않는다. `reopen: <단계> <사유>`가 마지막 `stage:`보다 뒤에 있으면 그 단계부터 다시 한다. 원장에 기록이 없을 때만 파일 존재로 판단한다. 같은 파일을 두 번 쓰지 않는다(예외: `09_draft-final.md`는 6·6P·9단계가 이어 고친다. 앞 판은 각 단계의 버전 파일과 보관본에 남는다). 부분 작성 파일은 마지막 지점부터 이어 붙인다.
 
 ## 3. 원장 `00_RUN_STATUS.md`
 
@@ -108,7 +109,9 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 ### 4.4 본문 합평 점수 (review 단계)
 
 - 패널: RED, SILVER, BLUE, GOLD. 각 카드는 `reviewers.md` 본문 모드 루브릭으로 10점에서 감점한다.
-- 통과 조건: 4인 단순 평균 ≥ `review.body_pass` 그리고 🔴 0건.
+- 라운드마다 합평 전에 처음 읽는 독자 점검(`reader-check.md`)을 한다. 그 🔴는 합평 파일의 `남은 🔴`에 더한다.
+- 통과 조건: 4인 단순 평균 ≥ `review.body_pass` 그리고 🔴 0건(reader-check 🔴 포함).
+- 통과 뒤 외부 리뷰 전에 PURPLE 루프(`purple-loop.md`)를 돈다. 합평 점수와 섞지 않는다. PURPLE 카드 합격선과 마지막 독자 점검 🔴 0, 또는 승인된 `purple_open` waiver가 있어야 7단계로 간다.
 
 ### 4.5 라운드 상한과 사용자 확인
 
@@ -138,21 +141,24 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 | `03_draft-v1.md` | write 단계 | 초안 |
 | `04_review-pink.md` | review 단계 1 | PINK 첫인상 |
 | `05_draft-v2.md` | review 단계 2 | PINK 반영본 |
+| `06_reader-check-1.md` | review 단계 3 | 처음 읽는 독자 점검 1라운드(합평 전, 재독 로그) |
 | `06_ensemble-1.md` | review 단계 3 | 합평 1라운드 |
 | `07_draft-v3.md` | review 단계 4 | 합평 1 반영본 |
 | `08_ensemble-2.md` | review 단계 5 | 합평 2라운드 |
 | `07_draft-v<k+2>.md` | review 단계 | 라운드 k(≥2) 미통과 후 BLACK 반영본. 라운드 k+1의 입력 (덮어쓰지 않음) |
 | `08_ensemble-<k>.md` | review 단계 | k≥3 라운드 합평. 입력은 `07_draft-v<k+1>.md` |
+| `08_reader-check-<k>.md` | review 단계 | 라운드 k(≥2)의 독자 점검. 입력은 그 라운드 합평과 같다 |
 | `09_draft-final.md` | review 단계 6·9 | 합평 통과본. 9단계 직전 버전은 `09_draft-final_pre9.md`로 남긴다 |
 | `10_review-editor.md` | review 단계 7 | EDITOR |
 | `11_review-marketer.md` | review 단계 8 | MARKETER (본문 미반영, publish 입력) |
 | `12_review-proofreader.md` | review 단계 8 | PROOF |
+| `13_purple-<k>.md`, `13_purple-resolve-<k>.md`, `13_draft-purple-v<k>.md`, `13_reader-check-<k>.md` | review 단계 6P, 출판 뒤 수정 | PURPLE 루프(purple-loop.md 3절). v0은 루프 입력 사본 |
 
 라운드 k의 입력 버전은 항상 v<k+1>이다: 1라운드 v2, 2라운드 v3, 3라운드 v4.
 
 ### 03_output/<run>/
 
-`ebook.html`(웹 e북, 유일한 출판 형식), `metadata.md`, `validate_report.txt`. 블록 `publish.formats`는 `["ebook"]`이다(예전 작품의 `docx`는 출판 뒤 수정으로 빼고 보관함으로 옮긴다). 스크립트는 run 폴더에 복사하지 않고 `<스킬>/scripts/`의 범용본을 실행한다. e북 디자인은 블록 `publish.ebook.design`으로 고른다. 작품 전용 디자인은 프로젝트 폴더의 `designs/ebook/<이름>.html`(스킬의 `templates/ebook/plain.html`을 복사해 고친다), 공용 디자인은 `<스킬>/templates/ebook/`에 둔다. 생성기는 프로젝트 쪽을 먼저 찾는다. 스킬 폴더에 넣은 파일은 다시 설치할 때 지워지므로 작품 전용 디자인을 거기에 두지 않는다.
+`ebook.html`(웹 e북, 유일한 출판 형식), `metadata.md`, `validate_report.txt`. 블록 `publish.formats`는 `["ebook"]`이다(예전 작품의 `docx`는 출판 뒤 수정으로 빼고 보관함으로 옮긴다). 스크립트는 run 폴더에 복사하지 않고 `<스킬>/scripts/`의 범용본을 실행한다. e북 디자인을 고르고 두는 곳은 book-toc 템플릿 필드 표(`publish.ebook.design`)가 정본이다.
 
 ### 장편 (`structure_mode: "part"`)
 
@@ -168,7 +174,7 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 6. 이름 짓기 원칙(book-toc)을 지킨다. 로봇·시스템에 사람 이름 금지.
 7. em dash(—, –), 불릿, `**`, 번역투, 클리셰 0건.
 8. 위트는 블록의 `wit` 범위와 출처, `zero_zones` 0회.
-9. 마지막 장 뒤의 섹션(작가의 말, 서평 등)은 블록 `back_matter`에 이름이 있을 때만, 마지막 장 뒤에 둔다.
+9. 마지막 장 뒤의 섹션(작가의 말, 서평 등)은 블록 `back_matter`에 이름이 있을 때만, 마지막 장 뒤에 둔다. 작가 이름으로 나가는 글(작가의 말, 감사의 말, 헌사)은 작가가 준 원문, 작가가 명시 승인한 초안, 작가가 BLACK에게 쓰라고 명시 요청한 글만 넣는다. 어느 쪽이든 원장에 `gate: author-text-<섹션> → approved "<원문>"`이 있어야 한다. 요청 없이 AI가 지어 넣지 않는다. BLACK이 쓸 때의 규칙은 stage-write.md 3절이다.
 10. 정본에 없는 실명을 만들지 않는다. 제3자 글(서평, 추천사, 해설)은 실제 글이면 블록 `publish.third_party_verified: true`, 작가가 쓴 가상 평자의 글이면 원장에 `waiver: fictional_reviewer`와 `gate: waiver-fictional_reviewer → approved "<원문>"`이 있어야 한다. 린터가 검사한다.
 
 ## 7. 도구
@@ -191,8 +197,8 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 - 합평 점수, 🔴 개수, 판정 줄은 평가 내용에서 나온 값이다. 린터는 그 값이 통과선과 맞는지만 본다. 점수 자체가 타당한지는 사람이 합평 본문을 읽고 판단한다.
 - `gate:` 줄의 응답 원문은 에이전트가 적는다. 사용자는 원장을 열어 자기 답과 같은지 확인할 수 있다.
 - 해시는 누구나 다시 계산할 수 있다: `shasum -a 256 <입력 파일>`. 머리 줄의 해시와 다르면 그 합평은 믿지 않는다.
-- 주술 호응, 위트, 감정 노출, 마지막 줄의 결은 검증기의 MANUAL 항목이다. 사람이 읽어야 한다.
+- 주술 호응, 위트, 감정 노출, 마지막 줄의 결, 처음 읽는 독자가 멈추는 자리는 검증기의 MANUAL 항목이다. 사람(또는 reader-check)이 읽어야 한다.
 
 ## 8. 문서 크기 상한
 
-CLAUDE.md 6KB, workflow.md·ledger.md 각 20KB, SKILL.md 본문 500줄. 넘으면 `references/`로 나눈다. 린터가 검사한다.
+린터가 검사하는 상한은 CLAUDE.md 6KB, AGENTS.md 20KB, SKILL.md 본문 500줄이다. workflow.md·ledger.md는 각 20KB 안으로 지휘가 관리한다(린터 밖). 넘으면 `references/`로 나눈다.

@@ -6,13 +6,13 @@
 
 ## 준비
 
-1. 원장에 `stage: review done`이 있는지 확인한다. 없으면 review 단계를 안내하고 종료한다.
-2. 블록의 `title`, `pen_name`, `genre_label`, `chapters`, `back_matter`, `publish`(특히 `publish.ebook`), 통과본 storyline, `11_review-marketer.md`를 읽는다.
+1. 원장에 `stage: review done`이 있는지 확인한다. 없으면 review 단계를 안내하고 종료한다. `stage: review-purple done`이나 승인된 `purple_open` waiver도 있어야 한다(PURPLE 루프가 생기기 전에 review를 마친 run은 제외). 없으면 `reopen: review-purple <사유>`를 남기고 review 6P로 되돌린다.
+2. 블록의 `title`, `pen_name`, `genre_label`, `chapters`, `back_matter`, `publish`(특히 `publish.ebook`), 통과본 storyline, `11_review-marketer.md`를 읽는다. `back_matter`에 작가 이름으로 나가는 글(작가의 말, 감사의 말, 헌사)이 있으면 원장에 `gate: author-text-<섹션> → approved`가 있는지 본다. 없으면 출판하지 않고 `need_user`(질문 id `author-text-<섹션>`)로 돌아간다.
 3. 한 줄로 알린다: `입력: 02_draft/<run>/<최종본> / 출력: 03_output/<run>/ebook.html`.
 
 ## 출판 정보 확인 (게이트 `publish-info`)
 
-publish를 시작하면 사용자 확인이 필요한 것을 **한 번에 모아** 묻는다(`need_user`, 질문 id `publish-info`): 블록 `publish.*` 빈칸(발행 연월, 뒤표지 소개, 소개문 등), 출처 미확인 제사가 있으면 그 처리(아래 "제사 출처"). 지휘는 같은 응답 원문으로 `gate: publish-info → approved`, `gate: epigraph-source → verified|approved|removed`를 각각 남긴다. 빈칸도 미확인 제사도 없으면 묻지 않는다. 지휘가 응답 원문을 원장에 `gate: publish-info → approved "<원문>"`으로 남기면, 블록과 run 스냅샷에 같은 값을 넣고 원장에 `note: block-change publish-info`를 남긴다. 린터는 `stage: review done` 이후 `publish.*` 빈칸을 FAIL로 본다.
+publish를 시작하면 사용자 확인이 필요한 것을 **한 번에 모아** 묻는다(`need_user`, 질문 id `publish-info`): 블록 `publish.*` 빈칸(발행 연월, 뒤표지 소개, 소개문 등), 출처 미확인 제사가 있으면 그 처리(아래 "제사 출처"). 지휘는 같은 응답 원문으로 `gate: publish-info → approved`를 남기고, 제사는 아래 "제사 출처"의 (a)(b)(c)에 적힌 줄을 같은 응답 원문으로 남긴다. 빈칸도 미확인 제사도 없으면 묻지 않는다. 지휘가 응답 원문을 원장에 `gate: publish-info → approved "<원문>"`으로 남기면, 블록과 run 스냅샷에 같은 값을 넣고 원장에 `note: block-change publish-info`를 남긴다. 린터는 `stage: review done` 이후 `publish.*` 빈칸을 FAIL로 본다.
 
 ## 0단계, 품질 게이트
 
@@ -25,8 +25,8 @@ python3 <스킬>/scripts/validate_draft.py --run <run> > 03_output/<run>/validat
 | 구분 | 항목 |
 |---|---|
 | FAIL | 부·장 헤딩 전부·순서, `back_matter` 밖의 장 밖 섹션, 분량(`length`), 마지막 줄(`last_line`), 시각 닻 총량, `**`, 불릿, em dash, 번역투, 클리셰, 명시 금지 키워드, 인물 누락, 폐기된 이름, 1인칭 시점 위반 |
-| WARN | 시각 닻 장 분포, 장별 분량 편차 ±20% 초과, 서술문 평균 길이, 출처 미확인 제사 |
-| MANUAL | 주술 호응, 위트 횟수·출처, 감정 직접 노출, 장 마지막 줄의 동작·사물 닫힘 |
+| WARN | 시각 닻 장 분포, 장별 분량 편차 ±20% 초과, 서술문 평균 길이, 단문 나열, 한글 수 표기, 출처 미확인 제사 |
+| MANUAL | 주술 호응, 위트 횟수·출처, 감정 직접 노출, 장 마지막 줄의 동작·사물 닫힘, 처음 읽는 독자 점검(reader-check) |
 
 - FAIL 0 → 1단계.
 - 기계 치환이 안전한 FAIL(`**`, 불릿, em dash)은 사용자에게 목록을 보여 주고 확인을 받은 뒤 치환한다. 원장에 `gate: publish-autofix → <yes|no>`.
@@ -64,7 +64,7 @@ python3 <스킬>/scripts/validate_draft.py --run <run> > 03_output/<run>/validat
 - `## 가격 전략`: 단독 출판 가격대 제안, 묶음 추천
 - `## 배포 메모`: 교보문고, 리디, 예스24, 밀리의 서재, 알라딘의 분류·키워드 적용
 
-금지: 합평 점수 인용, 정본에 없는 수상·판매량·평점·추천인 실명, em dash.
+금지: 합평 점수 인용, 정본에 없는 수상·판매량·평점·추천인 실명, em dash. 소개문, 뒤표지 소개, 판매 카피도 처음 읽는 독자 기준(`<스킬>/references/reader-check.md` R4 숫자 표기, R5 압축 비유, R12 지시어)을 따른다. 책을 읽지 않은 사람이 읽는 글이다.
 
 ## 완료
 

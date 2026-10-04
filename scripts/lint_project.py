@@ -200,7 +200,8 @@ def check_schema(p, text):
         errs.append(f"book-toc.md:{key_line(text, 'per_chapter_max')} `wit.per_chapter_max`가 per_chapter_min보다 작다")
     pub = p.get("publish", {}) if isinstance(p.get("publish"), dict) else {}
     opt = {"publisher": str, "pub_date": str, "copyright_holder": str, "isbn": (str, type(None)),
-           "copyright_year": (int, type(None)), "third_party_verified": bool}
+           "copyright_year": (int, type(None)), "third_party_verified": bool,
+           "colophon_note": (str, type(None))}
     for k, typ in opt.items():
         if k in pub and not isinstance(pub[k], typ):
             errs.append(f"book-toc.md:{key_line(text, k)} `publish.{k}` 값 {pub[k]!r}의 형식이 틀렸다")
@@ -477,7 +478,7 @@ def lint(root, skill_dir=None):
     # L6
     for d in [root] + [x for x in root.rglob("*") if x.is_dir() and ".git" not in x.parts]:
         if re.search(r"[가-힣ㄱ-ㅎㅏ-ㅣ]", d.name):
-            r.fail("L6", f"폴더 이름에 한글이 있다: {d.name}. 영문 소문자·숫자·하이픈·밑줄로 바꾼다 (작품 폴더는 projects/<영문-슬러그>/)")
+            r.fail("L6", f"폴더 이름에 한글이 있다: {d.name}. 영문 소문자·숫자·하이픈·밑줄로 바꾼다 (작품 폴더는 docs/<영문-슬러그>/)")
     if (root / "00_user_input").exists():
         r.fail("L6", "옛 폴더 이름 00_user_input이 남아 있다. 00_storyline으로 이름을 바꾼다")
     ui =sorted(f.name for f in (root / "00_storyline").iterdir() if not f.name.startswith(".")) if (root / "00_storyline").exists() else []
@@ -657,6 +658,14 @@ def lint(root, skill_dir=None):
                     names = [base] + ([fmt] if fmt else [])
                     if not any(re.search(rf"^gate:\s*remove-{re.escape(nm)}\s*→\s*approved\b", led, re.M) for nm in names):
                         emit("remove_output", f"작가 산출물 {src}이 옮겨졌는데 gate: remove-{fmt or base} → approved 줄이 없다")
+
+        # 작가 이름으로 나가는 글: 이 run에서 원고를 쓰고 아직 출판하지 않았으면 back_matter 섹션마다 author-text 승인이 있어야 한다
+        # (SKILL.md "사용자 게이트"). rework가 물려받은 원고(inherited)와 이 규칙 전에 출판한 run은 지난 기록을 따른다.
+        if (re.search(r"^stage:\s*write done(?!.*inherited)", led, re.M)
+                and not re.search(r"^stage:\s*publish done", led, re.M)):
+            for sec in (rp.get("back_matter") or []):
+                if not re.search(rf"^gate:\s*author-text-{re.escape(sec)}\s*→\s*approved\b", led, re.M):
+                    emit("author_text", f"back_matter '{sec}'에 gate: author-text-{sec} → approved 줄이 없다 (작가 원문, 승인한 초안, BLACK에게 쓰라는 요청 중 하나)")
 
         # 작가 산출물 잠금: 마지막 lock 줄 이후 back_matter·formats가 줄거나 스냅샷이 바뀌었으면 그 뒤에 승인·기록이 있어야 한다
         locks = [(i, ln) for i, ln in enumerate(lines) if ln.startswith("lock:")]

@@ -32,7 +32,7 @@ def copy_skill(dest_skills):
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True)
-    for item in SKILL_ITEMS:   # 저장소의 projects·tools 같은 개발용 폴더는 넣지 않는다
+    for item in SKILL_ITEMS:   # 저장소의 docs·tools 같은 개발용 폴더는 넣지 않는다
         s = SRC / item
         if s.is_dir():
             shutil.copytree(s, dest / item, ignore=IGNORE)

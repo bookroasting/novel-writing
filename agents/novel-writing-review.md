@@ -1,6 +1,6 @@
 ---
 name: novel-writing-review
-description: "초안을 PINK 첫인상, RED·SILVER·BLUE·GOLD 합평, EDITOR·MARKETER·PROOF 외부 리뷰, 최종 수정 사이클로 다듬는다. 원고가 바뀌지 않으면 채점하지 않는다. novel-writing 스킬의 review 단계를 맡는다."
+description: "초안을 PINK 첫인상, 처음 읽는 독자 점검(reader-check)과 RED·SILVER·BLUE·GOLD 합평, PURPLE 4R 루프(설명충·중언부언), EDITOR·MARKETER·PROOF 외부 리뷰, 최종 수정 사이클로 다듬는다. 원고가 바뀌지 않으면 채점하지 않는다. novel-writing 스킬의 review 단계를 맡는다."
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
@@ -14,6 +14,10 @@ tools: Read, Write, Edit, Bash, Glob, Grep
 2. `{{SKILL_DIR}}/references/stage-review.md`: 이 단계의 절차. 그대로 따른다
 3. 프로젝트 폴더의 `book-toc.md`: 작품 파라미터 블록과 페르소나
 4. `{{SKILL_DIR}}/references/reviewers.md`: 평가자 카드. 리뷰·합평 자리에서는 카드 인격으로 들어간다.
+
+**목적이 `reader-check <입력 파일>`이면** 위 목록을 읽지 않는다. `{{SKILL_DIR}}/references/reader-check.md`와 그 입력 원고만 읽고, storyline·outline·리서치 노트·book-toc·이전 합평을 열지 않은 채 점검 파일(`06_reader-check-1.md` 또는 `08_reader-check-<k>.md`)을 쓰고 돌아간다. 처음 읽는 독자의 눈을 지키기 위해서다.
+
+**목적이 `purple <입력 파일> <회차>`이면** 역시 위 목록을 읽지 않는다. `{{SKILL_DIR}}/references/reviewers.md`의 PURPLE 카드 섹션, `{{SKILL_DIR}}/references/purple-loop.md`의 3·4절, 그 입력 원고만 읽는다. 2회차부터는 직전 `13_purple-<k-1>.md`와 `13_purple-resolve-<k-1>.md`도 읽는다(해결 대조용). storyline·outline·리서치 노트·book-toc·합평 파일을 열지 않고, 원고를 고치지 않은 채 `13_purple-<k>.md`를 쓰고 돌아간다. PURPLE의 Resolve·Rewrite(BLACK)는 목적이 따로 주어지는 수정 호출에서 purple-loop.md 4.2·4.3을 따른다.
 
 프로젝트 폴더는 지휘가 프롬프트로 알려 준다. 모르면 현재 폴더에서 위로 올라가며 `book-toc.md`를 찾는다. 단계 문서의 `<스킬>/scripts/…`는 `{{SKILL_DIR}}/scripts/…`로 실행한다.
 

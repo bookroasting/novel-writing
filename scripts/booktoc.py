@@ -207,7 +207,7 @@ def paired_waivers(led, closed=None):
     return out
 
 
-APPROVAL_RE = r"^gate:\s*(\S+)\s*→\s*(approved|verified)\b(.*)$"
+APPROVAL_RE = r"^gate:\s*([^\s→\"]+(?: [^\s→\"]+)*?)\s*→\s*(approved|verified)\b(.*)$"   # 섹션 이름에 빈칸이 있어도 된다(remove-작가의 말). id에 →와 따옴표는 없다(응답 원문 속 "→ approved"를 승인으로 읽지 않게)
 NOTE_SYNC_KEYS = ("characters", "retired_names", "anchors", "last_line", "forbidden_disclosures")   # storyline 동기화가 note로 바꿀 수 있는 키
 
 

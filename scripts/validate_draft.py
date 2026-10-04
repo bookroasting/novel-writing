@@ -23,7 +23,45 @@ MANUAL = [
     "위트 횟수와 출처 분포, zero_zones 위트 0회 (9원칙 4번). GOLD 카운트로 확인",
     "감정의 직접 노출 (9원칙 6번). GOLD 리뷰로 확인",
     "각 장 마지막 한 줄이 동작·사물로 닫힘 (9원칙 3번). 아래 '장 마지막 줄' 목록을 눈으로 확인",
+    "처음 읽는 독자가 멈추는 자리: 문장 사이 연결, 압축 위트·비유, 높임, 서술 호칭, 성별 단서, 인용 메모의 뜻 (references/reader-check.md). review 단계 reader-check 파일로 확인",
 ]
+
+SHORT_SENT_CHARS, SHORT_SENT_SHARE = 12, 0.2   # 단문 나열 WARN: 12자 이하 서술문이 한 장의 20% 이상
+RHYTHM_PARA_CV, RHYTHM_SENT_CV = 0.4, 0.35   # 리듬 단조 WARN: 서술 단락·서술문 길이의 변동계수가 이 값보다 작으면 길이가 고르게 같다
+
+# 한글로 쓴 수 (reader-check R4: 수량·단위는 아라비아 숫자, 시각·서수는 한글). 오탐이 있을 수 있어 WARN만 낸다.
+# 잡는 것: 큰 수(이백, 백십 장, 이백 열둘, 삼만 원, 백 명)와 측정 단위가 붙은 한자어 수(삼 센티, 십일 센티, 삼십 퍼센트).
+# 잡지 않는 것: 시각(세 시 이십 분), 서수, 고유어 수(두 시간, 세 장), 어림수(수백, 이삼 일), 낱말 속 글자(천천히, 사건, 영원).
+SINO = "일이삼사오육칠팔구"
+_G = rf"(?:[{SINO}]?천)?(?:[{SINO}]?백)?(?:[{SINO}]?십)?[{SINO}]?"
+SINO_NUM = re.compile(rf"^(?:{_G}만)?{_G}$")
+NUM_RUN = re.compile(rf"(?<![가-힣0-9])([영{SINO}십백천만]+)(\s?)([가-힣]*)")
+MEASURE = ("센티미터", "센티", "밀리미터", "밀리", "킬로미터", "킬로그램", "킬로", "미터", "그램", "리터", "퍼센트")
+COUNTERS = ("장", "개", "건", "명", "권", "대", "쪽", "통", "곳", "채", "가구", "세대", "원", "평") + MEASURE
+NATIVE_TAIL = re.compile(r"^(?:열|스물|서른|마흔|쉰|예순|일흔|여든|아흔)")
+PARTICLE = re.compile(r"^(?:짜리|째|쯤|씩|여)?(?:이|가|은|는|을|를|의|에|에서|에게|도|과|와|만|으로|로|이다|이었다|였다|이나|나|까지|부터)?$")
+NOT_NUM = {"백일", "천일", "일백", "일천", "일만", "이만", "오만"}   # 백일잔치, 천일야화, 이만 가자, 오만한
+
+
+def korean_numerals(text):
+    """한글로 쓴 수를 찾는다. [(수와 단위, 앞뒤 문맥)]."""
+    hits = []
+    for m in NUM_RUN.finditer(text):
+        num, sp, rest = m.groups()
+        if num in NOT_NUM or not (SINO_NUM.match(num) or num == "영") or (num == "천만" and rest.startswith("에")):
+            continue
+        unit = next((u for u in COUNTERS if rest.startswith(u)), "")
+        if unit and not PARTICLE.match(rest[len(unit):]):
+            unit = ""
+        if not sp and not unit and not PARTICLE.match(rest) and not NATIVE_TAIL.match(rest):
+            continue   # 낱말의 일부다 (삼천리, 오만한)
+        big = len(num) >= 2 and any(c in num for c in "백천만")
+        single_big = num in ("백", "천", "만") and sp and unit           # 백 명, 천 원 (백 번, 천 년은 잡지 않는다)
+        small = (unit in MEASURE or (unit == "원" and "십" in num)) and not (sp and num in ("이", "일"))   # '이 미터'는 지시어일 수 있다
+        if big or single_big or small:
+            ctx = text[max(0, m.start() - 8): m.end() + 4].replace("\n", " ").strip()
+            hits.append((num + (sp + unit if unit else ""), ctx))
+    return hits
 
 
 def validate(draft_text, p, ebook_path=None):
@@ -110,6 +148,39 @@ def validate(draft_text, p, ebook_path=None):
             avg = sum(len(x) for x in sents) / len(sents)
             if avg > s["avg_sentence_chars_max"] * 1.5:
                 warns.append(f"{n}장 서술문 평균 {avg:.1f}자 (기준 {s['avg_sentence_chars_max']}자)")
+
+    # 6-1. 단문 나열 (reader-check R1): 한 동작짜리 짧은 문장이 한 장 서술의 큰 몫이면 리듬이 아니라 목록으로 읽힌다.
+    # 블록 값과 무관한 독자 기준이다(블록 기본값이 15자였을 때 독자가 "읽을 수가 없다"고 한 원고가 이 몫을 넘었다).
+    for n in sorted(chapters):
+        sents = [x.strip() for x in re.split(r"(?<=[.?!])\s+", narration_of(chapters[n])) if x.strip()]
+        if len(sents) >= 20:
+            share = sum(1 for x in sents if len(x) <= SHORT_SENT_CHARS) / len(sents)
+            if share >= SHORT_SENT_SHARE:
+                warns.append(f"{n}장 단문 나열 의심: 서술문 {len(sents)}개 중 {share:.0%}가 {SHORT_SENT_CHARS}자 이하. "
+                             f"연속 동작은 이어 쓰고 문장 사이를 잇는다 (reader-check R1·R2)")
+
+    # 6-1b. 리듬 단조 (문체 2원칙): 서술 단락과 서술문의 길이가 고르면 AI 문체처럼 단조롭게 읽힌다.
+    def _cv(xs):
+        m = sum(xs) / len(xs)
+        return (sum((x - m) ** 2 for x in xs) / len(xs)) ** 0.5 / m if m else 0
+    for n in sorted(chapters):
+        paras = [len(q.strip()) for q in re.split(r"\n\s*\n", chapters[n])
+                 if q.strip() and not q.strip().startswith(("#", '"', "\u201c"))]
+        sents = [len(x.strip()) for x in re.split(r"(?<=[.?!])\s+", narration_of(chapters[n])) if x.strip()]
+        why = []
+        if len(paras) >= 8 and _cv(paras) < RHYTHM_PARA_CV:
+            why.append(f"서술 단락 길이 변동계수 {_cv(paras):.2f}")
+        if len(sents) >= 20 and _cv(sents) < RHYTHM_SENT_CV:
+            why.append(f"서술문 길이 변동계수 {_cv(sents):.2f}")
+        if why:
+            warns.append(f"{n}장 리듬 단조: {', '.join(why)}. 한 줄 단락과 긴 단락, 짧은 문장과 긴 문장을 섞는다 (문체 2원칙)")
+
+    # 6-2. 한글로 쓴 수 (reader-check R4). 대사 포함
+    for n in sorted(chapters):
+        hits = korean_numerals(chapters[n])
+        if hits:
+            warns.append(f"{n}장 한글 수 표기 {len(hits)}건 (수량·단위는 아라비아 숫자, 시각·서수는 한글): "
+                         + "; ".join(f"'{h}' …{c}…" for h, c in hits[:3]))
 
     # 7. 사실·인물
     found = [t for t in p["forbidden_disclosures"] if t in body]

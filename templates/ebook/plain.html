@@ -707,6 +707,9 @@
     color: var(--ink-soft);
     letter-spacing: 0.05em;
   }
+  .copyright-note {
+    margin-top: 10px;
+  }
 
   /* 본문 페이지 종이 질감 (옅게) */
   .page-body {
@@ -821,6 +824,15 @@
   /* StPageFlip override */
   .stf__parent { perspective: 2400px; }
   .stf__block { box-shadow: 0 4px 24px var(--shadow); }
+  /* 앞표지·뒤표지처럼 한 쪽만 보일 때: 양면 폭 그림자를 지우고(빈 왼쪽 면처럼 보인다) 그 쪽에만 그림자를 준다. 책은 JS가 반 쪽 옮겨 가운데 둔다 */
+  #book { position: relative; transition: transform 0.35s ease; }
+  #book.single-left .stf__block, #book.single-right .stf__block { box-shadow: none; }
+  #book.single-left::before, #book.single-right::before {
+    content: ''; position: absolute; top: 0; width: 50%; height: 100%;
+    box-shadow: 0 4px 24px var(--shadow); pointer-events: none;
+  }
+  #book.single-right::before { left: 50%; }
+  #book.single-left::before { left: 0; }
   
   /* 책 크기는 JS가 화면에 맞춰 정한다(PAGE_W·PAGE_H). CSS로 축소하지 않는다: 축소하면 쪽 나누기 계산과 실제 크기가 어긋난다 */
   #book-wrap { transform: none; }
@@ -901,6 +913,8 @@
         this.el.addEventListener('click', e => {
           if (e.target.closest('a, button, li[data-page]')) return;
           const r = this.el.getBoundingClientRect();
+          // 표지만 보일 때는 그 쪽 어디를 눌러도 책 안쪽으로 넘긴다 (책이 반 쪽 옮겨져 있어 절반 기준이 맞지 않다)
+          if (this.spread() && this.view(this.cur).length === 1) { this.cur === 0 ? this.flipNext() : this.flipPrev(); return; }
           (e.clientX - r.left < r.width / 2 ? this.flipPrev() : this.flipNext());
         });
         this.render();
@@ -1291,6 +1305,7 @@
         {{ISBN_LINE}}
         {{COPYRIGHT_LINE}}
         <div class="copyright-c">All rights reserved.</div>
+        {{COLOPHON_NOTE_LINE}}
       </div>
     `;
     return makePageEl(html, { cls: 'copyright-page', html: true });
@@ -1526,8 +1541,20 @@
       const pct = total > 1 ? (idx / (total - 1)) * 100 : 0;
       progressBar.style.width = pct + '%';
     }
+    // 양면 보기에서 앞표지(오른쪽 칸)나 뒤표지(왼쪽 칸)만 보이면 책을 반 쪽 옮겨 그 쪽을 화면 가운데 둔다
+    function centerSinglePage() {
+      const book = document.getElementById('book');
+      const idx = pageFlip.getCurrentPageIndex(), n = pageFlip.getPageCount();
+      const portrait = IS_PORTRAIT || (pageFlip.getOrientation && pageFlip.getOrientation() === 'portrait');
+      const side = portrait ? '' : idx === 0 ? 'right' : (idx === n - 1 && n % 2 === 0) ? 'left' : '';
+      book.classList.toggle('single-right', side === 'right');
+      book.classList.toggle('single-left', side === 'left');
+      book.style.transform = side ? 'translateX(' + (side === 'right' ? -PAGE_W / 2 : PAGE_W / 2) + 'px)' : '';
+    }
     pageFlip.on('flip', updateCounter);
+    pageFlip.on('flip', centerSinglePage);
     updateCounter();
+    centerSinglePage();
 
     // 폰트 크기 토글 (s ↔ m ↔ l)
     const FS_STEPS = ['s', 'm', 'l'];
