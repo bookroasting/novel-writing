@@ -8,7 +8,7 @@
 <meta name="author" content="AI ROASTING">
 <meta property="og:type" content="website">
 <meta property="og:title" content="두 번의 방문 · AI ROASTING 단편 소설">
-<meta property="og:description" content="AI가 먼저 판단한 집에, 사람이 직접 찾아갑니다. 『돌봄로봇 1호기』와 『이의신청』.">
+<meta property="og:description" content="AI가 판단한 뒤에야, 사람이 문을 두드립니다. 『돌봄로봇 1호기』와 『이의신청』.">
 <meta property="og:site_name" content="ArgosLab">
 <meta property="og:locale" content="ko_KR">
 <meta name="theme-color" content="#0d0c0b">
@@ -185,6 +185,88 @@ img,svg,canvas{display:block}
 .marquee::after{right:0;background:linear-gradient(-90deg,var(--night),transparent)}
 @keyframes mq{to{transform:translateX(-50%)}}
 
+/* ---------- 책 섹션 예고편: 보기 전환 탭 + 플레이어 ---------- */
+.care{--acc:var(--teal);--acc-rgb:0,171,169;--vt-ink:#f2f2f2;--vt-dim:#9a958f;--vt-mute:#6c6761;--vt-line:rgba(255,255,255,.12);--vt-bg:rgba(255,255,255,.03)}
+.obj{--acc:#c8281e;--acc-rgb:200,40,30;--vt-ink:var(--holo-ink);--vt-dim:#4f4769;--vt-mute:#7d7697;--vt-line:rgba(27,21,48,.16);--vt-bg:rgba(255,255,255,.4)}
+.vtabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:max-content;max-width:100%;gap:4px;padding:4px;margin-bottom:12px;border-radius:999px;border:1px solid var(--vt-line);background:var(--vt-bg)}
+.obj-vis .vtabs{margin-left:auto;margin-right:auto}
+.vtabs button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;line-height:1.6;color:var(--vt-dim);transition:background .35s,color .35s}
+.vtabs button:hover{color:var(--vt-ink)}
+.vtabs button[aria-selected="true"]{background:var(--acc);color:#fff}
+.vtabs svg{width:9px;height:9px}
+.vtabs small{font-family:var(--mono);font-size:11px;font-weight:400;opacity:.75}
+.vstack{display:grid}
+.vstack>.vpanel{grid-area:1/1;min-width:0;transition:opacity .5s var(--ease),visibility 0s}
+.vstack>.vpanel[aria-hidden="true"]{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}
+.tvp{display:flex;flex-direction:column;min-height:0}
+
+.tv{position:relative;isolation:isolate;flex:none}
+.tv .amb{position:absolute;inset:-7% -5%;width:110%;height:114%;z-index:-1;filter:blur(46px) saturate(1.5);opacity:.45;transition:opacity 1s;pointer-events:none}
+.tv:not(.started) .amb{opacity:.15}
+.obj .tv .amb{display:none}
+.frame{position:relative;aspect-ratio:16/9;background:#050505;overflow:hidden;box-shadow:0 30px 70px -34px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.07)}
+.obj .frame{box-shadow:0 30px 60px -30px rgba(27,21,48,.55),0 0 0 1px rgba(27,21,48,.2)}
+.frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#050505}
+.frame .hit{position:absolute;inset:0;z-index:1;cursor:pointer}
+.big-play{position:absolute;left:50%;top:50%;z-index:3;width:clamp(56px,6vw,84px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);display:grid;place-items:center;color:#fff;
+  background:rgba(10,10,10,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);transition:transform .4s var(--ease),background .3s,opacity .3s}
+.big-play svg{width:34%;height:34%;margin-left:6%}
+.big-play:hover{transform:translate(-50%,-50%) scale(1.08);background:var(--acc)}
+.tv.playing .big-play,.tv.ended .big-play{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.8)}
+.unmute{position:absolute;left:14px;top:14px;z-index:3;display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 12px;border-radius:999px;font-size:13px;font-weight:600;color:#fff;
+  background:rgba(10,10,10,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);transition:opacity .4s,transform .4s var(--ease),background .3s}
+.unmute:hover{background:var(--acc)}
+.unmute .eq{display:flex;align-items:flex-end;gap:2px;height:12px}
+.unmute .eq i{width:3px;height:100%;background:currentColor;transform-origin:bottom;animation:eq 1s ease-in-out infinite}
+.unmute .eq i:nth-child(2){animation-delay:-.35s}.unmute .eq i:nth-child(3){animation-delay:-.7s}
+@keyframes eq{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+.tv:not(.playing) .unmute .eq i{animation-play-state:paused}
+.tv.sound .unmute,.tv:not(.started) .unmute,.tv.ended .unmute{opacity:0;pointer-events:none;transform:translateY(-8px)}
+.bar{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;align-items:center;gap:4px;padding:26px 8px 6px;color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.72));transition:opacity .4s,transform .4s var(--ease)}
+.tv.playing:not(:hover):not(:focus-within) .bar{opacity:0;transform:translateY(8px)}
+@media (hover:none){.tv.playing .bar{opacity:1!important;transform:none!important}}
+.bar button{width:34px;height:34px;display:grid;place-items:center;border-radius:6px;flex:none;transition:background .25s}
+.bar button:hover{background:rgba(255,255,255,.12)}
+.bar svg{width:17px;height:17px}
+.bar .time{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:#cfcfcf;min-width:80px;text-align:center;flex:none}
+.ico-pause,.tv.playing .ico-play{display:none}.tv.playing .ico-pause{display:block}
+.ico-on,.tv.sound .ico-off{display:none}.tv.sound .ico-on{display:block}
+.track{position:relative;flex:1;height:22px;cursor:pointer;touch-action:none;outline:none}
+.track::before,.track .fill{content:"";position:absolute;left:0;top:50%;height:3px;margin-top:-1.5px;border-radius:2px}
+.track::before{right:0;background:rgba(255,255,255,.22)}
+.track .fill{width:100%;background:var(--acc);transform-origin:left;transform:scaleX(var(--p,0))}
+.track .knob{position:absolute;top:50%;left:calc(var(--p,0) * 100%);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;transform:scale(0);transition:transform .2s}
+.track:hover .knob,.track:focus-visible .knob,.track.drag .knob{transform:scale(1)}
+.track .tk{position:absolute;top:50%;width:2px;height:9px;margin:-4.5px 0 0 -1px;background:rgba(255,255,255,.55);pointer-events:none}
+.track .tip{position:absolute;bottom:calc(100% + 8px);left:0;transform:translateX(-50%);max-width:240px;padding:6px 10px;font-size:12px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:rgba(10,10,10,.88);border:1px solid rgba(255,255,255,.14);border-radius:4px;opacity:0;pointer-events:none;transition:opacity .2s}
+.track .tip b{font-family:var(--mono);font-weight:400;color:var(--acc);margin-right:8px}
+.track:hover .tip{opacity:1}
+.endcard{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:16px;color:#fff;
+  background:rgba(5,5,5,.8);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .6s var(--ease)}
+.tv.ended .endcard{opacity:1;pointer-events:auto}
+.endcard .k{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:var(--acc)}
+.obj .endcard .k{color:#ff6b5c}
+.endcard h3{font-family:var(--serif);font-weight:900;font-size:clamp(24px,2.6vw,40px);letter-spacing:-.03em;line-height:1.2;margin-bottom:clamp(8px,1.4vw,18px)}
+.end-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.end-actions .btn{background:var(--acc);color:#fff;padding:12px 18px 12px 16px;font-size:14px}
+.end-actions .btn::before{background:#fff}
+.end-actions .btn:hover{color:#111}
+.ghost-btn{padding:12px 16px;border:1px solid rgba(255,255,255,.28);font-size:14px;font-weight:600;transition:background .3s,border-color .3s}
+.ghost-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
+@media (min-width:981px){.vstack>.tvp{contain:size}}
+@media (max-width:980px){
+  .vstack>.vpanel[aria-hidden="true"]{display:none}
+}
+@media (max-width:560px){
+  .vtabs button{padding:7px 13px}
+  .bar .time{display:none}
+  .unmute{left:10px;top:10px;font-size:12px;padding:7px 12px 7px 10px}
+  .endcard h3{font-size:22px;margin-bottom:6px}.endcard .k{display:none}
+  .end-actions .btn,.ghost-btn{padding:9px 12px;font-size:12.5px}
+}
+
 /* ---------- epigraph ---------- */
 .epi{min-height:86svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px var(--gutter);position:relative}
 .epi .rule{width:56px;height:1px;background:currentColor;opacity:.35;margin:0 auto}
@@ -207,7 +289,7 @@ img,svg,canvas{display:block}
 .ghost-num{position:absolute;font-weight:800;font-size:clamp(180px,30vw,460px);line-height:.8;letter-spacing:-.06em;pointer-events:none;user-select:none;color:transparent}
 
 /* ---------- BOOK 01 : care robot ---------- */
-.care{background:var(--char);color:#f2f2f2;overflow:hidden}
+.care{background:var(--char);color:#f2f2f2;overflow:hidden;padding-bottom:calc(clamp(80px,10vw,150px) + 56px)}
 .care .ghost-num{right:-2vw;top:4vw;-webkit-text-stroke:1px rgba(0,171,169,.18);font-family:var(--sans);font-weight:200}
 .care-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(36px,6vw,96px);align-items:start;position:relative;z-index:1}
 .care .sec-head{color:var(--teal)}
@@ -478,12 +560,13 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 @media (min-width:981px){
   .shelf{height:min(46vw,620px,calc(100svh - 250px))}
   .care,.obj,.proc{min-height:100svh;padding-top:84px;padding-bottom:40px;display:flex;flex-direction:column;justify-content:center}
+  .care{padding-bottom:112px} /* 아래 찢어진 종이(.tear)가 47px 겹치므로 검정 여백을 더 둔다 */
   .sec-head{margin-bottom:22px}
 
   /* BOOK 01: 타일 행 높이를 화면 높이에서 계산한다 */
   .care .callout{padding:11px 16px;margin-bottom:12px}
   .care .callout p{font-size:13.5px;line-height:1.55}
-  .care .tiles{grid-auto-rows:calc((100svh - 84px - 40px - 44px - 98px - 24px) / 4)}
+  .care .tiles{grid-auto-rows:calc((100svh - 84px - 112px - 44px - 98px - 24px - 57px) / 4)}
   .care .tile,.care .tile.w2{aspect-ratio:auto}
   .care .tile .ico{min-height:0}
   .care .tile .ico svg{width:auto;height:74%;max-width:62%}
@@ -501,7 +584,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   /* BOOK 02: 머리는 정보 칸 안, 연출은 섹션 높이 안 */
   .obj .masthead+.dbl{margin-bottom:18px}
   .obj h2{font-size:min(7vw,10.5svh);margin:4px 0 18px}
-  .theater{--dw:min(100%,420px,max(250px,calc((100svh - 440px) / 1.3)))}
+  .theater{--dw:min(100%,420px,max(250px,calc((100svh - 497px) / 1.3)))}
 
   /* 만든 방식: 1화면 단계도, 2화면 평가자 */
   .proc h2{font-size:min(5vw,8svh)}
@@ -539,7 +622,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   .hero{grid-template-columns:1fr;padding-top:100px;text-align:left}
   .shelf{height:min(98vw,500px)}
   .care-grid,.obj-grid,.deck-wrap{grid-template-columns:1fr}
-  .obj-grid .theater{order:2}
+  .obj-grid .obj-vis{order:2}
   .pipe{grid-template-columns:1fr;gap:28px;padding-left:72px}
   .pipe::before{left:27px;right:auto;top:0;bottom:0;width:1px;height:auto}
   .pipe .pulse{left:26px;top:0;width:3px;height:18%;background:linear-gradient(transparent,var(--teal),#fff,var(--orchid),transparent);animation-name:pulsev}
@@ -606,8 +689,8 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   <div class="hero-copy">
     <p class="eyebrow"><span class="dot"></span>ArgosLab · 단편 소설 2편 · 웹 e북</p>
     <h1>
-      <span class="ln"><span>AI가 먼저 판단한 집에,</span></span>
-      <span class="ln"><span class="shine">사람이 직접 찾아갑니다.</span></span>
+      <span class="ln"><span>AI가 판단한 뒤에야,</span></span>
+      <span class="ln"><span class="shine">사람이 문을 두드립니다.</span></span>
     </h1>
     <p class="lede">한 집에는 돌봄로봇이 들어왔고, 다른 한 집의 이의신청은 AI가 기각했습니다.<br class="br-wide"> <span class="nb">이 두 단편은</span> <b>AI 에이전트 팀이 설계하고 쓰고 합평했습니다.</b></p>
     <div class="hero-cta">
@@ -807,7 +890,16 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   <div class="sec-head io"><span class="num">BOOK 01</span><span class="line"></span><span>돌봄로봇 1호기</span></div>
 
   <div class="care-grid">
-    <div class="board-wrap">
+    <div class="board-wrap vwrap">
+      <div class="vtabs" role="tablist" aria-label="돌봄로봇 1호기 보기 방식">
+        <button type="button" role="tab" data-show="tv" aria-selected="true"><svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M1 0l9 5-9 5z"/></svg>예고편 <small>0:30</small></button>
+        <button type="button" role="tab" data-show="board" aria-selected="false">사건 보드</button>
+      </div>
+      <div class="vstack">
+      <div class="vpanel tvp" data-panel="tv">
+        <div class="tv" data-reel="care"><div class="frame"><video src="care-robot-unit-1/care-robot-kinetic-30s.mp4" poster="care-robot-unit-1/care-robot-kinetic-30s-poster.jpg" playsinline muted preload="metadata" controls aria-label="돌봄로봇 1호기 예고편"></video></div></div>
+      </div>
+      <div class="vpanel" data-panel="board" aria-hidden="true" inert>
       <div class="callout io" role="note">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00aba9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
         <div><small>호출 메시지 · 화요일 오전 열 시</small><p>“1호 시범 대상 정순임. 한돌봄-01호 6주차 평가에서 거부 의사 표명. 가정 방문 요청.”</p></div>
@@ -871,6 +963,8 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
         <a class="tile w2 cta" style="--i:8" href="care-robot-unit-1/ebook.html">
           <div class="flip"><div class="side"><span class="lbl">e북 펼치기</span><span class="arrow">→</span></div></div>
         </a>
+      </div>
+      </div>
       </div>
     </div>
 
@@ -939,6 +1033,16 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
       <a class="btn btn-red rv" style="--d:.38s" href="objection/ebook.html">e북 펼치기 <span class="ar">→</span></a>
     </div>
 
+    <div class="obj-vis vwrap">
+      <div class="vtabs" role="tablist" aria-label="이의신청 보기 방식">
+        <button type="button" role="tab" data-show="tv" aria-selected="true"><svg viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M1 0l9 5-9 5z"/></svg>예고편 <small>0:15</small></button>
+        <button type="button" role="tab" data-show="scene" aria-selected="false">사건 보드</button>
+      </div>
+      <div class="vstack">
+      <div class="vpanel tvp" data-panel="tv">
+        <div class="tv" data-reel="obj"><div class="frame"><video src="objection/objection-teaser.mp4" poster="objection/objection-teaser-poster.jpg" playsinline muted preload="metadata" controls aria-label="이의신청 예고편"></video></div></div>
+      </div>
+      <div class="vpanel" data-panel="scene" aria-hidden="true" inert>
     <div class="theater" id="theater" aria-label="1장 장면 연출: 결정서 날인">
       <div class="ledboard" aria-hidden="true">
         <div class="r r1"><span>현황판 · 오늘 건수</span><span id="clk">08:30</span></div>
@@ -953,6 +1057,9 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
       <div class="thumbs" id="thumbs" aria-hidden="true"></div>
       <p class="cap hide" id="cap" aria-live="polite"></p>
       <button class="replay" id="replay" type="button">↺ 다시 보기</button>
+    </div>
+      </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1018,6 +1125,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   <div>
     <a href="#top" class="brand" style="border:0" aria-label="AI ROASTING, 맨 위로"><img src="assets/logos/logo1-white-96.png" alt="" width="22" height="22">AI ROASTING</a>
     <p style="margin-top:14px">지은이 AI ROASTING · 발행 ArgosLab · © 2026 ArgosLab</p>
+    <p style="font-size:12px;opacity:.75">『이의신청』 예고편 음악 “The Way Out” Kevin MacLeod (<a href="https://incompetech.com" target="_blank" rel="noopener">incompetech.com</a>) · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></p>
   </div>
 </footer>
 
@@ -1312,7 +1420,166 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
     replay.classList.add('on');
   }
   replay.addEventListener('click', play);
-  new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { o.disconnect(); play(); } }), { threshold: .45 }).observe($('#theater'));
+  /* 예고편 탭이 앞에 있으므로, 연출은 '사건 보드' 탭이 보일 때 시작한다 */
+  const th = $('#theater'); let thOn = false;
+  const startTh = () => { if (!thOn) { thOn = true; play(); } };
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !th.closest('[aria-hidden="true"]')) startTh(); }), { threshold: .45 }).observe(th);
+  th.addEventListener('panel:show', startTh);
+})();
+</script>
+<script>
+/* ---------- 책 섹션 예고편: 보기 전환 탭 + 플레이어 ---------- */
+(() => {
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const REELS = {
+    care: {
+      dur: 30, k: 'BOOK 01 · 5장', title: '돌봄로봇 1호기', href: 'care-robot-unit-1/ebook.html', alt: ['board', '사건 보드 보기'],
+      cues: [
+        [0, '“엄마, 다음 주 일요일에 만나요. 백숙 끓여줘요.”'],
+        [5, '어느 봄, 78세 정순임의 집에 보건복지부 시범사업 돌봄로봇이 들어온다.'],
+        [10, '6주 뒤, 그녀는 로봇을 거부한다.'],
+        [12.5, '5년 전 잃은 외동딸의 목소리가 로봇에서 들려오기 시작했기 때문이다.'],
+        [17.5, '사회복지사 김지윤이 그 집으로 향한다.'],
+        [20, '한 사람의 5년이, 그곳에서 그녀를 기다린다.'],
+        [25, '돌봄로봇 1호기 · 단편 소설']
+      ]
+    },
+    obj: {
+      dur: 15, k: 'BOOK 02 · 4장', title: '이의신청', href: 'objection/ebook.html', alt: ['scene', '사건 보드 보기'],
+      cues: [
+        [0, '2032년, 서울. AI가 판정하고 사람은 도장을 찍는다.'],
+        [3, '하루 200장.'],
+        [4, '“제 점수 말고 제 집을 봐 주세요.”'],
+        [7, '처리기한 마지막 날.'],
+        [8.5, '인주를 묻힌 도장을 종이에 닿기 직전까지 그대로 들고 있었다.'],
+        [10.5, '날인란은 비어 있었다.'],
+        [11.5, '나는 도장을 찍지 않고 서랍을 닫았다.'],
+        [13, '이의신청']
+      ]
+    }
+  };
+  const fmt = s => { s = Math.max(0, Math.floor(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+
+  /* 보기 전환: 예고편 ↔ 사건 보드 */
+  $$('.vwrap').forEach(wrap => {
+    const tabs = $$('.vtabs [role="tab"]', wrap);
+    wrap.vshow = id => {
+      tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.show === id)));
+      $$('.vpanel', wrap).forEach(p => { const on = p.dataset.panel === id; p.setAttribute('aria-hidden', String(!on)); p.inert = !on; });
+      if (id === 'board') { const t = $('#tiles'); t.classList.remove('in'); void t.offsetWidth; t.classList.add('in'); }
+      if (id === 'scene') $('#theater').dispatchEvent(new Event('panel:show'));
+      wrap.dispatchEvent(new CustomEvent('vshow', { detail: id }));
+    };
+    tabs.forEach(b => b.addEventListener('click', () => wrap.vshow(b.dataset.show)));
+  });
+
+  /* 플레이어 */
+  $$('.tv').forEach(tv => {
+    const R = REELS[tv.dataset.reel], v = $('video', tv), frame = $('.frame', tv);
+    const panel = tv.closest('.vpanel'), wrap = tv.closest('.vwrap');
+    v.removeAttribute('controls');
+    tv.insertAdjacentHTML('afterbegin', '<canvas class="amb" width="48" height="27" aria-hidden="true"></canvas>');
+    frame.insertAdjacentHTML('beforeend', `
+      <button class="hit" type="button" aria-label="재생 또는 일시정지"></button>
+      <button class="big-play" type="button" aria-label="예고편 재생"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3l16 9-16 9z"/></svg></button>
+      <button class="unmute" type="button"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>소리 켜고 처음부터</button>
+      <div class="endcard">
+        <span class="k">${R.k}</span><h3>${R.title}</h3>
+        <div class="end-actions">
+          <a class="btn" href="${R.href}">e북 펼치기 <span class="ar">→</span></a>
+          <button class="ghost-btn replay-tv" type="button">↺ 다시 보기</button>
+          <button class="ghost-btn alt-tv" type="button">${R.alt[1]}</button>
+        </div>
+      </div>
+      <div class="bar">
+        <button class="b-play" type="button" aria-label="재생/일시정지"><svg class="ico-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg><svg class="ico-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+        <span class="time">0:00 / ${fmt(R.dur)}</span>
+        <div class="track" role="slider" tabindex="0" aria-label="재생 위치" aria-valuemin="0" aria-valuemax="${R.dur}" aria-valuenow="0"><span class="fill"></span><span class="knob"></span><span class="tip"></span></div>
+        <button class="b-mute" type="button" aria-label="소리 켜기/끄기"><svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z" fill="currentColor"/><path d="M23 9l-6 6M17 9l6 6"/></svg><svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg></button>
+        <button class="b-fs" type="button" aria-label="전체 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+      </div>`);
+
+    const track = $('.track', tv), tip = $('.tip', tv), time = $('.time', tv);
+    const amb = $('.amb', tv), ax = amb.getContext('2d');
+    R.cues.slice(1).forEach(([t]) => { const n = document.createElement('span'); n.className = 'tk'; n.style.left = (t / R.dur * 100) + '%'; track.appendChild(n); });
+    let inView = false, userPaused = false, sound = false, raf = 0, dragging = false;
+    const dur = () => (isFinite(v.duration) && v.duration) || R.dur;
+    const cueAt = t => { let i = 0; while (i + 1 < R.cues.length && t >= R.cues[i + 1][0]) i++; return i; };
+    const shown = () => panel.getAttribute('aria-hidden') !== 'true';
+
+    function paint(t) {
+      const d = dur(), p = Math.min(1, t / d);
+      track.style.setProperty('--p', p);
+      track.setAttribute('aria-valuenow', t.toFixed(1)); track.setAttribute('aria-valuetext', `${fmt(t)} / ${fmt(d)}`);
+      time.textContent = `${fmt(t)} / ${fmt(d)}`;
+    }
+    function drawAmb() { if (v.readyState >= 2) { try { ax.drawImage(v, 0, 0, amb.width, amb.height); } catch (e) {} } }
+    function loop() { paint(v.currentTime); drawAmb(); raf = requestAnimationFrame(loop); }
+    function play() { tv.classList.remove('ended'); tv.classList.add('started'); const p = v.play(); if (p && p.catch) p.catch(() => tv.classList.remove('playing')); }
+    function toggle() {
+      if (v.paused || v.ended) { userPaused = false; if (v.ended) v.currentTime = 0; play(); }
+      else { userPaused = true; v.pause(); }
+    }
+    function unmuteRestart() {
+      sound = true; v.muted = false; tv.classList.add('sound');
+      if (tv.classList.contains('ended') || v.currentTime > .3) v.currentTime = 0;
+      userPaused = false; play();
+    }
+    const autoplay = () => { if (inView && shown() && !RM && !userPaused && !tv.classList.contains('ended')) play(); };
+
+    v.addEventListener('play', () => { tv.classList.add('playing', 'started'); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); });
+    v.addEventListener('pause', () => { tv.classList.remove('playing'); cancelAnimationFrame(raf); paint(v.currentTime); });
+    v.addEventListener('seeked', () => { paint(v.currentTime); drawAmb(); });
+    v.addEventListener('loadeddata', drawAmb);
+    v.addEventListener('loadedmetadata', () => paint(v.currentTime));
+    v.addEventListener('ended', () => { paint(dur()); tv.classList.add('ended'); });
+
+    $('.hit', tv).addEventListener('click', () => { if (!sound && !v.paused) unmuteRestart(); else toggle(); });
+    $('.big-play', tv).addEventListener('click', () => { userPaused = false; play(); });
+    $('.unmute', tv).addEventListener('click', unmuteRestart);
+    $('.b-play', tv).addEventListener('click', toggle);
+    $('.b-mute', tv).addEventListener('click', () => {
+      if (v.muted) { sound = true; v.muted = false; tv.classList.add('sound'); if (v.paused) { userPaused = false; play(); } }
+      else { v.muted = true; tv.classList.remove('sound'); }
+    });
+    $('.b-fs', tv).addEventListener('click', () => {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (frame.requestFullscreen) frame.requestFullscreen();
+      else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+    });
+    $('.replay-tv', tv).addEventListener('click', () => { v.currentTime = 0; userPaused = false; play(); });
+    $('.alt-tv', tv).addEventListener('click', () => wrap.vshow(R.alt[0]));
+    /* 재생 막대: 끌기, 마우스를 올리면 그 시각의 문장을 보여 준다 */
+    const tAt = x => { const r = track.getBoundingClientRect(); return Math.min(1, Math.max(0, (x - r.left) / r.width)) * dur(); };
+    track.addEventListener('pointerdown', e => { dragging = true; track.classList.add('drag'); track.setPointerCapture(e.pointerId); v.currentTime = tAt(e.clientX); paint(v.currentTime); });
+    track.addEventListener('pointermove', e => {
+      const t = tAt(e.clientX), r = track.getBoundingClientRect();
+      tip.innerHTML = `<b>${fmt(t)}</b>${R.cues[cueAt(t)][1]}`;
+      tip.style.left = Math.min(r.width - 60, Math.max(60, e.clientX - r.left)) + 'px';
+      if (dragging) { v.currentTime = t; paint(t); }
+    });
+    const endDrag = () => { dragging = false; track.classList.remove('drag'); };
+    track.addEventListener('pointerup', endDrag); track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('keydown', e => {
+      const step = { ArrowRight: 2, ArrowLeft: -2, ArrowUp: 5, ArrowDown: -5 }[e.key];
+      if (step) { e.preventDefault(); v.currentTime = Math.min(dur(), Math.max(0, v.currentTime + step)); paint(v.currentTime); }
+      if (e.key === 'Home') { e.preventDefault(); v.currentTime = 0; }
+      if (e.key === 'End') { e.preventDefault(); v.currentTime = dur() - .1; }
+    });
+    tv.addEventListener('keydown', e => {
+      if (e.target.closest('a') || (e.target === track && e.key.startsWith('Arrow'))) return;
+      if (e.key === 'k' || (e.key === ' ' && !e.target.closest('button'))) { e.preventDefault(); toggle(); }
+      if (e.key === 'm') $('.b-mute', tv).click();
+      if (e.key === 'f') $('.b-fs', tv).click();
+    });
+
+    /* 화면에 절반 이상 들어오면 소리 없이 재생하고, 벗어나거나 다른 탭으로 바꾸면 멈춘다 */
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; if (inView) autoplay(); else v.pause(); }, { threshold: .55 }).observe(frame);
+    wrap.addEventListener('vshow', e => { if (e.detail === 'tv') autoplay(); else v.pause(); });
+    paint(0);
+  });
 })();
 </script>
 </body>
