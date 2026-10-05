@@ -285,7 +285,7 @@ img,svg,canvas{display:block}
 .cover-edge{position:absolute;inset:0;pointer-events:none;border:1.5px solid rgba(27,21,48,.8)}
 /* 표지 아래쪽과 같은 습기 띠와 연필 수위선 */
 .waterline{position:absolute;left:0;right:0;bottom:0;height:clamp(120px,16vw,220px);pointer-events:none;z-index:0;background:linear-gradient(rgba(74,88,102,0),rgba(74,88,102,.16))}
-.waterline svg{position:absolute;left:var(--gutter);right:var(--gutter);top:34%;width:calc(100% - var(--gutter) * 2);height:6px;overflow:visible}
+.waterline svg{position:absolute;left:var(--gutter);right:var(--gutter);bottom:16px;width:calc(100% - var(--gutter) * 2);height:6px;overflow:visible}
 .waterline path{stroke-dasharray:1600;stroke-dashoffset:1600;transition:stroke-dashoffset 2.6s var(--ease)}
 .waterline.in path{stroke-dashoffset:0}
 .holo-text{background:linear-gradient(135deg,#2b1f63,#3f2a8c 30%,#2f3a86 52%,#6a1f6e 75%,#24173f);-webkit-background-clip:text;background-clip:text;color:transparent}
