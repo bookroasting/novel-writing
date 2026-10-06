@@ -498,6 +498,13 @@ img,svg,canvas{display:block}
 .stat:nth-child(4) b{background:linear-gradient(120deg,var(--teal),#e9c46a 50%,var(--orchid));-webkit-background-clip:text;background-clip:text;color:transparent}
 .pipe{position:relative;margin-top:clamp(70px,8vw,110px);display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .pipe::before{content:"";position:absolute;left:0;right:0;top:27px;height:1px;background:rgba(255,255,255,.14)}
+.conductor{position:relative;z-index:2;background:var(--night);margin-top:clamp(56px,6vw,90px)}
+.conductor .ch{display:flex;align-items:baseline;gap:12px}
+.conductor .ch b{font-size:16px;font-weight:700;color:var(--cream)}
+.conductor .ch code{font-family:var(--mono);font-size:13px;color:var(--teal)}
+.conductor p{margin-top:6px;font-size:13.5px;line-height:1.7;color:#9d968e}
+.conductor::after{content:"";display:block;height:12px;margin-top:14px;border:1px solid rgba(255,255,255,.22);border-bottom:0;border-radius:6px 6px 0 0}
+.conductor+.pipe{margin-top:18px}
 .pipe .pulse{position:absolute;top:26px;left:0;width:18%;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--teal),#fff,var(--orchid),transparent);filter:drop-shadow(0 0 6px rgba(0,171,169,.8));animation:pulse 5.5s var(--ease-io) infinite}
 @keyframes pulse{0%{transform:translateX(-100%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateX(560%);opacity:0}}
 .stage{position:relative}
@@ -506,21 +513,44 @@ img,svg,canvas{display:block}
 .stage code{display:block;font-family:var(--mono);font-size:13px;color:var(--teal);margin-top:20px}
 .stage b{display:block;font-size:16px;font-weight:600;margin-top:4px}
 .stage p{font-size:13px;color:#9d968e;line-height:1.7;margin-top:8px}
+.crew{margin-top:12px}
+.crew .cw,.crew .cr{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12px;color:#d6cfc5}
+.crew .cw:not(:empty)+.cr{margin-top:12px}
+.crew small{flex-basis:100%;display:block}
+.crew .pill{display:inline-flex;align-items:center;height:20px;padding:0 10px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);font-size:11px;font-weight:600;letter-spacing:.02em;color:#d6cfc5}
+.crew .pill.none{border-style:dashed;background:none;color:var(--mute);font-weight:500}
+.crew span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.crew i{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
 .gate{position:absolute;top:18px;left:calc(50% + 34px);transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px}
 .gate i{width:16px;height:16px;transform:rotate(45deg);background:var(--seal);box-shadow:0 0 14px rgba(200,40,30,.7)}
 .gate small{font-family:var(--mono);font-size:10px;color:#f0958c;white-space:nowrap;letter-spacing:.04em}
+.gate .gl{position:relative;display:inline-flex;align-items:center;gap:6px}
+.gate .q{display:inline-grid;place-items:center;height:16px;min-width:22px;padding:0 6px;border-radius:999px;border:1px solid rgba(240,149,140,.55);background:rgba(200,40,30,.16);color:#f0958c;font-family:var(--mono);font-size:10px;font-weight:700;line-height:1;cursor:help;transition:background .2s,color .2s}
+.gate .q:hover,.gate .q:focus-visible{background:#c8281e;color:#fff;outline:none}
+.gate .tip{position:absolute;top:calc(100% + 10px);left:50%;transform:translate(-50%,-4px);width:min(260px,78vw);padding:10px 12px;border-radius:8px;background:#1d1b1a;border:1px solid rgba(255,255,255,.14);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);
+  font-size:12.5px;line-height:1.6;color:#e6e1d8;white-space:normal;text-align:left;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,transform .2s,visibility .2s;z-index:60}
+.gate .gl:hover .tip,.gate .q:focus+.tip{opacity:1;visibility:visible;transform:translate(-50%,0)}
+@media (min-width:981px){.gate .q{position:absolute;left:calc(100% + 6px);top:50%;transform:translateY(-50%)}.gate .q:hover,.gate .q:focus-visible{transform:translateY(-50%)}}
+.gate:hover,.gate:focus-within,.stage:has(.gate:hover),.stage:has(.gate:focus-within){z-index:60}
 .deck-wrap{margin-top:clamp(80px,9vw,130px);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,5vw,80px);align-items:center}
-.deck-wrap h3{font-family:var(--serif);font-size:clamp(26px,3vw,40px);font-weight:700;line-height:1.35;letter-spacing:-.02em}
+.deck-wrap h3{font-family:var(--serif);font-size:clamp(22px,2.3vw,32px);font-weight:700;line-height:1.35;letter-spacing:-.02em}
 .deck-wrap p{color:#a9a29a;font-size:15px;line-height:1.9;margin-top:18px}
 .deck{position:relative;height:clamp(320px,34vw,420px)}
 .card{position:absolute;left:50%;bottom:0;width:clamp(96px,10vw,128px);aspect-ratio:2.5/3.6;border-radius:10px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;
   transform-origin:50% 120%;transform:translateX(-50%) rotate(0deg);transition:transform 1.1s var(--ease),box-shadow .4s;box-shadow:0 18px 30px -16px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.12);
-  background:var(--c);color:var(--fg,#fff);cursor:default}
-.card b{font-family:var(--mono);font-size:clamp(9.5px,.85vw,11px);letter-spacing:.06em;font-weight:600;word-break:break-all}
-.card span{font-size:clamp(10.5px,.95vw,12.5px);line-height:1.4;font-weight:500}
+  background:var(--c);color:var(--fg,#fff);cursor:pointer;border:0;font:inherit;text-align:left;-webkit-tap-highlight-color:transparent}
+.card b{align-self:flex-start;writing-mode:vertical-rl;font-family:var(--serif);font-size:clamp(13px,1.2vw,16px);font-weight:700;letter-spacing:.08em;line-height:1}
+.deck-cap{position:relative;z-index:40;margin-top:clamp(72px,8vw,96px);min-height:5em;text-align:center;font-size:15px;line-height:1.6;color:#a9a29a}
+.deck-cap b{font-family:var(--serif);font-size:20px;color:var(--cream)}
+.deck-cap small{margin-left:8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--mute)}
+.deck-cap span{display:block;margin-top:4px;color:#e6e1d8}
+.deck-cap em{display:block;font-style:normal;font-weight:600;color:var(--cream)}
+.card:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .card::after{content:"";position:absolute;inset:6px;border-radius:6px;border:1px solid currentColor;opacity:.18;pointer-events:none}
-.deck.in .card{transform:translateX(-50%) rotate(calc((var(--i) - 6) * 9.5deg)) translateY(-10px)}
-.deck.in .card:hover{transform:translateX(-50%) rotate(calc((var(--i) - 6) * 9.5deg)) translateY(-46px);z-index:20;box-shadow:0 30px 50px -16px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.3)}
+.deck.in .card{transform:translateX(-50%) rotate(calc((var(--i) - 6.5) * 9deg)) translateY(-10px)}
+.deck.in .card:hover,.deck.in .card.open{transform:translateX(-50%) rotate(calc((var(--i) - 6.5) * 9deg)) translateY(-46px);box-shadow:0 30px 50px -16px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.3)}
+.deck.in .card:hover{z-index:20 !important}
+.deck.in .card.open{z-index:30 !important}
 .repo{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:clamp(70px,8vw,110px);padding:28px 30px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:linear-gradient(120deg,rgba(0,171,169,.08),rgba(176,74,216,.1))}
 .repo code{font-family:var(--mono);font-size:clamp(13px,1.3vw,16px);flex:1;min-width:220px}
 .repo code span{color:var(--mute)}
@@ -618,18 +648,28 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 }
 
 /* ---------- responsive ---------- */
+/* 만든 방식 제목은 데스크톱에서 한 줄로, 설명문은 제목 폭만큼 펼친다 */
+@media (min-width:981px){#how .stats{margin-top:clamp(20px,2.6svh,36px)}#how .stat{padding-top:12px}#how .stat b{font-size:min(5vw,6.5svh)}#how .stat span{margin-top:6px}.conductor{margin-top:clamp(28px,4svh,64px)}.conductor::after{margin-top:14px}.conductor+.pipe{margin-top:18px}.stage code{margin-top:12px}.pipe{row-gap:0}.stage{display:grid;grid-row:span 6;grid-template-rows:subgrid;align-content:start}.crew{display:contents}.crew .cw,.crew .cr{gap:4px 10px;align-content:start}.crew .cw:not(:empty){margin-top:22px}.crew .cr{margin-top:10px}.crew .cw:not(:empty)+.cr{margin-top:10px}.conductor p{margin-top:2px}}
+@media (max-width:980px){.conductor::after{display:none}.conductor+.pipe{margin-top:28px}}
+@media (min-width:981px){#how h2{max-width:none;white-space:nowrap;font-size:min(3.1vw,7svh)}#how .lede2{max-width:none}}
 @media (max-width:980px){
   .hero{grid-template-columns:1fr;padding-top:100px;text-align:left}
   .shelf{height:min(98vw,500px)}
   .care-grid,.obj-grid,.deck-wrap{grid-template-columns:1fr}
   .obj-grid .obj-vis{order:2}
-  .pipe{grid-template-columns:1fr;gap:28px;padding-left:72px}
+  .pipe{grid-template-columns:1fr;gap:72px;padding-left:72px;padding-bottom:56px}
+  .crew{margin-top:22px}
+  .crew .cw,.crew .cr{gap:10px 12px}
+  .stage p{margin-top:10px}
   .pipe::before{left:27px;right:auto;top:0;bottom:0;width:1px;height:auto}
   .pipe .pulse{left:26px;top:0;width:3px;height:18%;background:linear-gradient(transparent,var(--teal),#fff,var(--orchid),transparent);animation-name:pulsev}
   @keyframes pulsev{0%{transform:translateY(-100%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(560%);opacity:0}}
   .stage .node{position:absolute;left:-72px;top:0}
   .stage code{margin-top:0}
-  .gate{top:auto;bottom:-24px;right:auto;left:-72px;transform:translateX(19px);flex-direction:row}
+  .gate{top:auto;bottom:-44px;right:auto;left:-72px;transform:translateX(19px);flex-direction:row}
+  .gate.last .tip{top:auto;bottom:calc(100% + 10px);transform:translateY(4px)}
+  .gate .tip{left:0;transform:translateY(-4px)}
+  .gate .gl:hover .tip,.gate .q:focus+.tip{transform:none}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat:nth-child(2){border-right:0}
   .stat:nth-child(n+3){border-top:1px solid rgba(255,255,255,.08)}
@@ -653,7 +693,9 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   .obj .chaps li:nth-child(3){border-left:0;padding-left:0}
   .chaps li:nth-child(n+4),.obj .chaps li:nth-child(n+3){border-top:1px solid rgba(127,127,127,.2)}
   .card{width:78px;padding:7px;border-radius:7px}
-  .deck.in .card{transform:translateX(-50%) rotate(calc((var(--i) - 6) * 8deg)) translateY(-6px)}
+  .deck.in .card{transform:translateX(-50%) rotate(calc((var(--i) - 6.5) * 7.5deg)) translateY(-6px)}
+  .deck.in .card:hover,.deck.in .card.open{transform:translateX(-50%) rotate(calc((var(--i) - 6.5) * 7.5deg)) translateY(-40px)}
+  .card b{font-size:12px}
   .thumbs{gap:4px}
 }
 @media (min-width:981px) and (max-width:1200px){
@@ -1067,33 +1109,40 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 <!-- ================= PROCESS ================= -->
 <section class="sec proc" id="how" data-nav="dark">
   <div class="sec-head io"><span class="num">HOW</span><span class="line"></span><span>novel-writing</span></div>
-  <h2 class="rv">작가 <span class="t">한 명</span>이 쓰고,<br>평가자 <span class="r">13명</span>이 읽습니다.</h2>
-  <p class="lede2 rv" style="--d:.1s">두 책은 novel-writing이라는 같은 Agent Skill로 만들었습니다. 지휘 에이전트가 다섯 단계를 이끌고, 작가 페르소나 BLACK이 본문을 쓰며, 평가자 13명이 그 원고를 합평합니다. 작가가 내린 결정은 원장에 원문 그대로 기록됩니다. 검사 스크립트 두 개가 단계마다 원고의 분량, 시점, 번역투를 검사하고, 합평 기록과 작가의 결정이 서로 맞는지 대조합니다.</p>
+  <h2 class="rv">에이전트 <span class="t">6명</span>과 서브 에이전트 <span class="r">14명</span>이 함께 소설을 만듭니다.</h2>
+  <p class="lede2 rv" style="--d:.1s">위 두 소설은 novel-writing 스킬로 만들었습니다. 이 스킬에서는 에이전트 6명이 일하는데, 지휘 에이전트 1명이 단계 에이전트 5명을 차례로 부르며 전체 작업을 이끕니다. 각 단계에서 원고를 실제로 쓰고 읽는 것은 색 이름을 하나씩 가진 서브 에이전트 14명입니다.</p>
 
   <div class="stats io" id="stats">
     <div class="stat"><b data-to="1">0</b><span>지휘 에이전트</span></div>
-    <div class="stat"><b data-to="5">0</b><span>단계 서브 에이전트</span></div>
-    <div class="stat"><b data-to="1">0</b><span>작가 페르소나 BLACK</span></div>
-    <div class="stat"><b data-to="13">0</b><span>평가자</span></div>
+    <div class="stat"><b data-to="5">0</b><span>단계 에이전트</span></div>
+    <div class="stat"><b data-to="1">0</b><span>작가 서브 에이전트 블랙</span></div>
+    <div class="stat"><b data-to="13">0</b><span>평가자 서브 에이전트</span></div>
   </div>
 
+  <div class="conductor rv">
+    <div class="ch"><b>지휘 에이전트</b><code>/novel-writing</code></div>
+    <p>지휘 에이전트가 아래 다섯 단계를 차례로 이끌고, 사용자에게 물어볼 것이 생기면 직접 묻고 그 답을 기록합니다.</p>
+  </div>
   <div class="pipe rv">
     <div class="pulse" aria-hidden="true"></div>
-    <div class="stage"><div class="node">01</div><code>storyline</code><b>스토리 합평</b><p>평가자 패널이 스토리 설계도를 합평하고, 작가가 통과본을 확정합니다.</p><div class="gate"><i></i><small>storyline-pass</small></div></div>
-    <div class="stage"><div class="node">02</div><code>research</code><b>자료 조사</b><p>리서치 에이전트가 본문에 필요한 사실과 세계관 자료를 모아 노트로 정리합니다.</p></div>
-    <div class="stage"><div class="node">03</div><code>write</code><b>장면 설계와 초안</b><p>BLACK이 통과본과 리서치 노트를 바탕으로 장면 설계서와 장별 초안을 씁니다.</p><div class="gate"><i></i><small>write-mode</small></div></div>
-    <div class="stage"><div class="node">04</div><code>review</code><b>합평과 수정</b><p>원고는 첫인상 점검, 4인 합평, 외부 리뷰를 거치며 고쳐집니다. 원고가 바뀌지 않으면 다시 채점하지 않습니다.</p></div>
-    <div class="stage"><div class="node">05</div><code>publish</code><b>품질 게이트와 e북</b><p>출판 에이전트가 검증을 통과한 최종본으로 웹 e북과 메타데이터를 만들고 잠급니다.</p></div>
+    <div class="stage"><div class="node">01</div><code>/storyline</code><b>스토리라인 설계</b><p>평가자 패널이 스토리 설계도를 합평하고, 사용자가 통과본을 확정합니다.</p><div class="crew" data-crew="핑크 레드 실버 블루 골드 아이보리 오렌지 올리브 틸 브라운 인디고 버건디"></div><div class="gate"><i></i><span class="gl"><small>storyline-pass</small><button type="button" class="q" aria-label="storyline-pass 설명" aria-describedby="tip-storyline-pass">?</button><span class="tip" role="tooltip" id="tip-storyline-pass">스토리 설계도가 평가를 통과하면, 다음으로 넘어갈지는 사용자가 직접 정합니다. 그대로 확정하고 자료 조사로 넘어갈 수도 있고, 한 번 더 다듬자고 할 수도 있습니다. 사용자가 답하기 전에는 다음 단계로 넘어가지 않습니다.</span></span></div></div>
+    <div class="stage"><div class="node">02</div><code>/research</code><b>자료 조사와 노트 정리</b><p>리서치 에이전트가 본문에 필요한 사실과 세계관 자료를 모아 노트로 정리합니다.</p><div class="crew" data-crew=""></div></div>
+    <div class="stage"><div class="node">03</div><code>/write</code><b>장면 설계와 초안 작성</b><p>작가 블랙이 통과본과 리서치 노트를 바탕으로 장면 설계서와 장별 초안을 씁니다.</p><div class="crew" data-writer="블랙" data-crew=""></div><div class="gate"><i></i><span class="gl"><small>write-mode-selection</small><button type="button" class="q" aria-label="write-mode-selection 설명" aria-describedby="tip-write-mode-selection">?</button><span class="tip" role="tooltip" id="tip-write-mode-selection">초안을 쓰기 전에, 사용자가 원고를 어떻게 받아 볼지 고릅니다. 장마다 확인하면서 쓸 수도 있고, 끝까지 다 쓴 뒤에 한 번에 볼 수도 있습니다.</span></span></div></div>
+    <div class="stage"><div class="node">04</div><code>/review</code><b>원고 리뷰와 수정</b><p>평가자 9명이 원고를 리뷰하고, 작가 블랙이 그 리뷰를 받아 원고를 고칩니다.</p><div class="crew" data-writer="블랙" data-crew="핑크 레드 실버 블루 골드 퍼플 아이보리 오렌지 올리브"></div></div>
+    <div class="stage"><div class="node">05</div><code>/publish</code><b>품질 검사와 e북 출판</b><p>출판 에이전트가 검증을 통과한 최종본으로 웹 e북과 메타데이터를 만들고 잠급니다.</p><div class="crew" data-crew=""></div><div class="gate last"><i></i><span class="gl"><small>quality-check</small><button type="button" class="q" aria-label="quality-check 설명" aria-describedby="tip-quality-check">?</button><span class="tip" role="tooltip" id="tip-quality-check">e북이 나오면 사용자가 최종 결과물을 직접 읽고 평가합니다. 고칠 곳이 있으면 다시 고쳐서 한 번 더 돌리고, 만족하면 여기서 작업을 마칩니다.</span></span></div></div>
   </div>
 </section>
 
 <section class="sec proc proc-2" data-nav="dark" aria-label="평가자">
   <div class="deck-wrap">
     <div class="rv">
-      <h3>평가자 13명은<br>저마다 다른 기준으로 원고를 읽습니다.</h3>
-      <p>일반 독자, 비평가, 외부 편집자, 마케터, 프루프리더, 동료 작가 세 명, 문학평론가가 각자의 기준으로 원고를 평가합니다. 구조와 시점, 감정과 몰입, 문장과 호흡은 전담 카드가 따로 봅니다. 설명이 지나치거나 같은 말을 되풀이한 대목은 PURPLE 루프가 찾아냅니다. 위 단계도의 마름모는 작가가 직접 결정하는 게이트를 표시합니다.</p>
+      <h3>블랙이 쓰고,<br>평가자 13명이 저마다 다른 기준으로 리뷰합니다.</h3>
+      <p>서브 에이전트 14명은 작가 1명과 평가자 13명이며, 저마다 색 이름을 하나씩 씁니다. 13명의 리뷰어는 독자, 출판사 편집자, 마케터, 교정자, 동료 작가, 문학평론가처럼 다양한 관점으로 원고를 꼼꼼히 읽고 점수를 측정합니다.</p>
     </div>
-    <div class="deck io" id="deck" aria-label="평가자 13명"></div>
+    <div>
+      <div class="deck io" id="deck" aria-label="작가 1명과 평가자 13명, 모두 14명"></div>
+      <p class="deck-cap" id="deck-cap" aria-live="polite"></p>
+    </div>
   </div>
 
   <div class="repo rv">
@@ -1267,14 +1316,49 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 
   /* ---------- reviewer deck ---------- */
   const cards = [
-    ['PINK', '일반 독자', '#f2a9c4', '#3a1323'], ['RED', '비평가', '#c8372d'],
-    ['SILVER', '구조·시점·시제', '#bfc3c7', '#1d1f22'], ['BLUE', '감정·몰입·캐릭터', '#2f62d0'], ['GOLD', '문장·호흡·스타일', '#d2a640', '#2b1f05'],
-    ['EDITOR', '외부 편집자', '#efe7d8', '#1d1b1a'], ['MARKETER', '마케터', '#ef8f3a', '#2b1505'], ['PROOF', '프루프리더', '#6c7a5a'],
-    ['WRITER_SF', '장르 동료 작가', '#00aba9'], ['WRITER_SOCIAL', '사회파 동료 작가', '#2d6f6a'], ['WRITER_LITERARY', '문학적 깊이 추구 동료 작가', '#5b4a7a'],
-    ['CRITIC', '문학평론가, 절대 평가', '#2a2623'], ['PURPLE', '연결, 4R 루프', '#7b4fd0']
+    ['블랙', 'BLACK', '작가', '원고를 쓰고, 리뷰를 받으면 다시 고칩니다.', '#171615', '#f4efe6'],
+    ['핑크', 'PINK', '일반 독자', '첫 두 쪽만 읽어 보고 이 책을 살지 말지 정합니다.', '#f2a9c4', '#3a1323'],
+    ['레드', 'RED', '비평가', '이야기가 말이 되는지, 앞뒤가 맞는지 따져 봅니다.', '#c8372d'],
+    ['실버', 'SILVER', '소설 편집자', '지금 누가 이야기하는지, 언제 일어난 일인지 헷갈리는 곳을 찾아냅니다.', '#bfc3c7', '#1d1f22'],
+    ['블루', 'BLUE', '감정 담당', '읽는 사람이 인물에게 마음이 가는지 살핍니다.', '#2f62d0'],
+    ['골드', 'GOLD', '문장 담당', '소리 내어 읽었을 때 문장이 술술 읽히는지 봅니다.', '#d2a640', '#2b1f05'],
+    ['아이보리', 'IVORY', '출판사 편집자', '이 원고를 책으로 낼 수 있는지 보고, 덜어 낼 곳과 빠진 장면을 짚어 줍니다.', '#efe7d8', '#1d1b1a'],
+    ['오렌지', 'ORANGE', '마케터', '이 책을 누구에게 어떻게 팔지 고민하고, 책 소개 문구를 씁니다.', '#ef8f3a', '#2b1505'],
+    ['올리브', 'OLIVE', '교정자', '맞춤법이 틀린 곳, 이름이나 숫자가 잘못 적힌 곳을 잡아냅니다.', '#6c7a5a'],
+    ['틸', 'TEAL', '같은 장르를 쓰는 동료 작가', '장르 설정이 이야기에 자연스럽게 녹아 있는지 봅니다.', '#00aba9'],
+    ['브라운', 'BROWN', '사회 문제를 쓰는 동료 작가', '제도나 사회 현실을 그린 장면이 실제와 맞는지 확인합니다.', '#7a5434'],
+    ['인디고', 'INDIGO', '문학성을 중시하는 동료 작가', '인물을 사건을 굴리는 도구로만 쓰고 있지는 않은지 봅니다.', '#3d3f8f'],
+    ['버건디', 'BURGUNDY', '문학평론가', '누구보다 점수를 짜게 주고, 비슷한 이야기를 더 잘 쓴 작품은 없는지 따집니다.', '#7a1f2b'],
+    ['퍼플', 'PURPLE', '군더더기 담당', '했던 설명을 또 하거나 같은 말을 되풀이하는 문장을 찾아냅니다.', '#7b4fd0']
   ];
-  $('#deck').innerHTML = cards.map(([n, r, c, fg], i) =>
-    `<div class="card" style="--i:${i};--c:${c};${fg ? '--fg:' + fg : ''};z-index:${i}" title="${n}, ${r}"><b>${n}</b><span>${r}</span></div>`).join('');
+  const deck = $('#deck');
+  deck.innerHTML = cards.map(([ko, en, who, what, c, fg], i) =>
+    `<button type="button" class="card" aria-pressed="false" data-i="${i}" style="--i:${i};--c:${c};${fg ? '--fg:' + fg : ''};z-index:${i}"><b>${ko}</b></button>`).join('');
+  // 단계마다 리뷰어 이름을 카드 색 점과 함께 적는다
+  const colorOf = Object.fromEntries(cards.map(([ko, , , , c]) => [ko, c]));
+  document.querySelectorAll('.crew').forEach(el => {
+    const chip = n => `<span><i style="--c:${colorOf[n]}"></i>${n}</span>`;
+    const names = el.dataset.crew.split(' ').filter(Boolean), writer = el.dataset.writer;
+    // 작가 줄과 리뷰어 줄을 따로 두어 데스크톱에서 다섯 단계의 줄 높이를 맞춘다
+    const pill = (t, cls = '') => `<small><b class="pill${cls}">${t}</b></small>`;
+    const cw = writer ? pill('작가 서브 에이전트') + chip(writer) : '';
+    const cr = names.length ? pill(`리뷰어 ${names.length}명`) + names.map(chip).join('') : pill('리뷰어 없음', ' none');
+    el.innerHTML = `<div class="cw">${cw}</div><div class="cr">${cr}</div>`;
+  });
+
+  // 카드를 누르면 그 카드만 올라오고 아래 줄에 역할이 뜬다. 다시 누르면 닫힌다
+  const deckCap = $('#deck-cap');
+  deck.addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (!card) return;
+    const open = !card.classList.contains('open');
+    deck.querySelectorAll('.card.open').forEach(c => { c.classList.remove('open'); c.setAttribute('aria-pressed', 'false'); });
+    if (open) {
+      card.classList.add('open'); card.setAttribute('aria-pressed', 'true');
+      const [ko, en, who, what] = cards[card.dataset.i];
+      deckCap.innerHTML = `<b>${ko}</b><span><em>${who}</em>${what}</span>`;
+    } else deckCap.textContent = '';
+  });
 
   /* ---------- stats count-up ---------- */
   new IntersectionObserver((es, o) => es.forEach(e => {
