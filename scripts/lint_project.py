@@ -244,7 +244,7 @@ def line_of(text, needle):
 
 def headers(txt):
     keys = {"입력": r"^입력:\s*(\S+)", "sha": r"^입력 sha256:\s*([0-9a-f]{64})", "score": r"^판정 점수:\s*([\d.]+)",
-            "reds": r"^남은 🔴:\s*(\d+)", "verdict": r"^판정:\s*(통과|재수정|동결)", "critic": r"^CRITIC:\s*([\d.]+)"}
+            "reds": r"^남은 🔴:\s*(\d+)", "verdict": r"^판정:\s*(통과|재수정|동결)", "critic": r"^(?:BURGUNDY|CRITIC):\s*([\d.]+)"}  # CRITIC은 옛 이름
     out = {}
     for k, pat in keys.items():
         m = re.search(pat, txt, re.M)
@@ -583,9 +583,9 @@ def lint(root, skill_dir=None):
                         short.append(f"남은 🔴 {reds}건")
                     if story and rv["story_panel"] in ("standard", "extended"):
                         if not h["critic"]:
-                            short.append("CRITIC 줄 없음")
+                            short.append("BURGUNDY 줄 없음")
                         elif float(h["critic"]) < rv["story_critic_min"]:
-                            short.append(f"CRITIC {h['critic']} < {rv['story_critic_min']}")
+                            short.append(f"BURGUNDY {h['critic']} < {rv['story_critic_min']}")
                     if short and not ok_waiver("open_red", f.name):
                         emit("pass_threshold", f"{f.name} 통과 판정이 기준 미달: {', '.join(short)} (승인된 open_red waiver 없음)")
                 limit = rv["rounds_before_user_check"]

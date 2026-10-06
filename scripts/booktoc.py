@@ -514,7 +514,7 @@ def lock_line(run, root=ROOT):
 def headers(txt):
     """합평 파일 머리 줄(workflow.md 4.2)."""
     keys = {"입력": r"^입력:\s*(\S+)", "sha": r"^입력 sha256:\s*([0-9a-f]{64})", "score": r"^판정 점수:\s*([\d.]+)",
-            "reds": r"^남은 🔴:\s*(\d+)", "verdict": r"^판정:\s*(통과|재수정|동결)", "critic": r"^CRITIC:\s*([\d.]+)"}
+            "reds": r"^남은 🔴:\s*(\d+)", "verdict": r"^판정:\s*(통과|재수정|동결)", "critic": r"^(?:BURGUNDY|CRITIC):\s*([\d.]+)"}  # CRITIC은 옛 이름
     out = {}
     for k, pat in keys.items():
         m = re.search(pat, txt, re.M)

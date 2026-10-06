@@ -22,8 +22,8 @@
 | 5+ | 미통과 시 라운드 k≥3 | 07_draft-v<k+1> | 08_reader-check-<k>.md → 08_ensemble-<k>.md, 반영본 07_draft-v<k+2>.md |
 | 6 | BLACK 통과 정리 | 최신 draft + 최신 ensemble | 09_draft-final.md |
 | 6P | PURPLE 루프 (Rate → Resolve → Rewrite → Rerate, 마지막에 독자 점검) | 09 | 13_purple-<k>.md, 13_purple-resolve-<k>.md, 13_draft-purple-v<k>.md, 13_reader-check-<k>.md → 09_draft-final.md |
-| 7 | EDITOR | 09 | 10_review-editor.md |
-| 8 | MARKETER, PROOF | 09 | 11_review-marketer.md, 12_review-proofreader.md |
+| 7 | IVORY | 09 | 10_review-editor.md |
+| 8 | ORANGE, OLIVE | 09 | 11_review-marketer.md, 12_review-proofreader.md |
 | 9 | BLACK 최종 수정 | 09 + 10 + 12 | 09_draft-final.md (직전본은 09_draft-final_pre9.md) |
 
 1~9 모든 단계는 끝날 때 원장에 `stage: review-<단계> done <날짜>`를 남긴다(리뷰 단계 포함). 6P는 `stage: review-purple done`이다. 이어하기는 이 줄로 판정한다. publish 단계가 남긴 `reopen: review-9 <사유>`가 있으면 9단계부터, `reopen: review-purple <사유>`가 있으면 6P부터 다시 하고 7~9단계도 다시 거친다. 원장 기록이 없을 때만 파일 존재로 판단한다. 9단계 완료는 원장 `stage: review done`으로만 판정한다(09 파일은 6단계에도 생기므로).
@@ -33,9 +33,9 @@
 - PINK 단독 첫인상: 첫 두 페이지가 작품의 절반이다. 합평 전에 도입과 호흡을 먼저 잡는다.
 - 합평 두 라운드: 한 번만 하면 1라운드 🔴를 고친 효과를 검증할 수 없다.
 - 독자 점검을 합평보다 먼저: 카드는 설계도와 맞춰 읽어서, 설계도를 모르는 독자가 멈추는 자리(호칭, 숫자, 압축한 비유, 메모의 뜻)를 놓친다. 점수가 통과선을 넘어도 독자가 멈추는 원고는 통과가 아니다.
-- PURPLE 루프는 합평 통과 뒤, 외부 리뷰 앞: 합평 중에 돌리면 4인 합평의 🔴(사실, 시점, 문체)와 같은 문장을 두 번 고치게 된다. 루프는 문장을 많이 덜어 내므로, EDITOR와 PROOF가 덜어 낸 뒤의 원고를 봐야 교정이 다시 깨지지 않는다.
-- EDITOR는 합평 뒤: 시장 시각이 작품 내부 평가에 섞이지 않게 한다.
-- MARKETER는 본문 미반영(publish 입력), PROOF는 9단계 수정에 반영.
+- PURPLE 루프는 합평 통과 뒤, 외부 리뷰 앞: 합평 중에 돌리면 4인 합평의 🔴(사실, 시점, 문체)와 같은 문장을 두 번 고치게 된다. 루프는 문장을 많이 덜어 내므로, IVORY와 OLIVE가 덜어 낸 뒤의 원고를 봐야 교정이 다시 깨지지 않는다.
+- IVORY는 합평 뒤: 시장 시각이 작품 내부 평가에 섞이지 않게 한다.
+- ORANGE는 본문 미반영(publish 입력), OLIVE는 9단계 수정에 반영.
 
 ### 장편 (`structure_mode: "part"`)
 
@@ -50,7 +50,7 @@
 
 ## 3. 리뷰 단계 공통 (1·3·5·7·8)
 
-0. **머리 줄**. 합평 라운드(3·5·5+)는 `입력`, `입력 sha256`, `판정 점수`(4인 평균), `남은 🔴`, `판정: 통과|재수정|동결`을, 한 번만 하는 리뷰(1 PINK, 7 EDITOR, 8 MARKETER·PROOF)는 `입력`, `입력 sha256` 두 줄을 파일 맨 위에 둔다(workflow.md 4.2).
+0. **머리 줄**. 합평 라운드(3·5·5+)는 `입력`, `입력 sha256`, `판정 점수`(4인 평균), `남은 🔴`, `판정: 통과|재수정|동결`을, 한 번만 하는 리뷰(1 PINK, 7 IVORY, 8 ORANGE·OLIVE)는 `입력`, `입력 sha256` 두 줄을 파일 맨 위에 둔다(workflow.md 4.2).
 0.5. **처음 읽는 독자 점검 먼저** (합평 라운드만). `<스킬>/references/reader-check.md`를 따른다. 서브 에이전트를 쓸 수 있으면 지휘가 이 점검만 하는 새 호출을 연다(목적: `reader-check <입력 파일>`). 그 호출은 입력 원고와 reader-check.md만 읽고 storyline, outline, 리서치 노트, book-toc 인물 서술, 이전 합평을 열지 않는다. 산출물은 `06_reader-check-1.md`(1라운드), `08_reader-check-<k>.md`(라운드 k)이고 재독 로그를 반드시 담는다. 입력이 앞선 라운드와 같아 동결하는 라운드는 점검도 하지 않는다. 합평을 맡은 호출은 그 라운드의 reader-check 파일이 없으면 채점하지 않고 돌아가 `다음:`에 "reader-check <입력 파일> 새 호출 필요"라고 적는다.
 1. **점수 동결 먼저** (합평 라운드만, workflow.md 4.2). 입력 sha256이 앞선 어느 합평 입력과 같으면 채점하지 않는다. 산출물에 `점수 동결` 한 줄과 같은 입력이던 라운드의 점수만 쓰고 원장에 `freeze:`를 남긴다.
 2. 다르면 `## 바뀐 자리` 섹션(2라운드부터 필수). 점수를 올리는 카드는 바뀐 자리를 근거로 인용한다.
@@ -88,16 +88,16 @@
 
 ## 6. 7·8단계, 외부 리뷰
 
-- EDITOR → `10_review-editor.md`
-- MARKETER → `11_review-marketer.md`. 카드 출력 형식의 세 블록(`### 판매 카피 초안 (publish 입력)`, `### 검색 키워드 후보 (publish 입력)`, `### 단편집 묶음 추천`)을 반드시 포함. 정본에 없는 수상, 판매량, 평점, 추천인 실명을 쓰지 않는다.
-- PROOF → `12_review-proofreader.md`
+- IVORY → `10_review-editor.md`
+- ORANGE → `11_review-marketer.md`. 카드 출력 형식의 세 블록(`### 판매 카피 초안 (publish 입력)`, `### 검색 키워드 후보 (publish 입력)`, `### 단편집 묶음 추천`)을 반드시 포함. 정본에 없는 수상, 판매량, 평점, 추천인 실명을 쓰지 않는다.
+- OLIVE → `12_review-proofreader.md`
 
 ## 7. 9단계, 최종 수정
 
 1. 09를 `09_draft-final_pre9.md`로 복사해 둔다.
-2. EDITOR와 PROOF 지적을 반영한다(MARKETER는 반영하지 않는다).
+2. IVORY와 OLIVE 지적을 반영한다(ORANGE는 반영하지 않는다).
 3. 검증기를 돌린다: `python3 <스킬>/scripts/validate_draft.py --run <run>` (단편·장편 최종본을 알아서 고른다). FAIL 0이어야 한다.
-4. MANUAL 항목(주술 호응, 위트 횟수·출처, 감정 직접 노출, 장 마지막 줄, 처음 읽는 독자 점검)은 PROOF·GOLD 결과와 마지막 reader-check로 확인했다고 원장에 한 줄씩 남긴다. 9단계에서 고친 문단은 reader-check.md R1~R9·R12로 다시 훑는다. 검증기의 `한글 수 표기`·`단문 나열` WARN은 고치거나 남긴 이유를 한 줄 적는다.
+4. MANUAL 항목(주술 호응, 위트 횟수·출처, 감정 직접 노출, 장 마지막 줄, 처음 읽는 독자 점검)은 OLIVE·GOLD 결과와 마지막 reader-check로 확인했다고 원장에 한 줄씩 남긴다. 9단계에서 고친 문단은 reader-check.md R1~R9·R12로 다시 훑는다. 검증기의 `한글 수 표기`·`단문 나열` WARN은 고치거나 남긴 이유를 한 줄 적는다.
 5. 원장에 `stage: review done <날짜>`.
 
 9단계 이후 09에 어떤 섹션도 덧붙이지 않는다. 덧붙일 것이 있으면 블록을 고치고 7단계부터 다시 거친다.

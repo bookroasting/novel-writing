@@ -1,6 +1,6 @@
 ---
 name: novel-writing-review
-description: "초안을 PINK 첫인상, 처음 읽는 독자 점검(reader-check)과 RED·SILVER·BLUE·GOLD 합평, PURPLE 4R 루프(설명충·중언부언), EDITOR·MARKETER·PROOF 외부 리뷰, 최종 수정 사이클로 다듬는다. 원고가 바뀌지 않으면 채점하지 않는다. novel-writing 스킬의 review 단계를 맡는다."
+description: "초안을 PINK 첫인상, 처음 읽는 독자 점검(reader-check)과 RED·SILVER·BLUE·GOLD 합평, PURPLE 4R 루프(설명충·중언부언), IVORY·ORANGE·OLIVE 외부 리뷰, 최종 수정 사이클로 다듬는다. 원고가 바뀌지 않으면 채점하지 않는다. novel-writing 스킬의 review 단계를 맡는다."
 tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 

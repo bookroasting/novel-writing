@@ -69,7 +69,7 @@
 
 ### 4.2 점수 동결 (의례 방지)
 
-채점하는 합평 파일(스토리 `00b~`, 본문 `06`, `08`, `08_ensemble-<k>`, 장편 부 단위 합평)은 머리에 아래 줄들을 둔다. 린터가 이 줄로 모든 라운드를 검사한다. 한 번만 하는 리뷰(PINK `04`, EDITOR `10`, MARKETER `11`, PROOF `12`)는 라운드가 아니라서 동결 대상이 아니다. 이 파일들은 `입력`과 `입력 sha256` 두 줄만 둔다.
+채점하는 합평 파일(스토리 `00b~`, 본문 `06`, `08`, `08_ensemble-<k>`, 장편 부 단위 합평)은 머리에 아래 줄들을 둔다. 린터가 이 줄로 모든 라운드를 검사한다. 한 번만 하는 리뷰(PINK `04`, IVORY `10`, ORANGE `11`, OLIVE `12`)는 라운드가 아니라서 동결 대상이 아니다. 이 파일들은 `입력`과 `입력 sha256` 두 줄만 둔다.
 
 ```
 입력: <같은 폴더 안의 입력 파일명>
@@ -77,7 +77,7 @@
 판정 점수: X.XX                    (스토리는 패널 점수, 본문은 4인 평균)
 남은 🔴: N
 판정: 통과 | 재수정 | 동결
-CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 있을 때만)
+BURGUNDY: X.XX                       (스토리 합평이고 패널에 BURGUNDY가 있을 때만)
 ```
 
 린터는 `판정: 통과`인 파일의 점수를 run 스냅샷의 통과선(`review.story_pass`, `review.body_pass`, `review.story_critic_min`)과 비교하고 `남은 🔴: 0`을 확인한다. 미달이면 승인된 `open_red` waiver가 있을 때만 통과로 인정한다.
@@ -90,18 +90,18 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 ### 4.3 스토리 합평 점수 (storyline 단계)
 
 1. 카드 점수 = 그 카드의 5축 점수를 카드별 축 가중치(`reviewers.md`)로 가중 평균한 값.
-2. 패널 점수 = Σ(w × 카드 점수) / Σw. w는 모두 1, PROOF만 `review.story_proof_weight`.
+2. 패널 점수 = Σ(w × 카드 점수) / Σw. w는 모두 1, OLIVE만 `review.story_proof_weight`.
 3. BLACK은 패널에 넣지 않는다. 00a 자기 검토 점수는 따로 보고한다.
 4. 통과 조건은 셋을 모두 만족할 때다.
    - 패널 점수 ≥ `review.story_pass`
-   - CRITIC이 패널에 있으면 CRITIC 카드 점수 ≥ `review.story_critic_min`
+   - BURGUNDY가 패널에 있으면 BURGUNDY 카드 점수 ≥ `review.story_critic_min`
    - 남은 🔴 0건
 5. 패널 구성은 블록의 `review.story_panel`로 정한다.
 
 | story_panel | 패널 카드 |
 |---|---|
-| lite | PINK, RED, SILVER, BLUE, GOLD, EDITOR, MARKETER, PROOF |
-| standard | lite + WRITER_SF, WRITER_SOCIAL, WRITER_LITERARY, CRITIC |
+| lite | PINK, RED, SILVER, BLUE, GOLD, IVORY, ORANGE, OLIVE |
+| standard | lite + TEAL, BROWN, INDIGO, BURGUNDY |
 | extended | standard + 사용자 지정 게스트 (게스트 카드 점수도 `review.story_critic_min` 이상) |
 
 통과선은 패널 구성과 무관하게 같다.
@@ -149,9 +149,9 @@ CRITIC: X.XX                       (스토리 합평이고 패널에 CRITIC이 �
 | `08_ensemble-<k>.md` | review 단계 | k≥3 라운드 합평. 입력은 `07_draft-v<k+1>.md` |
 | `08_reader-check-<k>.md` | review 단계 | 라운드 k(≥2)의 독자 점검. 입력은 그 라운드 합평과 같다 |
 | `09_draft-final.md` | review 단계 6·9 | 합평 통과본. 9단계 직전 버전은 `09_draft-final_pre9.md`로 남긴다 |
-| `10_review-editor.md` | review 단계 7 | EDITOR |
-| `11_review-marketer.md` | review 단계 8 | MARKETER (본문 미반영, publish 입력) |
-| `12_review-proofreader.md` | review 단계 8 | PROOF |
+| `10_review-editor.md` | review 단계 7 | IVORY |
+| `11_review-marketer.md` | review 단계 8 | ORANGE (본문 미반영, publish 입력) |
+| `12_review-proofreader.md` | review 단계 8 | OLIVE |
 | `13_purple-<k>.md`, `13_purple-resolve-<k>.md`, `13_draft-purple-v<k>.md`, `13_reader-check-<k>.md` | review 단계 6P, 출판 뒤 수정 | PURPLE 루프(purple-loop.md 3절). v0은 루프 입력 사본 |
 
 라운드 k의 입력 버전은 항상 v<k+1>이다: 1라운드 v2, 2라운드 v3, 3라운드 v4.

@@ -19,7 +19,7 @@ from booktoc import (require_run, ROOT, DEFAULT_TOC, load_params, heading, lates
                      strip_quotes, outline, final_draft_name, run_params, back_headings, doc_order)
 
 MANUAL = [
-    "주술 호응 (BLACK 9원칙 9번). 정규식으로 판정할 수 없다. PROOF 리뷰로 확인",
+    "주술 호응 (BLACK 9원칙 9번). 정규식으로 판정할 수 없다. OLIVE 리뷰로 확인",
     "위트 횟수와 출처 분포, zero_zones 위트 0회 (9원칙 4번). GOLD 카운트로 확인",
     "감정의 직접 노출 (9원칙 6번). GOLD 리뷰로 확인",
     "각 장 마지막 한 줄이 동작·사물로 닫힘 (9원칙 3번). 아래 '장 마지막 줄' 목록을 눈으로 확인",

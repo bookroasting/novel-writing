@@ -12,7 +12,7 @@
   "genre": "<장르, 예: SF, 가족 드라마, 미스터리. 평가자 카드가 동료 작가와 시장을 고를 때 쓴다>",
   "genre_label": "<표지·메타에 쓸 장르 표기, 예: 단편 소설, 중편 SF>",
   "base_year": 2026,
-  "target_reader": "<대상 독자 한두 문장. PINK·MARKETER 카드가 그대로 쓴다>",
+  "target_reader": "<대상 독자 한두 문장. PINK·ORANGE 카드가 그대로 쓴다>",
   "narrator": {
     "name": "<화자 이름>",
     "person": 1
@@ -140,7 +140,7 @@
 
 | 키 | 뜻 | 누가 쓰나 |
 |---|---|---|
-| `genre` | 장르 이름(SF, 가족 드라마 등). WRITER_SF(장르 동료 작가)·MARKETER·PINK 카드가 읽는다. `genre_label`은 표지·메타에 찍는 표기 | storyline, review |
+| `genre` | 장르 이름(SF, 가족 드라마 등). TEAL(장르 동료 작가)·ORANGE·PINK 카드가 읽는다. `genre_label`은 표지·메타에 찍는 표기 | storyline, review |
 | `characters` | 본문에 반드시 나올 이름·호칭. 1인칭 화자의 이름은 대사로 불릴 때만 본문에 나오므로, 본문에 이름이 안 나오는 작품이면 넣지 않는다 | 검증기 |
 | `publish.ebook.description`, `og_description` | e북 메타 소개문. `og_description`을 비우면 `description`을 쓴다 | e북 생성기 |
 | `publish.ebook.cover_copy`, `synopsis` | e북 표지 한 줄 문구, 뒤표지 소개(줄 목록, 빈 문자열은 빈 줄) | e북 생성기 |
@@ -156,8 +156,8 @@
 | `wit` | 장당 위트 횟수 범위와 0회 구역 | write, GOLD |
 | `review.story_panel` | `lite` / `standard` / `extended` (`<스킬>/references/workflow.md` 4.3) | storyline |
 | `base_year` | 작품 안의 기준 연도. 리서치와 본문 연도 표기가 따른다 | research, write |
-| `review.story_critic_min` | 스토리 패널에 CRITIC이 있을 때 CRITIC 카드 점수 하한 | storyline, 린터 |
-| `review.story_proof_weight` | 스토리 패널 점수에서 PROOF 카드의 가중치(0~1) | storyline |
+| `review.story_critic_min` | 스토리 패널에 BURGUNDY가 있을 때 BURGUNDY 카드 점수 하한 | storyline, 린터 |
+| `review.story_proof_weight` | 스토리 패널 점수에서 OLIVE 카드의 가중치(0~1) | storyline |
 | `review.rounds_before_user_check` | 이 라운드를 넘기기 전 사용자에게 계속할지 묻는다 | storyline, review, 린터 |
 | `style.*` | 문체 9원칙의 숫자(문장 평균 길이, 단락 줄 수)와 금지 목록(번역투, 클리셰). em dash·불릿·`**`는 forbid 고정 | write, 검증기 |
 | `style.avg_sentence_chars_max` | 서술문 한 문장의 평균 글자 수 상한. 기본 22. 예전 기본 15는 한 문장에 한 동작씩 끊는 단문 나열을 낳아 독자가 "읽을 수가 없다"고 한 실패가 있어 올렸다. 평균이 이 값의 1.5배를 넘으면 검증기가 WARN을 낸다. 이 값과 별도로, 12자 이하 서술문이 한 장의 20% 이상이면 `단문 나열` WARN이 뜬다 | write, GOLD, 검증기 |
