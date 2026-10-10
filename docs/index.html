@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>두 번의 방문 · AI ROASTING</title>
-<meta name="description" content="『돌봄로봇 1호기』와 『이의신청』은 AI 에이전트 팀이 설계하고 쓰고 합평한 단편 소설입니다. 두 편 모두 웹 e북으로 바로 읽을 수 있습니다.">
+<title>세 번의 방문 · AI ROASTING</title>
+<meta name="description" content="『돌봄로봇 1호기』, 『이의신청』, 『복원』은 AI 에이전트 팀이 설계하고 쓰고 합평한 단편 소설입니다. 세 편 모두 웹 e북으로 바로 읽을 수 있습니다.">
 <meta name="author" content="AI ROASTING">
 <meta property="og:type" content="website">
-<meta property="og:title" content="두 번의 방문 · AI ROASTING 단편 소설">
-<meta property="og:description" content="AI가 판단한 뒤에야, 사람이 문을 두드립니다. 『돌봄로봇 1호기』와 『이의신청』.">
+<meta property="og:title" content="세 번의 방문 · AI ROASTING 단편 소설">
+<meta property="og:description" content="AI가 판단한 뒤에야, 사람이 문을 두드립니다. 『돌봄로봇 1호기』, 『이의신청』, 『복원』.">
 <meta property="og:site_name" content="ArgosLab">
 <meta property="og:locale" content="ko_KR">
 <meta name="theme-color" content="#0d0c0b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0b'/%3E%3Crect x='6' y='6' width='9' height='20' fill='%2300aba9'/%3E%3Crect x='17' y='6' width='9' height='20' fill='%23b04ad8'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0c0b'/%3E%3Crect x='4' y='6' width='7' height='20' fill='%2300aba9'/%3E%3Crect x='12.5' y='6' width='7' height='20' fill='%23b04ad8'/%3E%3Crect x='21' y='6' width='7' height='20' fill='%233a8ad6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -39,6 +39,14 @@
   --red-deep:#9c2e22;
   --cream:#efe9df;
   --mute:#8f8a84;
+  --ledger:#efe7da;
+  --ledger-ink:#24211e;
+  --ledger-soft:#6c635a;
+  --ledger-rule:#c4ae95;
+  --ledger-deep:#a88f75;
+  --signal:#3a8ad6;
+  --signal-hi:#6db4f5;
+  --kitchen:#121920;
   --sans:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   --serif:'Noto Serif KR','Nanum Myeongjo',AppleMyungjo,Batang,serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -110,7 +118,7 @@ img,svg,canvas{display:block}
 .hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(40px,4.7vw,84px);line-height:1.08;letter-spacing:-.035em;margin:22px 0 26px}
 .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}
 .hero h1 .ln{white-space:nowrap}
-@media (max-width:560px){.hero h1{font-size:8.3vw}.hero .scroll-cue{display:none}}
+@media (max-width:560px){.hero h1{font-size:8.3vw}.hero .scroll-cue{display:none}.hero-cta{display:flex;flex-wrap:wrap;gap:8px}.hero-cta .pill{padding:10px 14px;font-size:13px;gap:8px;white-space:nowrap}}
 .hero h1 .ln>span{display:inline-block;transform:translateY(110%);animation:rise 1.2s var(--ease) forwards}
 .hero h1 .ln:nth-child(2)>span{animation-delay:.14s}
 @keyframes rise{to{transform:none}}
@@ -128,22 +136,24 @@ img,svg,canvas{display:block}
 .pill .sq{width:9px;height:9px}
 .pill.t .sq{background:var(--teal)}
 .pill.r .sq{background:var(--seal)}
+.pill.b .sq{background:var(--signal);border-radius:50%}
 
 .shelf{position:relative;height:clamp(420px,46vw,620px);perspective:1800px;opacity:0;animation:fade 1.6s var(--ease) .3s forwards}
 .shelf .book{position:absolute;top:50%}
-.shelf .book.b1{left:6%;transform:translateY(-56%)}
-.shelf .book.b2{right:4%;transform:translateY(-44%)}
-.floor{position:absolute;left:8%;right:8%;bottom:6%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)}
+.shelf .book.b1{left:0;transform:translateY(-60%)}
+.shelf .book.b2{left:calc(50% - var(--w) / 2);transform:translateY(-44%)}
+.shelf .book.b3{right:0;transform:translateY(-54%)}
 .scroll-cue{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--mute)}
 .scroll-cue i{width:1px;height:46px;background:linear-gradient(var(--cream),transparent);transform-origin:top;animation:drip 2.2s var(--ease-io) infinite}
 @keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
 /* ---------- 3D book ---------- */
-.book{--w:230px;--h:360px;--d:30px;--ry:-24deg;--rx:4deg;--lift:0px;width:var(--w);height:var(--h);display:block;cursor:pointer}
+.book{--w:204px;--h:320px;--d:26px;--ry:-24deg;--rx:4deg;--lift:0px;width:var(--w);height:var(--h);display:block;cursor:pointer}
 .book-3d{position:relative;width:100%;height:100%;transform-style:preserve-3d;
   transform:translateY(calc(var(--lift) * -1)) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .9s var(--ease)}
 .book .float{width:100%;height:100%;transform-style:preserve-3d;animation:bob 7s ease-in-out infinite}
 .book.b2 .float{animation-delay:-3.5s}
+.book.b3 .float{animation-delay:-1.75s}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 .face{position:absolute;left:0;top:0;width:var(--w);height:var(--h);backface-visibility:hidden}
 .front{transform:translateZ(calc(var(--d) / 2));border-radius:1px 4px 4px 1px;overflow:hidden;box-shadow:inset 3px 0 6px rgba(0,0,0,.25)}
@@ -160,11 +170,20 @@ img,svg,canvas{display:block}
   transform:rotateX(90deg) translateZ(calc(var(--h) / 2 - 3px));background:repeating-linear-gradient(0deg,#f7f2e9 0 1px,#ddd5c6 1px 2px)}
 .book-shadow{position:absolute;left:8%;right:-6%;bottom:-46px;height:36px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.65),transparent);filter:blur(6px);transition:transform .9s var(--ease),opacity .9s;animation:shadowbob 7s ease-in-out infinite}
 .book.b2 .book-shadow{animation-delay:-3.5s}
+.book.b3 .book-shadow{animation-delay:-1.75s}
 @keyframes shadowbob{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(.88);opacity:.6}}
 .b-care .spine{background:#151515;color:#f2f2f2}
 .b-care .back{background:#1a1a1a}
 .b-obj .spine{background:linear-gradient(180deg,#efe6ff,#d3f3f7 30%,#fbe0f0 55%,#e8e8f0 78%,#dfe3ff);color:var(--holo-ink);font-family:var(--serif);font-weight:700}
 .b-obj .back{background:#120f1a}
+.b-res .spine{background:linear-gradient(90deg,#e4d9c8,#efe7da 40%,#e7dccb);color:var(--ledger-ink);font-family:var(--serif);font-weight:700}
+.b-res .back{background:var(--kitchen)}
+.b-res .front .rsf{font-family:var(--serif)}
+.b-res .front .rss{font-family:var(--sans)}
+.b-res .front .rh{font-family:var(--hand)}
+/* 새록의 테두리 빛: e북 표지와 같이 천천히 한 바퀴 돈다 */
+.ring-sweep{animation:ring-sweep 9s linear infinite}
+@keyframes ring-sweep{to{transform:rotate(360deg)}}
 .book-label{position:absolute;left:0;right:0;top:calc(100% + 54px);text-align:center;font-size:12px;color:var(--mute);letter-spacing:.06em;transition:color .4s}
 .book-label b{display:block;font-family:var(--serif);font-size:16px;color:var(--cream);letter-spacing:0;margin-top:2px}
 .shelf:hover .book:not(:hover){filter:brightness(.6) saturate(.8)}
@@ -179,6 +198,7 @@ img,svg,canvas{display:block}
 .marquee .row span{font-family:var(--serif);font-size:clamp(20px,2.6vw,34px);font-weight:500;white-space:nowrap;padding:0 28px;display:inline-flex;align-items:center;gap:56px}
 .marquee .row span::after{content:"";width:10px;height:10px;background:var(--teal);flex:none}
 .marquee .row span:nth-child(even)::after{background:var(--seal)}
+.marquee .row span.s3::after{background:var(--signal);border-radius:50%}
 .marquee .row.rev span{font-family:var(--sans);font-weight:200;letter-spacing:-.01em}
 .marquee::before,.marquee::after{content:"";position:absolute;top:0;bottom:0;width:12vw;z-index:2;pointer-events:none}
 .marquee::before{left:0;background:linear-gradient(90deg,var(--night),transparent)}
@@ -477,8 +497,98 @@ img,svg,canvas{display:block}
 .replay.on{opacity:1;pointer-events:auto}
 .replay:hover{background:rgba(29,27,26,.06)}
 
-/* ---------- epigraph 3 transition (ink) ---------- */
-.inkfall{background:#1f1c1a;color:#efe7da}
+/* ---------- epigraph 3 + BOOK 03 : restoration ---------- */
+/* 제사: 불 꺼진 부엌, 식탁 위 스피커의 푸른 테두리, 엄마의 가사 없는 허밍 (e북 뒤표지와 같은 장면) */
+.epi-3{color:#e6dccd;background:radial-gradient(42% 36% at 50% 26%,rgba(58,138,214,.16),transparent 70%),var(--kitchen);overflow:hidden}
+.epi-3 .spk{position:relative;width:58px;height:58px;margin:0 auto 26px;border-radius:50%;background:#18222c}
+.epi-3 .spk svg{position:absolute;inset:-8px;width:74px;height:74px;overflow:visible}
+.epi-3 .hum{display:block;width:min(560px,86vw);height:56px;margin:0 auto 34px;overflow:visible}
+.epi-3 .hum path{stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 3.2s var(--ease) .3s}
+.epi-3.in .hum path{stroke-dashoffset:0}
+.epi-3 .hum-note{display:block;font-size:12px;letter-spacing:.04em;color:#7fb8ee;margin:-22px 0 30px}
+.epi-3 .hum-note::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#5aa6ee;margin-right:8px;vertical-align:2px}
+
+.rest{color:var(--ledger-ink);overflow:hidden;color-scheme:light;background-color:var(--ledger);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .34 0 0 0 0 .24 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    radial-gradient(90% 80% at 50% 45%,transparent 60%,rgba(184,154,116,.22))}
+.rest .ghost-num{right:-2vw;bottom:-3vw;-webkit-text-stroke:1px rgba(168,143,117,.32);font-family:var(--serif);font-weight:700}
+.rest .sec-head{color:var(--ledger-deep)}
+.rest-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(36px,6vw,96px);align-items:start;position:relative;z-index:1}
+.rest h2{font-family:var(--serif);font-weight:700;font-size:clamp(84px,12vw,170px);line-height:.96;letter-spacing:.14em;margin:14px 0 26px;position:relative;display:inline-block}
+.rest h2 .ring-mini{position:absolute;right:-.2em;top:.02em;width:.34em;height:.34em;border-radius:50%;border:2px solid var(--signal);box-shadow:0 0 14px rgba(58,138,214,.45)}
+.rest .info .kicker{color:var(--ledger-soft)}
+.rest .copyline{color:var(--ledger-ink);font-family:var(--serif);font-weight:500}
+.rest .synopsis{color:#4a433c}
+.rest .chaps{grid-template-columns:repeat(4,1fr);border-color:var(--ledger-deep)}
+.rest .chaps li{border-left-color:rgba(168,143,117,.4)}
+.rest .chaps li small{color:var(--signal)}
+.rest .chaps li b{font-family:var(--serif);font-weight:700;font-size:17px}
+.rest .chaps li::after{background:var(--signal)}
+.rest .meta dt{color:#8a7e70}
+.btn-blue{background:var(--ledger-ink);color:var(--ledger)}
+.btn-blue::before{background:var(--signal)}
+.btn-blue:hover{color:#fff}
+
+/* 냉장고 옆 화면: 새록이 가계부와 성적표를 대조한다 */
+.srk-wrap{--sw:min(100%,540px)}
+.srk{position:relative;width:var(--sw);margin:0 auto;background:#fbf8f2;border-radius:14px;padding:14px 16px 14px;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 0 0 1px rgba(36,33,30,.1),0 34px 70px -34px rgba(60,40,20,.55)}
+.srk-top{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ledger-soft);padding-bottom:10px;border-bottom:1px solid rgba(36,33,30,.1)}
+.srk-top b{color:var(--ledger-ink);font-weight:700}
+.srk-top .clock{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+.srk-ring{position:relative;width:18px;height:18px;border-radius:50%;background:#18222c;flex:none}
+.srk-ring::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:1.6px solid transparent;border-top-color:var(--signal);border-right-color:var(--signal-hi);transition:opacity .4s}
+.srk.talk .srk-ring::after{animation:ring-sweep 1.4s linear infinite}
+.srk:not(.talk) .srk-ring::after{opacity:.35}
+.srk-day{font-family:var(--serif);font-weight:700;font-size:clamp(17px,1.5vw,20px);margin:10px 0 0;min-height:1.4em;transition:opacity .5s,transform .6s var(--ease)}
+.srk-day.hide{opacity:0;transform:translateY(6px)}
+.srk-day small{font-family:var(--sans);font-weight:500;font-size:12px;color:var(--signal);margin-left:10px;letter-spacing:.02em}
+.srk-sec{margin-top:8px}
+.srk-sec>small{display:block;font-size:11px;letter-spacing:.08em;color:var(--ledger-soft);margin-bottom:4px}
+.ledger{display:grid;grid-template-columns:repeat(7,1fr);border-top:1.2px solid var(--ledger-deep);border-left:1px solid var(--ledger-rule);background:var(--ledger);container-type:inline-size}
+.ledger .dw{font-size:10px;text-align:center;padding:2px 0;color:var(--ledger-deep);border-right:1px solid var(--ledger-rule);border-bottom:1px solid var(--ledger-deep)}
+.ledger .dw:first-child,.ledger .cell.sun .n{color:#b06a58}
+.ledger .cell{position:relative;aspect-ratio:1.5/1;border-right:1px solid var(--ledger-rule);border-bottom:1px solid var(--ledger-rule);padding:3px 4px;overflow:hidden;transition:background .35s}
+.ledger .cell .n{display:block;font-size:9px;line-height:1;color:var(--ledger-deep)}
+.ledger .cell.out .n{opacity:.4}
+.ledger .cell .w{display:block;font-family:var(--hand);font-size:clamp(11px,2.55cqi,15px);line-height:1.05;color:#3b342d;white-space:nowrap;margin-top:2px;opacity:0;transform:translateY(3px);transition:opacity .35s,transform .45s var(--ease)}
+.ledger .cell .w+.w{margin-top:0}
+.ledger.inked .cell .w{opacity:.78;transform:none;transition-delay:calc(var(--k) * 22ms)}
+.ledger .cell.ck{background:rgba(58,138,214,.07)}
+.ledger .cell.blank{background:#f7f1e7}
+.ledger .cell.hit,.exams .hit{z-index:2;outline:1.6px solid var(--signal);outline-offset:-1px;box-shadow:0 0 0 4px rgba(58,138,214,.14),0 0 22px rgba(58,138,214,.5);background:#fbf8f2}
+.exams{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.exams span{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:32px;border-radius:4px;background:var(--ledger);border:1px solid var(--ledger-rule);font-size:12px;font-weight:600;color:var(--ledger-ink);opacity:0;transform:translateY(6px);transition:opacity .4s,transform .5s var(--ease),background .35s}
+.exams span::after{content:"";width:60%;height:2px;background:repeating-linear-gradient(90deg,rgba(36,33,30,.35) 0 3px,transparent 3px 5px)}
+.exams.on span{opacity:1;transform:none;transition-delay:calc(var(--k) * 90ms)}
+.exams span.gap{background:transparent;border:1px dashed var(--ledger-deep);color:var(--ledger-deep);font-weight:500}
+.exams span.gap::after{display:none}
+.exams span.ck{background:rgba(58,138,214,.08)}
+.srk-say{min-height:3.1em;margin-top:8px;font-size:13px;line-height:1.55;color:#1f5f9c;transition:opacity .4s}
+.srk-say.hide{opacity:0}
+.srk-say::before{content:"새록";display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--signal);border-radius:999px;padding:1px 8px;margin-right:8px;vertical-align:1px}
+.srk-fill{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:2px;opacity:0;transform:translateY(8px);transition:opacity .6s,transform .7s var(--ease)}
+.srk-fill.on{opacity:1;transform:none}
+.srk-fill .fb{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 10px;border-radius:999px;background:var(--signal);color:#fff;font-size:13.5px;font-weight:600;cursor:default}
+.srk-fill .fb i{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.22);font-style:normal;font-size:15px;line-height:1}
+.srk-fill.on .fb{animation:fb-pulse 2.6s ease-in-out .6s infinite}
+@keyframes fb-pulse{0%,100%{box-shadow:0 0 0 0 rgba(58,138,214,.45)}60%{box-shadow:0 0 0 12px rgba(58,138,214,0)}}
+.srk-fill small{font-size:11.5px;color:var(--ledger-soft)}
+/* 아래 자막줄: 은재는 자막 검수 일을 한다 */
+.sub{width:var(--sw);min-height:3.3em;margin:14px auto 0;display:flex;gap:12px;align-items:baseline;justify-content:center;text-align:center;font-family:var(--serif);font-size:clamp(14px,1.27vw,16.7px);line-height:1.65;transition:opacity .5s}
+.sub.hide{opacity:0}
+.sub b{flex:none;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ledger-soft)}
+.sub b:empty{display:none}
+.rest .replay{color:var(--ledger-soft);border-color:rgba(36,33,30,.25)}
+
+/* 마지막 문 */
+.door-res{background:var(--ledger);color:var(--ledger-ink)}
+.door-res h3{font-family:var(--serif);font-weight:700;font-size:clamp(46px,6vw,92px);letter-spacing:.14em}
+.door-res .art{position:absolute;right:clamp(20px,4vw,60px);top:clamp(28px,4vw,60px);display:grid;grid-template-columns:repeat(3,clamp(30px,3.4vw,46px));border-top:1.2px solid var(--ledger-deep);border-left:1px solid var(--ledger-rule)}
+.door-res .art i{aspect-ratio:1.18/1;border-right:1px solid var(--ledger-rule);border-bottom:1px solid var(--ledger-rule);
+  background:linear-gradient(transparent 46%,rgba(59,52,45,.32) 46% 52%,transparent 52%) 22% 0/56% 100% no-repeat;transition:box-shadow .6s,outline-color .6s}
+.door-res .art i:nth-child(5){background:#f7f1e7;outline:1.6px solid transparent;outline-offset:-1px}
+.door-res:hover .art i:nth-child(5){outline-color:var(--signal);box-shadow:0 0 0 4px rgba(58,138,214,.14),0 0 22px rgba(58,138,214,.5)}
 
 /* ---------- process ---------- */
 .proc{background:var(--night);color:var(--cream);overflow:hidden}
@@ -576,7 +686,7 @@ img,svg,canvas{display:block}
 .door-care:hover .art i{transform:scale(.9)}
 .door-care:hover .art i:nth-child(odd){background:var(--teal)}
 .door-obj{color:var(--holo-ink)}
-.door-obj h3{font-family:var(--serif);font-weight:900;font-size:clamp(52px,7vw,108px);letter-spacing:-.06em}
+.door-obj h3{font-family:var(--serif);font-weight:900;font-size:clamp(46px,4.6vw,108px);letter-spacing:-.06em;white-space:nowrap}
 .door-obj .art{position:absolute;right:clamp(20px,4vw,60px);top:clamp(28px,4vw,60px);width:clamp(80px,9vw,120px);aspect-ratio:1;border:2px solid transparent;border-image:var(--seal) 1;transition:transform 1s var(--ease);z-index:1}
 .door-obj .art::after{content:"";position:absolute;inset:10%;border:1px dashed var(--magenta)}
 .door-obj:hover .art{transform:rotate(-8deg) scale(1.05)}
@@ -589,7 +699,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 /* ---------- 데스크톱: 섹션마다 한 화면 ---------- */
 @media (min-width:981px){
   .shelf{height:min(46vw,620px,calc(100svh - 250px))}
-  .care,.obj,.proc{min-height:100svh;padding-top:84px;padding-bottom:40px;display:flex;flex-direction:column;justify-content:center}
+  .care,.obj,.rest,.proc{min-height:100svh;padding-top:84px;padding-bottom:40px;display:flex;flex-direction:column;justify-content:center}
   .care{padding-bottom:112px} /* 아래 찢어진 종이(.tear)가 47px 겹치므로 검정 여백을 더 둔다 */
   .sec-head{margin-bottom:22px}
 
@@ -616,6 +726,12 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   .obj h2{font-size:min(7vw,10.5svh);margin:4px 0 18px}
   .theater{--dw:min(100%,420px,max(250px,calc((100svh - 497px) / 1.3)))}
 
+  /* BOOK 03: 화면 폭은 섹션 높이 안에서 정한다 */
+  .rest h2{font-size:min(7vw,10.5svh);margin:4px 0 18px}
+  .rest .copyline{margin-bottom:16px;font-size:clamp(16px,1.4vw,20px)}
+  .srk-wrap{--sw:min(100%,520px,max(400px,calc((100svh - 420px) * 1.15)))}
+  .rest .replay{margin-top:2px}
+
   /* 만든 방식: 1화면 단계도, 2화면 평가자 */
   .proc h2{font-size:min(5vw,8svh)}
   .proc .lede2{margin-top:18px}
@@ -633,6 +749,8 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   .chaps{margin-top:16px}
   .meta{margin:12px 0 14px}
   .obj h2{font-size:min(7vw,8.6svh);margin:2px 0 14px}
+  .rest h2{font-size:min(7vw,8.6svh);margin:2px 0 14px}
+  .ledger .cell .w+.w{display:none}
   .care h2{font-size:min(5.8vw,9svh)}
   .proc h2{font-size:min(5vw,7svh)}
   .proc .lede2{margin-top:12px;font-size:15px;line-height:1.75}
@@ -655,7 +773,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 @media (max-width:980px){
   .hero{grid-template-columns:1fr;padding-top:100px;text-align:left}
   .shelf{height:min(98vw,500px)}
-  .care-grid,.obj-grid,.deck-wrap{grid-template-columns:1fr}
+  .care-grid,.obj-grid,.rest-grid,.deck-wrap{grid-template-columns:1fr}
   .obj-grid .obj-vis{order:2}
   .pipe{grid-template-columns:1fr;gap:72px;padding-left:72px;padding-bottom:56px}
   .crew{margin-top:22px}
@@ -678,9 +796,8 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   .door:hover{flex-grow:1}
 }
 @media (max-width:560px){
-  .book{--w:150px;--h:235px;--d:20px}
-  .shelf .book.b1{left:2%}
-  .shelf .book.b2{right:2%}
+  .book{--w:108px;--h:169px;--d:14px}
+  .book-shadow{bottom:-30px;height:24px}
   .book-label{top:calc(100% + 40px);font-size:11px}
   .book-label b{font-size:14px}
   .tiles{gap:6px}
@@ -699,7 +816,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   .thumbs{gap:4px}
 }
 @media (min-width:981px) and (max-width:1200px){
-  .book{--w:200px;--h:313px;--d:26px}
+  .book{--w:168px;--h:263px;--d:22px}
 }
 @media (prefers-reduced-motion:reduce){
   .holo-sheen{animation:none;background-position:50% 50%}
@@ -718,6 +835,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   <ul>
     <li><a href="#care">돌봄로봇 1호기</a></li>
     <li><a href="#objection">이의신청</a></li>
+    <li><a href="#restoration">복원</a></li>
     <li class="opt"><a href="#how">만든 방식</a></li>
     <li class="opt"><a href="https://github.com/bookroasting/novel-writing" target="_blank" rel="noopener">GitHub ↗</a></li>
   </ul>
@@ -729,20 +847,20 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   <div class="lamp" id="lamp" aria-hidden="true"></div>
 
   <div class="hero-copy">
-    <p class="eyebrow"><span class="dot"></span>ArgosLab · 단편 소설 2편 · 웹 e북</p>
+    <p class="eyebrow"><span class="dot"></span>ArgosLab · 단편 소설 3편 · 웹 e북</p>
     <h1>
       <span class="ln"><span>AI가 판단한 뒤에야,</span></span>
       <span class="ln"><span class="shine">사람이 문을 두드립니다.</span></span>
     </h1>
-    <p class="lede">한 집에는 돌봄로봇이 들어왔고, 다른 한 집의 이의신청은 AI가 기각했습니다.<br class="br-wide"> <span class="nb">이 두 단편은</span> <b>AI 에이전트 팀이 설계하고 쓰고 합평했습니다.</b></p>
+    <p class="lede">한 집에는 돌봄로봇이 들어왔고, 다른 집의 이의신청은 AI가 기각했습니다. 또 다른 집의 기억 보조 AI는 엄마가 말하는 바다를 기록에서 찾지 못합니다.<br class="br-wide"> <span class="nb">이 세 단편은</span> <b>AI 에이전트 팀이 설계하고 쓰고 합평했습니다.</b></p>
     <div class="hero-cta">
       <a class="pill t" href="#care"><span class="sq"></span>돌봄로봇 1호기</a>
       <a class="pill r" href="#objection"><span class="sq"></span>이의신청</a>
+      <a class="pill b" href="#restoration"><span class="sq"></span>복원</a>
     </div>
   </div>
 
   <div class="shelf" id="shelf">
-    <div class="floor"></div>
     <a class="book b1 b-care" href="care-robot-unit-1/ebook.html" aria-label="돌봄로봇 1호기 e북 펼치기">
       <div class="float"><div class="book-3d">
         <div class="face front"><svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -898,6 +1016,38 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
       <div class="book-shadow"></div>
       <div class="book-label">02 · 4장<b>이의신청</b></div>
     </a>
+    <a class="book b3 b-res" href="restoration/ebook.html" aria-label="복원 e북 펼치기">
+      <div class="float"><div class="book-3d">
+        <div class="face front"><svg viewBox="0 0 460 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+          <radialGradient id="rs-age" cx="50%" cy="42%" r="75%"><stop offset="62%" stop-color="#b89a74" stop-opacity="0"/><stop offset="100%" stop-color="#b89a74" stop-opacity="0.28"/></radialGradient>
+          <linearGradient id="rs-fade-g" x1="0" y1="0" x2="0" y2="720" gradientUnits="userSpaceOnUse"><stop offset="0.5" stop-color="#fff"/><stop offset="0.74" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <mask id="rs-fade"><rect width="460" height="720" fill="url(#rs-fade-g)"/></mask>
+          <filter id="rs-ring-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+          <filter id="rs-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 0.42  0 0 0 0 0.34  0 0 0 0 0.24  0 0 0 0.16 0"/></filter>
+          </defs>
+          <rect width="460" height="720" fill="#efe7da"/>
+          <text x="230" y="58" text-anchor="middle" class="rss" font-size="10" fill="#6c635a" letter-spacing="6" font-weight="500" dx="3">단편 소설</text>
+          <g mask="url(#rs-fade)"><text x="22" y="104" class="rsf" font-size="30" font-weight="300" fill="#a88f75">6</text><text x="44" y="104" class="rsf" font-size="12" font-weight="500" fill="#a88f75">월</text><text x="-122" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#b06a58">일</text><text x="-34" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">월</text><text x="54" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">화</text><text x="142" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">수</text><text x="230" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">목</text><text x="318" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">금</text><text x="406" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">토</text><text x="494" y="134" text-anchor="middle" class="rss" font-size="9.5" letter-spacing="1" fill="#a88f75">합계</text><line x1="0" y1="115.5" x2="460" y2="115.5" stroke="#a88f75" stroke-width="0.6"/><line x1="0" y1="118" x2="460" y2="118" stroke="#a88f75" stroke-width="1.1"/><line x1="0" y1="144" x2="460" y2="144" stroke="#a88f75" stroke-width="0.7"/><line x1="0" y1="218" x2="460" y2="218" stroke="#c4ae95" stroke-width="0.7"/><line x1="0" y1="292" x2="460" y2="292" stroke="#c4ae95" stroke-width="0.7"/><line x1="0" y1="366" x2="460" y2="366" stroke="#c4ae95" stroke-width="0.7"/><line x1="0" y1="440" x2="460" y2="440" stroke="#c4ae95" stroke-width="0.7"/><line x1="0" y1="514" x2="460" y2="514" stroke="#c4ae95" stroke-width="0.7"/><line x1="10" y1="118" x2="10" y2="514" stroke="#c4ae95" stroke-width="0.7"/><line x1="98" y1="118" x2="98" y2="514" stroke="#c4ae95" stroke-width="0.7"/><line x1="186" y1="118" x2="186" y2="514" stroke="#c4ae95" stroke-width="0.7"/><line x1="274" y1="118" x2="274" y2="514" stroke="#c4ae95" stroke-width="0.7"/><line x1="362" y1="118" x2="362" y2="514" stroke="#c4ae95" stroke-width="0.7"/><line x1="450" y1="118" x2="450" y2="514" stroke="#a88f75" stroke-width="1"/><text x="-160" y="157" class="rss" font-size="9" fill="#b06a58" opacity="0.45">31</text><text x="-72" y="157" class="rss" font-size="9" fill="#a88f75" opacity="1">1</text><text x="16" y="157" class="rss" font-size="9" fill="#a88f75" opacity="1">2</text><text x="19.814863895066082" y="177.82312353653833" transform="rotate(1.24 19.814863895066082 177.82312353653833)" class="rh" font-size="17.2" fill="#3b342d" opacity="0.81">우유 1,850</text><text x="21.965065046446398" y="197.31589852203615" transform="rotate(-0.19 21.965065046446398 197.31589852203615)" class="rh" font-size="16.9" fill="#3b342d" opacity="0.73">계란 3,600</text><text x="104" y="157" class="rss" font-size="9" fill="#a88f75" opacity="1">3</text><text x="108.4081364730373" y="178.02597825136036" transform="rotate(-0.55 108.4081364730373 178.02597825136036)" class="rh" font-size="17.6" fill="#3b342d" opacity="0.77">콩나물 1,000</text><text x="107.55057824938558" y="197.0797411284875" transform="rotate(0.61 107.55057824938558 197.0797411284875)" class="rh" font-size="17.3" fill="#3b342d" opacity="0.65">버스비 2,000</text><text x="192" y="157" class="rss" font-size="9" fill="#a88f75" opacity="1">4</text><rect x="186.6" y="144.6" width="86.8" height="72.8" fill="#f7f1e7" opacity="0.75"/><text x="192" y="157" class="rss" font-size="9" fill="#a88f75">4</text><text x="280" y="157" class="rss" font-size="9" fill="#a88f75" opacity="1">5</text><text x="285.3685259616468" y="178.6729740051087" transform="rotate(-1.55 285.3685259616468 178.6729740051087)" class="rh" font-size="16.8" fill="#3b342d" opacity="0.74">학원비</text><text x="287.7118840785697" y="197.59318397263996" transform="rotate(0.34 287.7118840785697 197.59318397263996)" class="rh" font-size="17.4" fill="#3b342d" opacity="0.79">250,000</text><text x="368" y="157" class="rss" font-size="9" fill="#a88f75" opacity="1">6</text><text x="373.1378757758066" y="178.5408871609252" transform="rotate(-1.37 373.1378757758066 178.5408871609252)" class="rh" font-size="17.1" fill="#3b342d" opacity="0.68">고등어 4,000</text><text x="371.7788037706632" y="197.89676614827476" transform="rotate(0.11 371.7788037706632 197.89676614827476)" class="rh" font-size="17.3" fill="#3b342d" opacity="0.81">무 1,500</text><text x="-160" y="231" class="rss" font-size="9" fill="#b06a58" opacity="1">7</text><text x="-72" y="231" class="rss" font-size="9" fill="#a88f75" opacity="1">8</text><text x="16" y="231" class="rss" font-size="9" fill="#a88f75" opacity="1">9</text><text x="23.1673557437025" y="253.1255644452758" transform="rotate(0.70 23.1673557437025 253.1255644452758)" class="rh" font-size="17.1" fill="#3b342d" opacity="0.75">두부 1,200</text><text x="21.88354491116479" y="271.4685799879953" transform="rotate(-0.62 21.88354491116479 271.4685799879953)" class="rh" font-size="16.6" fill="#3b342d" opacity="0.83">버스비 2,000</text><text x="104" y="231" class="rss" font-size="9" fill="#a88f75" opacity="1">10</text><text x="110.10609421343543" y="253.14802186819725" transform="rotate(-0.82 110.10609421343543 253.14802186819725)" class="rh" font-size="16.5" fill="#3b342d" opacity="0.77">약값 5,600</text><text x="192" y="231" class="rss" font-size="9" fill="#a88f75" opacity="1">11</text><text x="195.5389741039835" y="254.20307776890695" transform="rotate(0.56 195.5389741039835 254.20307776890695)" class="rh" font-size="17.6" fill="#3b342d" opacity="0.64">콩나물 1,000</text><text x="198.94296680111438" y="271.04543255711906" transform="rotate(1.39 198.94296680111438 271.04543255711906)" class="rh" font-size="17.8" fill="#3b342d" opacity="0.81">계란 3,600</text><text x="280" y="231" class="rss" font-size="9" fill="#a88f75" opacity="1">12</text><text x="285.691953277681" y="253.4358982075937" transform="rotate(-1.23 285.691953277681 253.4358982075937)" class="rh" font-size="16.7" fill="#3b342d" opacity="0.80">우유 1,850</text><text x="368" y="231" class="rss" font-size="9" fill="#a88f75" opacity="1">13</text><text x="371.38452028646134" y="252.696927273646" transform="rotate(-0.61 371.38452028646134 252.696927273646)" class="rh" font-size="17.4" fill="#3b342d" opacity="0.66">실, 바늘 2,000</text><text x="-160" y="305" class="rss" font-size="9" fill="#b06a58" opacity="1">14</text><text x="-72" y="305" class="rss" font-size="9" fill="#a88f75" opacity="1">15</text><text x="16" y="305" class="rss" font-size="9" fill="#a88f75" opacity="1">16</text><text x="23.808482490479946" y="327.1415801171679" transform="rotate(-0.38 23.808482490479946 327.1415801171679)" class="rh" font-size="16.9" fill="#3b342d" opacity="0.63">파 1,000</text><text x="19.256640061270446" y="346.3762031677179" transform="rotate(1.24 19.256640061270446 346.3762031677179)" class="rh" font-size="17.9" fill="#3b342d" opacity="0.68">양파 2,500</text><text x="104" y="305" class="rss" font-size="9" fill="#a88f75" opacity="1">17</text><text x="109.79955480829813" y="325.544832988875" transform="rotate(0.18 109.79955480829813 325.544832988875)" class="rh" font-size="17.6" fill="#3b342d" opacity="0.65">버스비 2,000</text><text x="192" y="305" class="rss" font-size="9" fill="#a88f75" opacity="1">18</text><text x="198.6819129693322" y="328.1241294373758" transform="rotate(1.06 198.6819129693322 328.1241294373758)" class="rh" font-size="16.5" fill="#3b342d" opacity="0.83">보리차 1,900</text><text x="280" y="305" class="rss" font-size="9" fill="#a88f75" opacity="1">19</text><text x="286.18418617127463" y="328.30305182305165" transform="rotate(-0.11 286.18418617127463 328.30305182305165)" class="rh" font-size="16.8" fill="#3b342d" opacity="0.77">두부 1,200</text><text x="284.8821160320658" y="346.7552773049101" transform="rotate(1.30 284.8821160320658 346.7552773049101)" class="rh" font-size="17.3" fill="#3b342d" opacity="0.71">시금치 1,500</text><text x="368" y="305" class="rss" font-size="9" fill="#a88f75" opacity="1">20</text><text x="371.6263941829093" y="326.1756649359595" transform="rotate(0.84 371.6263941829093 326.1756649359595)" class="rh" font-size="16.7" fill="#3b342d" opacity="0.85">가스비 28,700</text><text x="-160" y="379" class="rss" font-size="9" fill="#b06a58" opacity="1">21</text><text x="-72" y="379" class="rss" font-size="9" fill="#a88f75" opacity="1">22</text><text x="16" y="379" class="rss" font-size="9" fill="#a88f75" opacity="1">23</text><text x="22.984677313128486" y="400.199237909168" transform="rotate(0.31 22.984677313128486 400.199237909168)" class="rh" font-size="17.1" fill="#3b342d" opacity="0.76">버스비 2,000</text><text x="20.222335092024878" y="420.79596843221225" transform="rotate(-1.06 20.222335092024878 420.79596843221225)" class="rh" font-size="16.5" fill="#3b342d" opacity="0.73">김 3,000</text><text x="104" y="379" class="rss" font-size="9" fill="#a88f75" opacity="1">24</text><text x="110.72877994319424" y="399.71244585351087" transform="rotate(1.36 110.72877994319424 399.71244585351087)" class="rh" font-size="17.7" fill="#3b342d" opacity="0.70">계란 3,600</text><text x="192" y="379" class="rss" font-size="9" fill="#a88f75" opacity="1">25</text><text x="199.15032692835666" y="402.3845126586966" transform="rotate(-0.19 199.15032692835666 402.3845126586966)" class="rh" font-size="16.6" fill="#3b342d" opacity="0.66">무 1,500</text><text x="195.5280489125289" y="419.7553338815924" transform="rotate(-0.57 195.5280489125289 419.7553338815924)" class="rh" font-size="18.0" fill="#3b342d" opacity="0.83">콩나물 1,000</text><text x="280" y="379" class="rss" font-size="9" fill="#a88f75" opacity="1">26</text><text x="286.2969527563546" y="400.47862853552215" transform="rotate(-1.35 286.2969527563546 400.47862853552215)" class="rh" font-size="17.4" fill="#3b342d" opacity="0.74">고등어 4,000</text><text x="368" y="379" class="rss" font-size="9" fill="#a88f75" opacity="1">27</text><text x="373.5550166866742" y="402.28231568960473" transform="rotate(-0.22 373.5550166866742 402.28231568960473)" class="rh" font-size="17.3" fill="#3b342d" opacity="0.85">휴지 6,900</text><text x="-160" y="453" class="rss" font-size="9" fill="#b06a58" opacity="1">28</text><text x="-72" y="453" class="rss" font-size="9" fill="#a88f75" opacity="1">29</text><text x="16" y="453" class="rss" font-size="9" fill="#a88f75" opacity="1">30</text><text x="19.092245382256806" y="474.87072118069045" transform="rotate(-1.02 19.092245382256806 474.87072118069045)" class="rh" font-size="17.3" fill="#3b342d" opacity="0.84">우유 1,850</text><text x="22.56239694985561" y="494.8602859394159" transform="rotate(1.55 22.56239694985561 494.8602859394159)" class="rh" font-size="17.9" fill="#3b342d" opacity="0.77">버스비 2,000</text><text x="104" y="453" class="rss" font-size="9" fill="#a88f75" opacity="0.45">1</text><text x="192" y="453" class="rss" font-size="9" fill="#a88f75" opacity="0.45">2</text><text x="280" y="453" class="rss" font-size="9" fill="#a88f75" opacity="0.45">3</text><text x="368" y="453" class="rss" font-size="9" fill="#a88f75" opacity="0.45">4</text></g>
+          <circle cx="230" cy="181" r="44" fill="none" stroke="#3a8ad6" stroke-width="0.9" opacity="0.6"/>
+          <g class="ring-sweep" style="transform-origin:230px 181px">
+          <path d="M 215.78 139.36 A 44 44 0 0 1 273.78 176.61" fill="none" stroke="#6db4f5" stroke-width="5" stroke-linecap="round" opacity="0.35" filter="url(#rs-ring-glow)"/>
+          <path d="M 215.78 139.36 A 44 44 0 0 1 273.78 176.61" fill="none" stroke="#3a8ad6" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+          <text x="230" y="604" text-anchor="middle" class="rsf" font-size="74" fill="#24211e" font-weight="700" letter-spacing="20" dx="10">복원</text>
+          <line x1="221" y1="646" x2="239" y2="646" stroke="#a88f75" stroke-width="0.7"/>
+          <text x="230" y="670" text-anchor="middle" class="rss" font-size="10.5" fill="#4a433c" letter-spacing="4.2" dx="2.1" font-weight="600">AI ROASTING</text>
+          <rect width="460" height="720" fill="url(#rs-age)" pointer-events="none"/>
+          <rect width="460" height="720" filter="url(#rs-grain)" opacity="0.5" pointer-events="none"/>
+          </svg></div>
+        <div class="face back"></div>
+        <div class="face spine"><span>복원</span></div>
+        <div class="face edge-r"></div>
+        <div class="face edge-t"></div>
+      </div></div>
+      <div class="book-shadow"></div>
+      <div class="book-label">03 · 4장<b>복원</b></div>
+    </a>
   </div>
 
   <div class="scroll-cue" aria-hidden="true">SCROLL<i></i></div>
@@ -906,12 +1056,12 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
 <!-- ================= MARQUEE ================= -->
 <div class="marquee" aria-hidden="true">
   <div class="row">
-    <span>“그 로봇이 자꾸 우리 딸 흉내를 내요.”</span><span>“제 점수 말고 제 집을 봐 주세요.”</span><span>“엄마, 다음 주 일요일에 만나요. 백숙 끓여줘요.”</span><span>2032년, AI가 판정하고 사람은 도장을 찍는다.</span>
-    <span>“그 로봇이 자꾸 우리 딸 흉내를 내요.”</span><span>“제 점수 말고 제 집을 봐 주세요.”</span><span>“엄마, 다음 주 일요일에 만나요. 백숙 끓여줘요.”</span><span>2032년, AI가 판정하고 사람은 도장을 찍는다.</span>
+    <span>“그 로봇이 자꾸 우리 딸 흉내를 내요.”</span><span>“제 점수 말고 제 집을 봐 주세요.”</span><span>“엄마, 다음 주 일요일에 만나요. 백숙 끓여줘요.”</span><span>2032년, AI가 판정하고 사람은 도장을 찍는다.</span><span class="s3">“그런 기록은 없어요, 어머님.”</span><span class="s3">엄마는 딸과 바다에 갔다고 했다.</span>
+    <span>“그 로봇이 자꾸 우리 딸 흉내를 내요.”</span><span>“제 점수 말고 제 집을 봐 주세요.”</span><span>“엄마, 다음 주 일요일에 만나요. 백숙 끓여줘요.”</span><span>2032년, AI가 판정하고 사람은 도장을 찍는다.</span><span class="s3">“그런 기록은 없어요, 어머님.”</span><span class="s3">엄마는 딸과 바다에 갔다고 했다.</span>
   </div>
   <div class="row rev">
-    <span>보건복지부 1인 가구 노인 돌봄로봇 1차 시범사업</span><span>처리기한 2032년 7월 19일</span><span>6주차 만족도 10점 만점에 1점</span><span>마지막 확인(9회차): 다음 신청부터 자동 종결</span>
-    <span>보건복지부 1인 가구 노인 돌봄로봇 1차 시범사업</span><span>처리기한 2032년 7월 19일</span><span>6주차 만족도 10점 만점에 1점</span><span>마지막 확인(9회차): 다음 신청부터 자동 종결</span>
+    <span>보건복지부 1인 가구 노인 돌봄로봇 1차 시범사업</span><span>처리기한 2032년 7월 19일</span><span>6주차 만족도 10점 만점에 1점</span><span>마지막 확인(9회차): 다음 신청부터 자동 종결</span><span class="s3">새록 주간 리포트: 정정 41회, 불안 반응 9회</span><span class="s3">일치하는 곡을 찾지 못했어요.</span>
+    <span>보건복지부 1인 가구 노인 돌봄로봇 1차 시범사업</span><span>처리기한 2032년 7월 19일</span><span>6주차 만족도 10점 만점에 1점</span><span>마지막 확인(9회차): 다음 신청부터 자동 종결</span><span class="s3">새록 주간 리포트: 정정 41회, 불안 반응 9회</span><span class="s3">일치하는 곡을 찾지 못했어요.</span>
   </div>
 </div>
 
@@ -1106,11 +1256,69 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   </div>
 </section>
 
+<!-- ================= EPIGRAPH 3 ================= -->
+<section class="epi epi-3 io" data-nav="dark" aria-label="『복원』 제사">
+  <div>
+    <span class="tag">BOOK 03 · EPIGRAPH</span>
+    <div class="spk" aria-hidden="true"><svg viewBox="0 0 74 74"><defs><filter id="ep-ring-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.4"/></filter></defs><circle cx="37" cy="37" r="30" fill="none" stroke="#3a8ad6" stroke-width=".9" opacity=".55"/><g class="ring-sweep" style="transform-origin:37px 37px"><path d="M 27.3 8.6 A 30 30 0 0 1 66.85 34" fill="none" stroke="#6db4f5" stroke-width="5" stroke-linecap="round" opacity=".35" filter="url(#ep-ring-glow)"/><path d="M 27.3 8.6 A 30 30 0 0 1 66.85 34" fill="none" stroke="#3a8ad6" stroke-width="1.6" stroke-linecap="round"/></g></svg></div>
+    <svg class="hum" viewBox="50 228 360 48" preserveAspectRatio="none" aria-hidden="true"><line x1="50" y1="252" x2="410" y2="252" stroke="#e6dccd" stroke-width=".4" opacity=".18" vector-effect="non-scaling-stroke"/><path d="M58.0 252.00 L59.5 252.06 L61.0 252.00 L62.5 251.88 L64.0 251.72 L65.5 251.53 L67.0 251.30 L68.5 251.03 L70.0 250.75 L71.5 250.53 L73.0 250.48 L74.5 250.65 L76.0 251.07 L77.5 251.71 L79.0 252.44 L80.5 253.15 L82.0 253.71 L83.5 254.08 L85.0 254.28 L86.5 254.34 L88.0 254.33 L89.5 254.27 L91.0 254.12 L92.5 253.80 L94.0 253.24 L95.5 252.46 L97.0 251.54 L98.5 250.65 L100.0 250.01 L101.5 249.79 L103.0 250.05 L104.5 250.74 L106.0 251.66 L107.5 252.62 L109.0 253.43 L110.5 254.03 L112.0 254.46 L113.5 254.79 L115.0 255.07 L116.5 255.25 L118.0 255.19 L119.5 254.67 L121.0 253.56 L122.5 251.86 L124.0 249.80 L125.5 247.71 L127.0 246.02 L128.5 245.02 L130.0 244.80 L131.5 245.28 L133.0 246.18 L134.5 247.27 L136.0 248.36 L137.5 249.45 L139.0 250.60 L140.5 251.90 L142.0 253.32 L143.5 254.68 L145.0 255.70 L146.5 256.13 L148.0 255.81 L149.5 254.84 L151.0 253.47 L152.5 252.07 L154.0 250.97 L155.5 250.34 L157.0 250.17 L158.5 250.33 L160.0 250.66 L161.5 251.02 L163.0 251.36 L164.5 251.69 L166.0 251.96 L167.5 252.06 L169.0 252.00 L170.5 252.00 L172.0 252.00 L173.5 252.00 L175.0 252.00 L176.5 252.00 L178.0 252.00 L179.5 252.00 L181.0 252.00 L182.5 252.04 L184.0 251.88 L185.5 251.51 L187.0 250.99 L188.5 250.32 L190.0 249.57 L191.5 248.90 L193.0 248.54 L194.5 248.70 L196.0 249.50 L197.5 250.84 L199.0 252.43 L200.5 253.89 L202.0 254.85 L203.5 255.12 L205.0 254.75 L206.5 253.94 L208.0 252.93 L209.5 251.90 L211.0 250.86 L212.5 249.70 L214.0 248.31 L215.5 246.71 L217.0 245.11 L218.5 243.89 L220.0 243.46 L221.5 244.10 L223.0 245.81 L224.5 248.29 L226.0 251.07 L227.5 253.63 L229.0 255.62 L230.5 256.92 L232.0 257.64 L233.5 257.98 L235.0 258.10 L236.5 258.05 L238.0 257.72 L239.5 256.98 L241.0 255.73 L242.5 254.06 L244.0 252.23 L245.5 250.59 L247.0 249.49 L248.5 249.10 L250.0 249.41 L251.5 250.22 L253.0 251.24 L254.5 252.20 L256.0 252.95 L257.5 253.47 L259.0 253.83 L260.5 254.11 L262.0 254.34 L263.5 254.49 L265.0 254.46 L266.5 254.17 L268.0 253.58 L269.5 252.75 L271.0 251.83 L272.5 250.99 L274.0 250.36 L275.5 250.03 L277.0 249.98 L278.5 250.12 L280.0 250.38 L281.5 250.66 L283.0 250.94 L284.5 251.20 L286.0 251.46 L287.5 251.73 L289.0 251.99 L290.5 252.18 L292.0 252.27 L293.5 252.25 L295.0 252.13 L296.5 252.00 L298.0 252.00 L299.5 252.00 L301.0 252.00 L302.5 252.00 L304.0 252.00 L305.5 252.00 L307.0 252.00 L308.5 252.00 L310.0 252.00 L311.5 251.83 L313.0 251.79 L314.5 251.92 L316.0 252.29 L317.5 252.91 L319.0 253.71 L320.5 254.55 L322.0 255.22 L323.5 255.57 L325.0 255.52 L326.5 255.12 L328.0 254.48 L329.5 253.73 L331.0 252.93 L332.5 252.05 L334.0 251.01 L335.5 249.77 L337.0 248.43 L338.5 247.25 L340.0 246.55 L341.5 246.66 L343.0 247.71 L344.5 249.55 L346.0 251.78 L347.5 253.89 L349.0 255.41 L350.5 256.11 L352.0 256.02 L353.5 255.38 L355.0 254.47 L356.5 253.45 L358.0 252.30 L359.5 250.84 L361.0 248.91 L362.5 246.53 L364.0 243.99 L365.5 241.82 L367.0 240.58 L368.5 240.68 L370.0 242.18 L371.5 244.77 L373.0 247.86 L374.5 250.87 L376.0 253.34 L377.5 255.14 L379.0 256.35 L380.5 257.17 L382.0 257.74 L383.5 258.08 L385.0 258.03 L386.5 257.44 L388.0 256.27 L389.5 254.68 L391.0 252.97 L392.5 251.54 L394.0 250.67 L395.5 250.43 L397.0 250.69 L398.5 251.21 L400.0 251.70 L401.5 251.97" fill="none" stroke="#e6dccd" stroke-width="1.15" stroke-linejoin="round" stroke-linecap="round" opacity=".88" vector-effect="non-scaling-stroke"/></svg>
+    <span class="hum-note">일치하는 곡을 찾지 못했어요.</span>
+    <div class="rule"></div>
+    <blockquote class="split">치매환자의 대답이 틀려도 지적하지 않습니다.</blockquote>
+    <div class="rule"></div>
+    <cite><b>중앙치매센터</b>『2024 나에게 힘이 되는 치매 가이드북』<br>「치매환자와의 대화방법」에서</cite>
+  </div>
+</section>
+
+<!-- ================= BOOK 03 ================= -->
+<section class="sec rest" id="restoration" data-nav="light">
+  <div class="ghost-num" aria-hidden="true">03</div>
+  <div class="sec-head io"><span class="num">BOOK 03</span><span class="line"></span><span>복원</span></div>
+
+  <div class="rest-grid">
+    <div class="srk-wrap" id="srk-wrap" aria-label="3장 장면 연출: 비어 있는 날짜">
+      <div class="srk" id="srk">
+        <div class="srk-top"><span class="srk-ring" aria-hidden="true"></span><b>새록</b><span>생애 기록 보완</span><span class="clock" id="srk-clock">2034. 5. 31. 23:10</span></div>
+        <p class="srk-day hide" id="srk-day">2009년 6월 4일 목요일<small>기록이 비어 있어요</small></p>
+        <div class="srk-sec"><small>어머님 가계부 · 2009년 6월</small><div class="ledger" id="ledger"></div></div>
+        <div class="srk-sec"><small>은재 님 고3 모의고사 성적표</small><div class="exams" id="exams"></div></div>
+        <p class="srk-say hide" id="srk-say"></p>
+        <div class="srk-fill" id="srk-fill" aria-hidden="true">
+          <span class="fb"><i>+</i>자료를 추가하면 이날을 채울 수 있어요.</span>
+          <small>채운 날은 관련 기록과 함께 어머님께 들려드려요.</small>
+        </div>
+      </div>
+      <p class="sub hide" id="rs-sub" aria-live="polite"><b></b><span></span></p>
+      <button class="replay" id="rs-replay" type="button">↺ 다시 보기</button>
+    </div>
+
+    <div class="info">
+      <p class="kicker rv">2026년 10월 · 2034 · 안양</p>
+      <h2 class="rv" style="--d:.08s">복원<span class="ring-mini" aria-hidden="true"></span></h2>
+      <p class="copyline rv" style="--d:.16s">엄마는 딸과 바다에 갔다고 했다. AI는 그런 기록이 없다고 했다.</p>
+      <div class="synopsis rv" style="--d:.22s">
+        <p>2034년 봄, 경도 치매 진단을 받은 엄마의 식탁에 기억 보조 AI ‘새록’이 놓인다. 새록은 켜 둔 가스 불을 알려 주고 틀린 날짜를 부드럽게 바로잡는다.</p>
+        <p>그런데 엄마가 딸과 기차를 타고 바다에 가서 옥수수를 먹었다고 할 때마다 대답은 같다. “그런 기록은 없어요.”</p>
+        <p>어느 밤, 새록은 엄마의 가계부와 딸의 고3 성적표가 함께 비어 있는 날짜를 하나 찾아낸다. 그리고 딸 앞에 그 빈 날짜를 채울 수 있는 버튼이 놓인다.</p>
+      </div>
+      <ol class="chaps rv" style="--d:.28s">
+        <li><small>01</small><b>수집</b></li><li><small>02</small><b>대조</b></li><li><small>03</small><b>누락</b></li><li><small>04</small><b>복원</b></li>
+      </ol>
+      <dl class="meta rv" style="--d:.32s">
+        <dt>화자</dt><dd>자막 검수 12년차 딸 노은재, 1인칭</dd>
+        <dt>분량</dt><dd>본문 4장, 원고지 약 54매</dd>
+        <dt>함께 실린 글</dt><dd>작가의 말</dd>
+      </dl>
+      <a class="btn btn-blue rv" style="--d:.38s" href="restoration/ebook.html">e북 펼치기 <span class="ar">→</span></a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= PROCESS ================= -->
 <section class="sec proc" id="how" data-nav="dark">
   <div class="sec-head io"><span class="num">HOW</span><span class="line"></span><span>novel-writing</span></div>
   <h2 class="rv">에이전트 <span class="t">6명</span>과 서브 에이전트 <span class="r">14명</span>이 함께 소설을 만듭니다.</h2>
-  <p class="lede2 rv" style="--d:.1s">위 두 소설은 novel-writing 스킬로 만들었습니다. 이 스킬에서는 에이전트 6명이 일하는데, 지휘 에이전트 1명이 단계 에이전트 5명을 차례로 부르며 전체 작업을 이끕니다. 각 단계에서 원고를 실제로 쓰고 읽는 것은 색 이름을 하나씩 가진 서브 에이전트 14명입니다.</p>
+  <p class="lede2 rv" style="--d:.1s">위 세 소설은 novel-writing 스킬로 만들었습니다. 이 스킬에서는 에이전트 6명이 일하는데, 지휘 에이전트 1명이 단계 에이전트 5명을 차례로 부르며 전체 작업을 이끕니다. 각 단계에서 원고를 실제로 쓰고 읽는 것은 색 이름을 하나씩 가진 서브 에이전트 14명입니다.</p>
 
   <div class="stats io" id="stats">
     <div class="stat"><b data-to="1">0</b><span>지휘 에이전트</span></div>
@@ -1128,7 +1336,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
     <div class="stage"><div class="node">01</div><code>/storyline</code><b>스토리라인 설계</b><p>평가자 패널이 스토리 설계도를 합평하고, 사용자가 통과본을 확정합니다.</p><div class="crew" data-crew="핑크 레드 실버 블루 골드 아이보리 오렌지 올리브 틸 브라운 인디고 버건디"></div><div class="gate"><i></i><span class="gl"><small>storyline-pass</small><button type="button" class="q" aria-label="storyline-pass 설명" aria-describedby="tip-storyline-pass">?</button><span class="tip" role="tooltip" id="tip-storyline-pass">스토리 설계도가 평가를 통과하면, 다음으로 넘어갈지는 사용자가 직접 정합니다. 그대로 확정하고 자료 조사로 넘어갈 수도 있고, 한 번 더 다듬자고 할 수도 있습니다. 사용자가 답하기 전에는 다음 단계로 넘어가지 않습니다.</span></span></div></div>
     <div class="stage"><div class="node">02</div><code>/research</code><b>자료 조사와 노트 정리</b><p>리서치 에이전트가 본문에 필요한 사실과 세계관 자료를 모아 노트로 정리합니다.</p><div class="crew" data-crew=""></div></div>
     <div class="stage"><div class="node">03</div><code>/write</code><b>장면 설계와 초안 작성</b><p>작가 블랙이 통과본과 리서치 노트를 바탕으로 장면 설계서와 장별 초안을 씁니다.</p><div class="crew" data-writer="블랙" data-crew=""></div><div class="gate"><i></i><span class="gl"><small>write-mode-selection</small><button type="button" class="q" aria-label="write-mode-selection 설명" aria-describedby="tip-write-mode-selection">?</button><span class="tip" role="tooltip" id="tip-write-mode-selection">초안을 쓰기 전에, 사용자가 원고를 어떻게 받아 볼지 고릅니다. 장마다 확인하면서 쓸 수도 있고, 끝까지 다 쓴 뒤에 한 번에 볼 수도 있습니다.</span></span></div></div>
-    <div class="stage"><div class="node">04</div><code>/review</code><b>원고 리뷰와 수정</b><p>평가자 9명이 원고를 리뷰하고, 작가 블랙이 그 리뷰를 받아 원고를 고칩니다.</p><div class="crew" data-writer="블랙" data-crew="핑크 레드 실버 블루 골드 퍼플 아이보리 오렌지 올리브"></div></div>
+    <div class="stage"><div class="node">04</div><code>/review</code><b>원고 리뷰와 수정</b><p>평가자 9명이 원고를 리뷰하고, 작가 블랙이 그 리뷰를 받아 원고를 고칩니다. 마지막에는 평가자 8명이 원고를 소리 내어 읽으며 걸리는 문장을 하나씩 짚고, 블랙이 그 자리를 다시 다듬습니다.</p><div class="crew" data-writer="블랙" data-crew="핑크 레드 실버 블루 골드 퍼플 아이보리 오렌지 올리브"></div></div>
     <div class="stage"><div class="node">05</div><code>/publish</code><b>품질 검사와 e북 출판</b><p>출판 에이전트가 검증을 통과한 최종본으로 웹 e북과 메타데이터를 만들고 잠급니다.</p><div class="crew" data-crew=""></div><div class="gate last"><i></i><span class="gl"><small>quality-check</small><button type="button" class="q" aria-label="quality-check 설명" aria-describedby="tip-quality-check">?</button><span class="tip" role="tooltip" id="tip-quality-check">e북이 나오면 사용자가 최종 결과물을 직접 읽고 평가합니다. 고칠 곳이 있으면 다시 고쳐서 한 번 더 돌리고, 만족하면 여기서 작업을 마칩니다.</span></span></div></div>
   </div>
 </section>
@@ -1166,6 +1374,13 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
     <span class="k">BOOK 02 · 4장</span>
     <h3 class="holo-text">이의신청</h3>
     <p>“제 점수 말고 제 집을 봐 주세요.”</p>
+    <span class="go">펼쳐 읽기 <i></i></span>
+  </a>
+  <a class="door door-res" href="restoration/ebook.html">
+    <div class="art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <span class="k">BOOK 03 · 4장</span>
+    <h3>복원</h3>
+    <p>“그런 기록은 없어요, 어머님.”</p>
     <span class="go">펼쳐 읽기 <i></i></span>
   </a>
 </section>
@@ -1260,7 +1475,7 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   /* ---------- book tilt + lamp ---------- */
   const lamp = $('#lamp'), shelf = $('#shelf');
   const books = $$('.shelf .book');
-  const base = [{ ry: -26, rx: 5 }, { ry: -14, rx: 3 }];
+  const base = [{ ry: -28, rx: 5 }, { ry: -18, rx: 4 }, { ry: -8, rx: 3 }];
   books.forEach((b, i) => { b.style.setProperty('--ry', base[i].ry + 'deg'); b.style.setProperty('--rx', base[i].rx + 'deg'); });
   if (!RM && matchMedia('(hover:hover)').matches) {
     hero.addEventListener('pointermove', e => {
@@ -1509,6 +1724,92 @@ footer a{color:var(--cream);border-bottom:1px solid rgba(255,255,255,.25)}
   const startTh = () => { if (!thOn) { thOn = true; play(); } };
   new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !th.closest('[aria-hidden="true"]')) startTh(); }), { threshold: .45 }).observe(th);
   th.addEventListener('panel:show', startTh);
+
+  /* ---------- restoration: 새록이 가계부와 성적표를 대조한다 (3장, 스포일러 없이 버튼까지) ---------- */
+  // 가계부 손글씨는 e북 표지와 같은 데이터를 쓴다. 2009년 6월 1일은 월요일, 4일 칸은 비어 있다
+  const LEDGER = {
+    1: ['두부 1,200', '파 1,000'], 2: ['우유 1,850', '계란 3,600'], 3: ['콩나물 1,000', '버스비 2,000'],
+    5: ['학원비', '250,000'], 6: ['고등어 4,000', '무 1,500'], 7: ['시장 12,300'], 8: ['전기세 32,400'],
+    9: ['두부 1,200', '버스비 2,000'], 10: ['약값 5,600'], 11: ['콩나물 1,000', '계란 3,600'], 12: ['우유 1,850'],
+    13: ['실, 바늘 2,000'], 14: ['쌀 42,000'], 15: ['신문 12,000'], 16: ['파 1,000', '양파 2,500'],
+    17: ['버스비 2,000'], 18: ['보리차 1,900'], 19: ['두부 1,200', '시금치 1,500'], 20: ['가스비 28,700'],
+    21: ['시장 9,800'], 22: ['우유 1,850'], 23: ['버스비 2,000', '김 3,000'], 24: ['계란 3,600'],
+    25: ['무 1,500', '콩나물 1,000'], 26: ['고등어 4,000'], 27: ['휴지 6,900'], 28: ['시장 15,200'],
+    29: ['약값 5,600'], 30: ['우유 1,850', '버스비 2,000']
+  };
+  const ledger = $('#ledger'), exams = $('#exams'), srk = $('#srk'), sDay = $('#srk-day'), sSay = $('#srk-say'),
+        sFill = $('#srk-fill'), sub = $('#rs-sub'), rsReplay = $('#rs-replay');
+  ledger.innerHTML = ['일', '월', '화', '수', '목', '금', '토'].map(d => `<span class="dw">${d}</span>`).join('') +
+    Array.from({ length: 35 }, (_, i) => {
+      const out = i === 0 || i > 30, day = i === 0 ? 31 : out ? i - 30 : i;
+      const ws = out ? [] : (LEDGER[i] || []);
+      return `<div class="cell${i % 7 === 0 ? ' sun' : ''}${out ? ' out' : ''}${i === 4 ? ' blank' : ''}" style="--k:${i}"><span class="n">${day}</span>${ws.map(w => `<span class="w">${w}</span>`).join('')}</div>`;
+    }).join('');
+  exams.innerHTML = ['3월', '4월', '6월', '7월', '9월', '10월'].map((m, i) => `<span class="${m === '6월' ? 'gap' : ''}" style="--k:${i}">${m}</span>`).join('');
+  const days = $$('.cell:not(.out)', ledger), blank = days[3], exs = $$('span', exams), gap = $('.gap', exams);
+
+  function subtitle(who, text) {
+    sub.classList.add('hide');
+    return sleep(350).then(() => { sub.firstElementChild.textContent = who; sub.lastElementChild.textContent = text; sub.classList.remove('hide'); });
+  }
+  function saerok(text) {
+    sSay.classList.add('hide');
+    return sleep(300).then(() => { sSay.textContent = text; sSay.classList.remove('hide'); });
+  }
+  let rsRun = 0;
+  async function rsPlay() {
+    const id = ++rsRun, alive = () => id === rsRun;
+    rsReplay.classList.remove('on'); sub.classList.add('hide');
+    ledger.classList.remove('inked'); exams.classList.remove('on');
+    $$('.ck, .hit', srk).forEach(el => el.classList.remove('ck', 'hit'));
+    sDay.classList.add('hide'); sSay.classList.add('hide'); sSay.textContent = ''; sFill.classList.remove('on'); srk.classList.remove('talk');
+
+    if (RM) { // 움직임을 줄인 설정이면 끝 장면만 보여 준다
+      ledger.classList.add('inked'); exams.classList.add('on');
+      blank.classList.add('hit'); gap.classList.add('hit'); sDay.classList.remove('hide');
+      sSay.textContent = '이날 어머님과 은재 님의 기록이 함께 비어 있어요.'; sSay.classList.remove('hide');
+      sFill.classList.add('on');
+      sub.lastElementChild.textContent = '그리고 딸 앞에 그 빈 날짜를 채울 수 있는 버튼이 놓인다.'; sub.classList.remove('hide');
+      return;
+    }
+
+    await sleep(400); if (!alive()) return;
+    ledger.classList.add('inked');
+    await subtitle('', '엄마는 1987년부터 2031년까지 가계부를 썼다. 거른 날은 거의 없었다.');
+    await sleep(3000); if (!alive()) return;
+    await subtitle('엄마', '너랑 나랑 기차 타고 바다 갔던 날 있잖아. 옥수수.');
+    await sleep(2700); if (!alive()) return;
+    srk.classList.add('talk');
+    await subtitle('새록', '그런 기록은 없어요, 어머님.');
+    await sleep(2600); if (!alive()) return;
+    sub.classList.add('hide');
+    await saerok('어머님이 이번 달에 바다 이야기를 31번 하셨어요. 맞는 기록이 없어서 다른 기록을 찾아봤어요.');
+    await sleep(2600); if (!alive()) return;
+
+    for (const c of days) { if (c !== blank) c.classList.add('ck'); await sleep(45); if (!alive()) return; }
+    sDay.classList.remove('hide'); blank.classList.add('hit'); srk.classList.remove('talk');
+    await subtitle('', '3일 칸에는 콩나물과 버스비가, 5일 칸에는 학원비가 적혀 있었다. 4일 칸만 비어 있었다.');
+    await sleep(3800); if (!alive()) return;
+
+    exams.classList.add('on');
+    await sleep(800); if (!alive()) return;
+    for (const e of exs) { if (e !== gap) e.classList.add('ck'); await sleep(160); if (!alive()) return; }
+    gap.classList.add('hit');
+    await subtitle('', '3월, 4월, 7월, 9월, 10월. 6월은 없었다.');
+    await sleep(3000); if (!alive()) return;
+
+    srk.classList.add('talk');
+    await saerok('이날 어머님과 은재 님의 기록이 함께 비어 있어요. 혹시 아시는 게 있으세요?');
+    await subtitle('은재', '몰라.');
+    await sleep(2800); if (!alive()) return;
+    srk.classList.remove('talk');
+    sFill.classList.add('on');
+    await subtitle('', '그리고 딸 앞에 그 빈 날짜를 채울 수 있는 버튼이 놓인다.');
+    await sleep(1600); if (!alive()) return;
+    rsReplay.classList.add('on');
+  }
+  rsReplay.addEventListener('click', rsPlay);
+  new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { o.disconnect(); rsPlay(); } }), { threshold: .4 }).observe($('#srk-wrap'));
 })();
 </script>
 <script>

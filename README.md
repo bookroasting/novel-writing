@@ -270,6 +270,7 @@ docs/           작품 폴더 (영문 이름만). 예시 출판본 포함
 
 - [`docs/care-robot-unit-1/ebook.html`](docs/care-robot-unit-1/ebook.html): 단편 『돌봄로봇 1호기』의 웹 e북. 브라우저로 바로 열린다.
 - [`docs/objection/ebook.html`](docs/objection/ebook.html): 단편 『이의신청』의 웹 e북. 같은 폴더에 작품 설정(`book-toc.md`)과 스토리 설계도(`00_storyline/storyline.md`)를 함께 둔다.
+- [`docs/restoration/ebook.html`](docs/restoration/ebook.html): 단편 『복원』의 웹 e북. 폴더 구성은 『이의신청』과 같다. 합평 원장과 초안(`01_test/`, `02_draft/`, `03_output/`)은 로컬에만 두고 올리지 않는다.
 
 ## 바뀐 점 (『이의신청』 이후)
 
