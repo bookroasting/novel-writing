@@ -20,6 +20,7 @@
 | `<스킬>/references/reviewers.md` | 14장 평가자 카드. 작품 값은 블록과 storyline에서 읽는다 | 아니오 |
 | `<스킬>/references/reader-check.md` | 처음 읽는 독자 점검표(R1~R12)와 재독 로그 | 아니오 |
 | `<스킬>/references/purple-loop.md` | PURPLE 4R 루프(설명충·중언부언·주제 전달) | 아니오 |
+| `<스킬>/references/read-aloud.md` | 구두 낭독 점검 루프(연결·습관어·문단·이해, 출판 뒤 윤문과 작가의 말) | 아니오 |
 | `<스킬>/scripts/*.py` | 검증기, e북 생성기, 린터, new_run | 아니오 |
 | `<스킬>/templates/` | 새 작품용 book-toc·storyline 양식, e북 디자인 | 아니오 |
 

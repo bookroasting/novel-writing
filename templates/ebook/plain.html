@@ -169,6 +169,9 @@
   }
   #toc-panel .toc-name { font-size: 14px; font-weight: 500; }
   #toc-panel .toc-page { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; }
+  #toc-panel li.toc-cover .toc-name { font-weight: 400; color: var(--ink-soft); }
+  /* 한국어는 낱말 중간에서 줄을 바꾸지 않는다 (표지·뒤표지·목차 포함) */
+  .page, #toc-panel { word-break: keep-all; overflow-wrap: break-word; }
   #toc-overlay {
     position: fixed;
     inset: 0;
@@ -1585,12 +1588,17 @@
     // 목차 사이드 패널 동적 생성
     const tocList = document.getElementById('toc-panel-list');
     tocList.innerHTML = '';
-    chapterPages.forEach((cp) => {
-      const li = document.createElement('li');
-      li.dataset.page = cp.pageIdx;
-      li.innerHTML = `<span class="toc-name">${cp.title}</span><span class="toc-page">${cp.pageIdx}쪽</span>`;
-      tocList.appendChild(li);
-    });
+    // 앞표지와 뒤표지도 목차 패널에서 바로 갈 수 있게 처음과 끝에 둔다
+    [{ title: '표지', pageIdx: 1, cls: 'toc-cover' }]
+      .concat(chapterPages)
+      .concat([{ title: '뒤표지', pageIdx: total, cls: 'toc-cover' }])
+      .forEach((cp) => {
+        const li = document.createElement('li');
+        li.dataset.page = cp.pageIdx;
+        if (cp.cls) li.className = cp.cls;
+        li.innerHTML = `<span class="toc-name">${cp.title}</span><span class="toc-page">${cp.pageIdx}쪽</span>`;
+        tocList.appendChild(li);
+      });
 
     const tocPanel = document.getElementById('toc-panel');
     const tocOverlay = document.getElementById('toc-overlay');
