@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>34-f4 climax (30s): the stamp held a hair above the empty 날인란</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Serif KR";
+          src: url("assets/fonts/NotoSerifKR.woff2") format("woff2");
+          font-weight: 200 900;
+        }
+        @font-face {
+          font-family: "Pretendard";
+          src: url("assets/fonts/Pretendard.woff2") format("woff2");
+          font-weight: 45 930;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono.woff2") format("woff2");
+          font-weight: 100 800;
+        }
+
+        #stage[data-composition-id="34-f4"] {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+        }
+        /* own wrapper carries the frame's ground, reset and variables (works after cloning into the host) */
+        #f34_root {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+          /* continuity with frame 5: last line em-box center y 440, Noto Serif KR 700 120px -0.03em */
+          --f34-last-center-y: 440px;
+          --f34-last-size: 120px;
+        }
+        #f34_root,
+        #f34_root * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* camera: everything that shakes / chroma-splits. holo-layer + HUD stay outside. */
+        #f34_cam,
+        .f34_layer {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+        .f34_svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: block;
+          overflow: visible;
+        }
+        /* the desk scene is authored at 1x on a 1920x1080 plane, then fitted 1.3x.
+           The 14px freeze gap is measured AFTER this fit (10.77 authored px). */
+        .f34_fit {
+          transform-origin: 0px 0px;
+          transform: matrix(1.3, 0, 0, 1.3, -440, -263);
+        }
+
+        /* ---------- kinetic serif type ---------- */
+        .f34_line {
+          position: absolute;
+          left: 150px;
+          display: block;
+          font-family: "Noto Serif KR", serif;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        .f34_line span {
+          display: inline-block;
+          will-change: transform, opacity, filter;
+        }
+        .f34_head {
+          font-weight: 700;
+          font-size: 96px;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+        }
+        .f34_hero {
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.045em;
+        }
+        .f34_hero120 {
+          font-weight: 800;
+          font-size: 120px;
+          line-height: 1.05;
+          letter-spacing: -0.045em;
+        }
+        .f34_hero140 {
+          font-weight: 800;
+          font-size: 140px;
+          line-height: 1;
+          letter-spacing: -0.045em;
+        }
+        #f34_g1_time {
+          top: 128px;
+          color: #8c8c88;
+        }
+        #f34_g1_name {
+          top: 268px;
+        }
+        #f34_g1_order {
+          top: 428px;
+        }
+        #f34_g1_q1 {
+          top: 250px;
+        }
+        #f34_g1_q2 {
+          top: 382px;
+        }
+        #f34_g1_edge {
+          top: 618px;
+        }
+        #f34_g2_held,
+        #f34_g2_empty {
+          top: 296px;
+        }
+        /* final line: fixed position shared with frame 4 (centered, em-box center at y=440) */
+        #f34_g2_last {
+          position: absolute;
+          left: 0;
+          top: calc(var(--f34-last-center-y) - var(--f34-last-size) / 2); /* 380px */
+          width: 1920px;
+          height: var(--f34-last-size);
+          text-align: center;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 700;
+          font-size: var(--f34-last-size);
+          line-height: var(--f34-last-size);
+          letter-spacing: -0.03em;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        #f34_g2_last span {
+          display: inline-block;
+          will-change: transform, opacity, filter;
+        }
+
+        /* ---------- shared scene: desk + 결정서 + 인주 통 + stamp ---------- */
+        #f34_stamp_move {
+          position: absolute;
+          left: 1360px;
+          top: 515.23px; /* face bottom = 905.23 = dashed front 916 - 10.77 */
+          width: 200px;
+          height: 400px;
+          will-change: transform;
+        }
+        #f34_stamp_tremble {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 200px;
+          height: 400px;
+          transform-origin: 100px 390px;
+        }
+        #f34_stamp_svg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 200px;
+          height: 400px;
+          display: block;
+          overflow: visible;
+        }
+        #f34_nalin_label {
+          position: absolute;
+          left: 1455px;
+          top: 826px;
+          transform: translateX(-50%);
+          font-family: "Noto Serif KR", serif;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 1;
+          letter-spacing: 0.08em;
+          color: #c8281e;
+          white-space: nowrap;
+          background: #050505;
+          padding: 3px 7px 2px;
+        }
+        #f34_mark {
+          position: absolute;
+          left: 1271px;
+          top: 903px;
+          width: 58px;
+          height: 26px;
+          transform-origin: 29px 13px;
+          opacity: 0;
+        }
+        #f34_mark svg {
+          display: block;
+          width: 58px;
+          height: 26px;
+          overflow: visible;
+        }
+
+        /* ---------- holo-layer (track-time driven, identical in every frame) ---------- */
+        #f34_hl_scan {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background-image: repeating-linear-gradient(0deg, rgba(245, 245, 242, 0.035) 0 1px, transparent 1px 4px);
+          background-position: 0px 473.04px;
+        }
+        #f34_hl_grain {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0.06;
+          pointer-events: none;
+          display: block;
+        }
+        #f34_hl_vig {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          box-shadow: inset 0 0 240px rgba(0, 0, 0, 0.85);
+        }
+
+        /* ---------- hud (fixed chrome, identical in every frame) ---------- */
+        .f34_hud_label {
+          position: absolute;
+          top: 48px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f34_hud_tl {
+          left: 96px;
+        }
+        #f34_hud_tr {
+          right: 96px;
+        }
+        #f34_hud_rule {
+          position: absolute;
+          left: 96px;
+          top: 84px;
+          width: 1728px;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f34_hud_track {
+          position: absolute;
+          left: 96px;
+          top: 1012px;
+          width: 1728px;
+          height: 2px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f34_hud_bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 2px;
+          width: 1135.30px;
+          background: #c8281e;
+        }
+        #f34_hud_tc {
+          position: absolute;
+          left: 96px;
+          top: 1032px;
+          height: 18px;
+          width: 240px;
+          overflow: hidden;
+        }
+        #f34_hud_tc_strip {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 18px;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f34_hud_tc_strip span {
+          display: block;
+          height: 18px;
+        }
+
+        /* SURGE flash: one white frame, over everything */
+        #f34_flash {
+          position: absolute;
+          inset: 0;
+          background: #ffffff;
+          opacity: 0;
+          pointer-events: none;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="34-f4" data-width="1920" data-height="1080" data-duration="7.53">
+        <div id="f34_root">
+        <div id="f34_cam">
+          <!-- shared scene, visible across both groups -->
+          <div id="f34_shared" class="f34_layer">
+            <div id="f34_shared_fit" class="f34_layer f34_fit">
+              <div id="f34_desk" class="f34_layer">
+                <svg class="f34_svg" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="f34_desk_grad" x1="0" y1="760" x2="0" y2="1000" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#070707" />
+                      <stop offset="0.7" stop-color="#0c0c0c" />
+                      <stop offset="1" stop-color="#050505" />
+                    </linearGradient>
+                    <linearGradient id="f34_paper_grad" x1="0" y1="790" x2="0" y2="960" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#0f0f0f" />
+                      <stop offset="1" stop-color="#171716" />
+                    </linearGradient>
+                    <filter id="f34_ink" x="-30%" y="-80%" width="160%" height="260%">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="5" result="n" />
+                      <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" result="d" />
+                      <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="1" seed="9" result="g" />
+                      <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 2.05" result="ga" />
+                      <feComposite in="d" in2="ga" operator="in" />
+                    </filter>
+                  </defs>
+                  <defs><filter id="f34_desk_soft" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7" /></filter></defs>
+                  <!-- desk surface: flat side-view plane, vanishing point (1400,110) -->
+                  <polygon points="760,1000 2160,1000 1880,760 1040,760" fill="url(#f34_desk_grad)" />
+                  <line x1="1040" y1="760" x2="1880" y2="760" stroke="rgba(245,245,242,0.14)" stroke-width="1" />
+                  <!-- 결정서: white hairline document, 날인란 at its lower right -->
+                  <polygon id="f34_doc" points="1000,960 1640,960 1592,790 1080,790" fill="url(#f34_paper_grad)" stroke="rgba(245,245,242,0.6)" stroke-width="1.2" />
+                  <g id="f34_doc_rows" stroke="rgba(245,245,242,0.22)" stroke-width="1.4">
+                    <line x1="1110" y1="808" x2="1300" y2="808" stroke="rgba(245,245,242,0.45)" stroke-width="2.2" />
+                    <line x1="1104" y1="830" x2="1420" y2="830" />
+                    <line x1="1098" y1="850" x2="1380" y2="850" />
+                    <line x1="1092" y1="870" x2="1300" y2="870" />
+                    <line x1="1084" y1="892" x2="1250" y2="892" />
+                    <line x1="1076" y1="914" x2="1220" y2="914" />
+                  </g>
+                  <!-- 날인란: solid outer + dashed inner, EMPTY -->
+                  <polygon points="1346.3,922 1573.7,922 1558.7,852 1350.9,852" fill="rgba(245,245,242,0.025)" stroke="#f5f5f2" stroke-width="1.6" />
+                  <polygon points="1356.6,916 1563.4,916 1551.5,857 1359.8,857" fill="none" stroke="rgba(245,245,242,0.85)" stroke-width="1" stroke-dasharray="5 4" />
+                  <!-- the stamp's shadow on the empty box: darkens as it descends, never meets the face -->
+                  <ellipse id="f34_box_shadow" cx="1457" cy="890" rx="96" ry="19" fill="rgba(0,0,0,0.85)" filter="url(#f34_desk_soft)" opacity="0" />
+                  <ellipse id="f34_box_glow" cx="1457" cy="890" rx="70" ry="11" fill="rgba(200,40,30,0.35)" filter="url(#f34_desk_soft)" opacity="0" />
+                  <!-- 인주 통: open, seal-red disc in a white ring -->
+                  <g id="f34_pad">
+                    <ellipse id="f34_pad_shadow" cx="1692" cy="868" rx="74" ry="16" fill="rgba(0,0,0,0.75)" />
+                    <path d="M1624 846 L1624 858 A 66 14 0 0 0 1756 858 L1756 846" fill="#0b0b0b" stroke="#f5f5f2" stroke-width="1.4" />
+                    <ellipse cx="1690" cy="846" rx="66" ry="14" fill="#0b0b0b" stroke="#f5f5f2" stroke-width="1.4" />
+                    <ellipse id="f34_pad_ink" cx="1690" cy="846" rx="55" ry="10.5" fill="#c8281e" />
+                    <ellipse cx="1674" cy="843" rx="18" ry="3" fill="rgba(255,255,255,0.18)" />
+                  </g>
+                </svg>
+                <div id="f34_nalin_label">날인</div>
+              </div>
+
+              <!-- the one red half-moon mark, in the margin outside the box -->
+              <div id="f34_mark">
+                <svg viewBox="0 0 80 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 12 A 37 22 0 0 0 77 12 A 37 7 0 0 1 3 12 Z" fill="#c8281e" filter="url(#f34_ink)" opacity="0.92" />
+                </svg>
+              </div>
+
+            <div id="f34_stamp_move">
+              <div id="f34_stamp_tremble">
+                <svg id="f34_stamp_svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="f34_glow_down" x1="0" y1="390" x2="0" y2="395" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="rgba(200,40,30,0.55)" />
+                      <stop offset="1" stop-color="rgba(200,40,30,0)" />
+                    </linearGradient>
+                    <linearGradient id="f34_holo_band" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="rgba(160,235,255,0)" />
+                      <stop offset="0.35" stop-color="rgba(160,235,255,0.45)" />
+                      <stop offset="0.5" stop-color="rgba(255,255,255,0.6)" />
+                      <stop offset="0.65" stop-color="rgba(255,170,225,0.4)" />
+                      <stop offset="1" stop-color="rgba(201,184,255,0)" />
+                    </linearGradient>
+                    <clipPath id="f34_handle_clip">
+                      <rect x="62" y="40" width="76" height="291" />
+                    </clipPath>
+                    <filter id="f34_soft" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur stdDeviation="3.5" />
+                    </filter>
+                  </defs>
+                  <!-- handle: white holo wireframe cylinder -->
+                  <rect x="62" y="81" width="76" height="250" fill="rgba(245,245,242,0.035)" />
+                  <g stroke="rgba(245,245,242,0.26)" stroke-width="1">
+                    <line x1="63" y1="95" x2="137" y2="95" /><line x1="63" y1="109" x2="137" y2="109" />
+                    <line x1="63" y1="123" x2="137" y2="123" /><line x1="63" y1="137" x2="137" y2="137" />
+                    <line x1="63" y1="151" x2="137" y2="151" /><line x1="63" y1="165" x2="137" y2="165" />
+                    <line x1="63" y1="179" x2="137" y2="179" /><line x1="63" y1="193" x2="137" y2="193" />
+                    <line x1="63" y1="207" x2="137" y2="207" /><line x1="63" y1="221" x2="137" y2="221" />
+                    <line x1="63" y1="235" x2="137" y2="235" /><line x1="63" y1="249" x2="137" y2="249" />
+                    <line x1="63" y1="263" x2="137" y2="263" /><line x1="63" y1="277" x2="137" y2="277" />
+                    <line x1="63" y1="291" x2="137" y2="291" /><line x1="63" y1="305" x2="137" y2="305" />
+                    <line x1="63" y1="319" x2="137" y2="319" />
+                  </g>
+                  <rect id="f34_holo_sweep" x="62" y="-60" width="76" height="70" fill="url(#f34_holo_band)" clip-path="url(#f34_handle_clip)" opacity="0" />
+                  <g fill="none" stroke="#f5f5f2" stroke-width="1.5">
+                    <line x1="62" y1="81" x2="62" y2="331" />
+                    <line x1="138" y1="81" x2="138" y2="331" />
+                    <ellipse cx="100" cy="81" rx="38" ry="9" />
+                    <path d="M62 81 C 62 46, 138 46, 138 81" />
+                  </g>
+                  <!-- the face (印面): seal-red slab that fits the 날인란's dashed inner square -->
+                  <polygon points="25,350 175,350 170,312 30,312" fill="#9e1f17" />
+                  <polygon points="25,350 175,350 170,312 30,312" fill="none" stroke="rgba(245,245,242,0.3)" stroke-width="1" />
+                  <!-- handle foot where it meets the slab -->
+                  <path d="M62 331 A 38 9 0 0 0 138 331" fill="none" stroke="#f5f5f2" stroke-width="1.5" />
+                  <path d="M62 331 A 38 9 0 0 1 138 331" fill="none" stroke="rgba(245,245,242,0.3)" stroke-width="1" stroke-dasharray="3 3" />
+                  <!-- seal glow hugging the lower edge of the face (stays clear of the paper) -->
+                  <rect x="20" y="364" width="160" height="20" rx="6" fill="rgba(200,40,30,0.55)" filter="url(#f34_soft)" />
+                  <rect x="25" y="350" width="150" height="40" fill="#c8281e" />
+                  <line x1="25" y1="350.5" x2="175" y2="350.5" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+                  <!-- downward glow: 5 authored px (6.5 screen px), half of the 14px gap -->
+                  <rect x="25" y="390" width="150" height="5" fill="url(#f34_glow_down)" />
+                </svg>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <!-- g1 [0, 5.18] local = track 19.71-24.89 -->
+          <div id="f34_g1" class="f34_layer">
+            <div id="f34_g1_time" class="f34_line f34_head"><span>처</span><span>리</span><span>기</span><span>한</span><span>&nbsp;</span><span>마</span><span>지</span><span>막</span><span>&nbsp;</span><span>날</span><span>,</span><span>&nbsp;</span><span>오</span><span>후</span><span>&nbsp;</span><span>네</span><span>&nbsp;</span><span>시</span><span>.</span></div>
+            <div id="f34_g1_name" data-layout-allow-overlap class="f34_line f34_hero"><span>“</span><span>서</span><span>진</span><span>&nbsp;</span><span>씨</span><span>,</span><span>”</span></div>
+            <div id="f34_g1_order" data-layout-allow-overlap class="f34_line f34_hero"><span>“</span><span>찍</span><span>고</span><span>&nbsp;</span><span>퇴</span><span>근</span><span>하</span><span>세</span><span>요</span><span>.</span><span>”</span></div>
+            <div id="f34_g1_q1" data-layout-allow-overlap class="f34_line f34_hero120"><span>“</span><span>이</span><span>&nbsp;</span><span>집</span><span>&nbsp;</span><span>애</span><span>한</span><span>테</span><span>는</span></div>
+            <div id="f34_g1_q2" data-layout-allow-overlap class="f34_line f34_hero120"><span>뭐</span><span>라</span><span>고</span><span>&nbsp;</span><span>해</span><span>요</span><span>?</span><span>”</span></div>
+            <div id="f34_g1_edge" class="f34_line f34_head"><span>종</span><span>이</span><span>에</span><span>&nbsp;</span><span>닿</span><span>기</span><span>&nbsp;</span><span>직</span><span>전</span><span>까</span><span>지</span><span>.</span></div>
+          </div>
+
+          <!-- g2 [5.18, 7.53] local = track 24.89-27.24 -->
+          <div id="f34_g2" class="f34_layer" style="opacity: 0; visibility: hidden">
+            <div id="f34_g2_held" class="f34_line f34_hero140"><span>그대로 들고 있었다.</span></div>
+            <div id="f34_g2_empty" class="f34_line f34_hero140"><span>날인란은 비어 있었다.</span></div>
+            <div id="f34_g2_last"><span>나는</span> <span>도장을</span> <span>찍지 않고</span></div>
+          </div>
+        </div>
+
+        <!-- holo-layer -->
+        <div id="f34_hl_scan"></div>
+        <svg id="f34_hl_grain" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <filter id="f34_hl_grain_f" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#f34_hl_grain_f)" />
+        </svg>
+        <div id="f34_hl_vig"></div>
+
+        <!-- hud -->
+        <div id="f34_hud_tl" class="f34_hud_label">OBJECTION · 이의신청</div>
+        <div id="f34_hud_tr" class="f34_hud_label">2032 · SEOUL</div>
+        <div id="f34_hud_rule"></div>
+        <div id="f34_hud_track"><div id="f34_hud_bar"></div></div>
+        <div id="f34_hud_tc"><div id="f34_hud_tc_strip" data-layout-ignore></div></div>
+
+        <div id="f34_flash"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var ID = "34-f4";
+          var T0 = 19.71; // frame start, track seconds
+          var DUR = 7.53; // frame length (19.71 -> 27.24)
+          var TRACK_END = 30.0;
+          var SURGE = 5.18; // 24.89 track: freeze, g1 -> g2 0ms cut
+          var HOLD_END = 5.48; // 0.3s breath: timecode + scanline drift freeze too
+          var $ = function (id) {
+            return document.getElementById(id);
+          };
+          function glyphs(id) {
+            return $(id).querySelectorAll("span");
+          }
+
+          // ---- timecode strip: one line per centisecond, 00:19.71 -> 00:27.24 ----
+          var CS0 = 1971; // 00:19.71
+          var CSF = 2489; // 00:24.89 freeze
+          var CS1 = 2724; // 00:27.24
+          function pad2(n) {
+            return n < 10 ? "0" + n : String(n);
+          }
+          var html = "";
+          for (var c = CS0; c <= CS1; c++) {
+            var totalSec = Math.floor(c / 100);
+            html += "<span>" + pad2(Math.floor(totalSec / 60)) + ":" + pad2(totalSec % 60) + "." + pad2(c % 100) + "</span>";
+          }
+          $("f34_hud_tc_strip").innerHTML = html;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // =========================== group spans (0ms cut at the SURGE) ===========================
+          tl.set($("f34_g1"), { autoAlpha: 1 }, 0);
+          tl.set($("f34_g1"), { autoAlpha: 0 }, SURGE);
+          tl.set($("f34_g2"), { autoAlpha: 0 }, 0);
+          tl.set($("f34_g2"), { autoAlpha: 1 }, SURGE);
+
+          // kinetic letter entrance (reactive, 0-45ms after the hit)
+          function letterIn(els, t, o) {
+            o = o || {};
+            tl.fromTo(
+              els,
+              { opacity: 0, y: o.y == null ? 42 : o.y, scaleY: o.sy || 1.12, filter: "blur(" + (o.blur == null ? 10 : o.blur) + "px)" },
+              {
+                opacity: 1,
+                y: 0,
+                scaleY: 1,
+                filter: "blur(0px)",
+                duration: o.dur || 0.3,
+                ease: "expo.out",
+                stagger: o.stagger == null ? 0.03 : o.stagger,
+                transformOrigin: "50% 100%",
+              },
+              t
+            );
+          }
+          // chroma-hit: red/cyan copies via drop-shadow, 2-3 frames
+          function chroma(el, t, px) {
+            tl.set(el, { filter: "drop-shadow(" + -px + "px 0px 0px rgba(255,40,40,0.85)) drop-shadow(" + px * 2 + "px 0px 0px rgba(0,220,255,0.85))" }, t);
+            tl.set(el, { filter: "drop-shadow(" + -Math.round(px * 0.4) + "px 0px 0px rgba(255,40,40,0.85)) drop-shadow(" + Math.round(px * 0.8) + "px 0px 0px rgba(0,220,255,0.85))" }, t + 0.034);
+            tl.set(el, { filter: "none" }, t + 0.1);
+          }
+          function show(el, on, off) {
+            tl.set(el, { autoAlpha: 0 }, 0);
+            tl.set(el, { autoAlpha: 1 }, on);
+            if (off != null) tl.set(el, { autoAlpha: 0 }, off);
+          }
+
+          // =========================== g1 ===========================
+          var time = $("f34_g1_time"),
+            name = $("f34_g1_name"),
+            order = $("f34_g1_order"),
+            q1 = $("f34_g1_q1"),
+            q2 = $("f34_g1_q2"),
+            edge = $("f34_g1_edge");
+          tl.set([time, name, order, q1, q2, edge], { filter: "none" }, 0);
+
+          var QCUT = 2.12; // 21.83 strong snare: hard cut to the question
+          var ECUT = 4.0; // 23.71: the question cuts, "종이에 닿기 직전까지." builds
+
+          // 19.71 "처리기한 마지막 날, 오후 네 시." (ink-dim headline)
+          show(time, 0, QCUT);
+          letterIn(glyphs("f34_g1_time"), 0, { y: 26, blur: 8, stagger: 0.024 });
+          // 19.95 "“서진 씨,”"
+          show(name, 0.24, QCUT);
+          letterIn(glyphs("f34_g1_name"), 0.24, { stagger: 0.032 });
+          // 20.53 strong hard stop: "“찍고 퇴근하세요.”" slams in with chroma, holds to 21.83
+          show(order, 0.82, QCUT);
+          tl.fromTo(order, { scale: 1.1, transformOrigin: "0% 60%" }, { scale: 1, duration: 0.26, ease: "expo.out" }, 0.82);
+          letterIn(glyphs("f34_g1_order"), 0.82, { y: 30, stagger: 0.018, dur: 0.22, blur: 6 });
+          chroma(order, 0.84, 9);
+          // hold micro-drift on the lead's lines
+          tl.fromTo([time, name, order], { x: 0 }, { x: -10, duration: QCUT, ease: "none" }, 0);
+
+          // texture only: 21.36 hard stop, 23.01 / 23.08. the 인주 통 shadow flickers, the document rows shudder 1px
+          var padShadow = $("f34_pad_shadow"),
+            padInk = $("f34_pad_ink"),
+            rows = $("f34_doc_rows");
+          tl.set(padShadow, { opacity: 1 }, 0);
+          tl.set(padInk, { opacity: 1 }, 0);
+          tl.set(rows, { x: 0, y: 0 }, 0);
+          [1.65, 3.3].forEach(function (h) {
+            tl.set(padShadow, { opacity: 0.35 }, h);
+            tl.set(padShadow, { opacity: 1 }, h + 0.04);
+            tl.set(padShadow, { opacity: 0.5 }, h + 0.07);
+            tl.set(padShadow, { opacity: 1 }, h + 0.11);
+            tl.set(padInk, { opacity: 0.78 }, h + 0.07);
+            tl.set(padInk, { opacity: 1 }, h + 0.11);
+            tl.set(rows, { x: 1.5, y: -0.6 }, h);
+            tl.set(rows, { x: -1, y: 0.4 }, h + 0.032);
+            tl.set(rows, { x: 0, y: 0 }, h + 0.065);
+            tl.set(rows, { x: 1, y: 0 }, h + 0.07);
+            tl.set(rows, { x: 0, y: 0 }, h + 0.105);
+          });
+
+          // 21.83 hard cut: the question (two lines), holds to 23.71
+          show(q1, QCUT, ECUT);
+          show(q2, QCUT, ECUT);
+          letterIn(glyphs("f34_g1_q1"), QCUT, { y: 34, stagger: 0.022, dur: 0.26, blur: 6 });
+          letterIn(glyphs("f34_g1_q2"), QCUT + 0.08, { y: 34, stagger: 0.022, dur: 0.26, blur: 6 });
+          chroma(q1, QCUT + 0.01, 6);
+          tl.fromTo([q1, q2], { x: 0 }, { x: -8, duration: ECUT - QCUT, ease: "none" }, QCUT);
+
+          // 23.71 / 24.06 / 24.38 / 24.54: "종이에 닿기 직전까지." in chunks, holds to 24.89
+          show(edge, ECUT);
+          var eg = glyphs("f34_g1_edge");
+          var chunks = [
+            [4.0, [0, 1, 2]], // 종이에
+            [4.35, [3, 4, 5]], // 닿기
+            [4.67, [6, 7, 8]], // 직전
+            [4.83, [9, 10, 11]], // 까지.
+          ];
+          tl.set(eg, { opacity: 0 }, 0);
+          chunks.forEach(function (ch) {
+            var els = ch[1].map(function (i) {
+              return eg[i];
+            });
+            tl.fromTo(
+              els,
+              { opacity: 0, y: 30, scale: 1.18, filter: "blur(6px)" },
+              { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.16, ease: "expo.out", stagger: 0.022, immediateRender: false },
+              ch[0]
+            );
+          });
+
+          // =========================== the stamp across the roll ===========================
+          var move = $("f34_stamp_move");
+          var trem = $("f34_stamp_tremble");
+          var cam = $("f34_cam");
+          var shared = $("f34_shared");
+          var FREEZE_Y = -78; // hover: the face clears the box's far edge, so the whole empty 날인란 reads under it
+          var ACCEL = 3.74; // 23.45: the fill starts, the descent accelerates
+          // 21.83: enters from above on the hard cut, settles high, descends slowly, then plunges with the fill; stops dead at 24.89
+          tl.set(move, { y: -1150 }, 0);
+          tl.fromTo(move, { y: -1150 }, { y: -420, duration: 0.34, ease: "expo.out", immediateRender: false }, QCUT);
+          tl.to(move, { y: -330, duration: ACCEL - (QCUT + 0.34), ease: "sine.inOut" }, QCUT + 0.34);
+          tl.to(move, { y: FREEZE_Y, duration: SURGE - ACCEL, ease: "power2.in" }, ACCEL);
+          // the stamp's shadow on the empty box darkens as it descends, never meets the face
+          var boxShadow = $("f34_box_shadow"),
+            boxGlow = $("f34_box_glow");
+          tl.set([boxShadow, boxGlow], { opacity: 0 }, 0);
+          tl.fromTo(boxShadow, { opacity: 0, attr: { rx: 150, ry: 30 } }, { opacity: 0.75, attr: { rx: 96, ry: 19 }, duration: SURGE - QCUT, ease: "power2.in", immediateRender: false }, QCUT);
+          tl.fromTo(boxGlow, { opacity: 0 }, { opacity: 1, duration: SURGE - QCUT, ease: "power3.in", immediateRender: false }, QCUT);
+          // dolly push on the desk scene across the roll, landing at exactly 1.0 on the freeze
+          tl.set(shared, { scale: 1, opacity: 1, transformOrigin: "1451px 890px" }, 0);
+          tl.fromTo(shared, { scale: 1 }, { scale: 0.94, duration: 0.3, ease: "power2.out", immediateRender: false }, QCUT);
+          tl.to(shared, { scale: 1, duration: SURGE - (QCUT + 0.3), ease: "power2.in" }, QCUT + 0.3);
+          // holo light down the handle once as it arrives
+          tl.fromTo($("f34_holo_sweep"), { attr: { y: -60 }, opacity: 0 }, { attr: { y: 340 }, opacity: 1, duration: 0.6, ease: "sine.inOut" }, QCUT + 0.08);
+          tl.set($("f34_holo_sweep"), { opacity: 0 }, QCUT + 0.68);
+
+          tl.set(trem, { x: 0, y: 0, rotation: 0 }, 0);
+          tl.set(cam, { x: 0, y: 0 }, 0);
+          // 22.41 / 23.01 / 23.45: the hand trembles slightly, no screen-shake yet
+          [2.7, 3.3, 3.74].forEach(function (h, i) {
+            var sgn = i % 2 ? -1 : 1;
+            tl.set(trem, { x: sgn * 0.5, y: 1.2, rotation: sgn * 0.25 }, h);
+            tl.to(trem, { x: 0, y: 0, rotation: 0, duration: 0.14, ease: "power3.out" }, h + 0.02);
+          });
+          // 23.71 .. 24.59 roll hits: trembling hand + screen-shake growing 2 -> 8px
+          var HITS = [4.0, 4.09, 4.35, 4.46, 4.56, 4.67, 4.83, 4.88];
+          var AMP = [2, 2.8, 3.6, 4.4, 5.2, 6, 7, 8];
+          HITS.forEach(function (h, i) {
+            var a = AMP[i];
+            var sgn = i % 2 ? -1 : 1;
+            var next = i < HITS.length - 1 ? HITS[i + 1] : SURGE;
+            var settle = Math.min(0.12, next - h - 0.02);
+            tl.set(trem, { x: sgn * a * 0.3, y: 2 + a * 0.5, rotation: sgn * (0.2 + a * 0.1) }, h);
+            tl.to(trem, { x: 0, y: 0, rotation: 0, duration: settle, ease: "power3.out" }, h + 0.02);
+            tl.set(cam, { x: sgn * a, y: -a * 0.6 }, h);
+            tl.set(cam, { x: -sgn * a * 0.7, y: a * 0.45 }, h + 0.033);
+            if (next - h > 0.07) tl.set(cam, { x: sgn * a * 0.35, y: -a * 0.2 }, h + 0.066);
+            tl.set(cam, { x: 0, y: 0 }, Math.min(h + 0.1, next - 0.001));
+          });
+
+          // =========================== g2: SURGE 24.89 ===========================
+          // 0ms freeze: hard-zero every moving part on the hit (face bottom 14px above the dashed box edge)
+          tl.set(cam, { x: 0, y: 0 }, SURGE);
+          tl.set(trem, { x: 0, y: 0, rotation: 0 }, SURGE);
+          tl.set(move, { y: FREEZE_Y }, SURGE);
+          tl.set(shared, { scale: 1 }, SURGE);
+          // white flash 0.85 -> 0 over 3 frames
+          var flash = $("f34_flash");
+          tl.set(flash, { opacity: 0 }, 0);
+          tl.set(flash, { opacity: 0.85 }, SURGE);
+          tl.set(flash, { opacity: 0.5 }, SURGE + 0.034);
+          tl.set(flash, { opacity: 0.2 }, SURGE + 0.067);
+          tl.set(flash, { opacity: 0 }, SURGE + 0.1);
+          // chroma-hit on the whole stage
+          tl.set(cam, { filter: "none" }, 0);
+          tl.set(cam, { filter: "drop-shadow(-10px 0px 0px rgba(255,40,40,0.85)) drop-shadow(20px 0px 0px rgba(0,220,255,0.85))" }, SURGE);
+          tl.set(cam, { filter: "drop-shadow(-4px 0px 0px rgba(255,40,40,0.85)) drop-shadow(8px 0px 0px rgba(0,220,255,0.85))" }, SURGE + 0.034);
+          tl.set(cam, { filter: "none" }, SURGE + 0.1);
+
+          // "그대로 들고 있었다." slams in on the hit, holds to 25.70
+          var held = $("f34_g2_held"),
+            empty = $("f34_g2_empty"),
+            last = $("f34_g2_last");
+          var CUT1 = 5.99; // 25.70
+          var CUT2 = 6.74; // 26.45
+          show(held, SURGE, CUT1);
+          tl.fromTo(held, { scale: 1.08, transformOrigin: "0% 60%" }, { scale: 1, duration: 0.14, ease: "expo.out", immediateRender: false }, SURGE);
+
+          // 25.70: the stamp tilts as it withdraws; its left edge grazes the margin outside the box
+          var GRAZE = 6.24; // 25.95 contact
+          tl.to(trem, { x: -85, rotation: -8.3, duration: GRAZE - CUT1, ease: "power2.inOut" }, CUT1);
+          tl.to(move, { y: 0, duration: GRAZE - CUT1, ease: "power2.in" }, CUT1);
+          tl.to([boxShadow, boxGlow], { opacity: 0, duration: 0.25, ease: "power2.out" }, CUT1);
+          var mark = $("f34_mark");
+          tl.set(mark, { opacity: 0, scaleX: 0.55, scaleY: 0.7 }, 0);
+          tl.set(mark, { opacity: 1 }, GRAZE);
+          tl.fromTo(mark, { scaleX: 0.55, scaleY: 0.7 }, { scaleX: 1, scaleY: 1, duration: 0.12, ease: "expo.out", immediateRender: false }, GRAZE);
+          // and lifts away, out of frame before the last line (gone by 6.68)
+          tl.to(move, { y: -1150, duration: 0.42, ease: "power3.in" }, GRAZE + 0.02);
+          tl.to(trem, { rotation: -3, duration: 0.3, ease: "power2.out" }, GRAZE + 0.02);
+
+          // text cuts to "날인란은 비어 있었다." holds to 26.45
+          show(empty, CUT1, CUT2);
+          tl.fromTo(empty, { scale: 1.05, transformOrigin: "0% 60%", filter: "blur(4px)" }, { scale: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out", immediateRender: false }, CUT1);
+
+          // 26.45 / 26.70 / 26.95: "나는 도장을 찍지 않고" word by word, holds to the frame end (frame 5 continues it)
+          var words = last.querySelectorAll("span");
+          var WT = [CUT2, 6.99, 7.24];
+          show(last, CUT2);
+          tl.set(words, { opacity: 0 }, 0);
+          WT.forEach(function (t, i) {
+            tl.set(words[i], { opacity: 1 }, t);
+            tl.fromTo(
+              words[i],
+              { y: 22, scale: 1.06, filter: "blur(6px)" },
+              { y: 0, scale: 1, filter: "blur(0px)", duration: 0.22, ease: "expo.out", immediateRender: false },
+              t
+            );
+          });
+          // the desk steps back so the sentence owns the frame; the red half-moon keeps full strength
+          var desk = $("f34_desk");
+          tl.set(desk, { opacity: 1 }, 0);
+          tl.to(desk, { opacity: 0.5, duration: 0.4, ease: "power2.out" }, CUT2);
+
+          // =========================== holo-layer + hud (track time over 30.0s) ===========================
+          // track clock: 19.71 -> 24.89 real time, frozen 0.3s on the SURGE, then resumes and
+          // catches up so it reads exactly 27.24 at the cut into frame 5 (2.35 track-s in 2.05 s).
+          var scan = $("f34_hl_scan");
+          var bar = $("f34_hud_bar");
+          var strip = $("f34_hud_tc_strip");
+          var TF = 24.89;
+          var T1 = 27.24;
+          var R2 = DUR - HOLD_END; // 2.05
+          tl.fromTo(scan, { backgroundPosition: "0px " + (T0 * 24).toFixed(2) + "px" }, { backgroundPosition: "0px " + (TF * 24).toFixed(2) + "px", duration: SURGE, ease: "none" }, 0);
+          tl.fromTo(scan, { backgroundPosition: "0px " + (TF * 24).toFixed(2) + "px" }, { backgroundPosition: "0px " + (T1 * 24).toFixed(2) + "px", duration: R2, ease: "none", immediateRender: false }, HOLD_END);
+          tl.fromTo(bar, { width: (T0 / TRACK_END) * 1728 }, { width: (TF / TRACK_END) * 1728, duration: SURGE, ease: "none" }, 0);
+          tl.fromTo(bar, { width: (TF / TRACK_END) * 1728 }, { width: (T1 / TRACK_END) * 1728, duration: R2, ease: "none", immediateRender: false }, HOLD_END);
+          tl.fromTo(strip, { y: 0 }, { y: -(CSF - CS0) * 18, duration: SURGE, ease: "steps(" + (CSF - CS0) + ")" }, 0);
+          tl.fromTo(strip, { y: -(CSF - CS0) * 18 }, { y: -(CS1 - CS0) * 18, duration: R2, ease: "steps(" + (CS1 - CSF) + ")", immediateRender: false }, HOLD_END);
+
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+        })();
+      </script>
+      <script>
+        /* audited by eye in snapshots: tight display leading / rolling digit strip are intentional */
+        document.querySelectorAll("#f34_g1_name span, #f34_g1_order span, #f34_g1_q1 span, #f34_g1_q2 span").forEach(function (e) {
+          e.setAttribute("data-layout-allow-overlap", "");
+        });
+      </script>
+    </template>
+  </body>
+</html>

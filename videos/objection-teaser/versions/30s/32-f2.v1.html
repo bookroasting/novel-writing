@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>32-f2 ninth objection form</title>
+    <!-- Frame 2 (32-f2) of objection-teaser 30s. Track span [7.0, 13.0], local 0..6.0. Fork of compositions/frames/02-f2.html. Head is ignored by the runtime. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Serif KR";
+          src: url("assets/fonts/NotoSerifKR.woff2") format("woff2");
+          font-weight: 200 900;
+        }
+        @font-face {
+          font-family: "Pretendard";
+          src: url("assets/fonts/Pretendard.woff2") format("woff2");
+          font-weight: 45 930;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono.woff2") format("woff2");
+          font-weight: 100 800;
+        }
+
+        /* Root (the root element itself only, never a descendant chain from it). */
+        #stage[data-composition-id="32-f2"] {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+        }
+        #f32_base {
+          position: absolute;
+          inset: 0;
+          background: #050505;
+        }
+        .f32_defs {
+          position: absolute;
+          width: 0;
+          height: 0;
+          overflow: hidden;
+        }
+        .f32_group {
+          position: absolute;
+          inset: 0;
+        }
+
+        /* ---------- digit columns (decorative texture, hit-driven content swap) ---------- */
+        .f32_digits {
+          position: absolute;
+          inset: 0;
+          opacity: 0.12;
+        }
+        .f32_dv {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+        }
+        .f32_dcol {
+          position: absolute;
+          top: 110px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 300;
+          font-size: 24px;
+          line-height: 46px;
+          letter-spacing: 0.08em;
+          color: rgba(245, 245, 242, 0.16);
+          white-space: pre;
+        }
+
+        /* ---------- pre-flip projection outline (the 7.0-7.62 silence) ---------- */
+        .f32_outline {
+          position: absolute;
+          left: 300px;
+          top: 188px;
+          width: 1320px;
+          height: 720px;
+          box-sizing: border-box;
+          opacity: 0.1;
+          border: 1px solid rgba(245, 245, 242, 0.5);
+          background: repeating-linear-gradient(0deg, rgba(245, 245, 242, 0.03) 0 1px, transparent 1px 5px);
+        }
+        .f32_outline_scan {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 50%;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.55);
+          box-shadow: 0 0 18px 2px rgba(160, 235, 255, 0.25);
+        }
+
+        /* ---------- 3D form rig ---------- */
+        .f32_scene {
+          position: absolute;
+          inset: 0;
+          perspective: 1800px;
+          perspective-origin: 50% 50%;
+        }
+        .f32_rig {
+          position: absolute;
+          left: 300px;
+          top: 188px;
+          width: 1320px;
+          height: 720px;
+          transform-style: preserve-3d;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f32_punch,
+        .f32_ghosts {
+          position: absolute;
+          inset: 0;
+          transform-style: preserve-3d;
+        }
+        .f32_ghost {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          border: 1.5px solid rgba(245, 245, 242, 0.2);
+          background:
+            repeating-linear-gradient(180deg, transparent 0 79px, rgba(245, 245, 242, 0.05) 79px 80px),
+            rgba(11, 11, 11, 0.94);
+        }
+        .f32_seal {
+          position: absolute;
+          width: 120px;
+          height: 120px;
+          border: 4.8px solid #c8281e;
+          opacity: 0.92;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          filter: url(#f32_ink);
+        }
+        .f32_seal_in {
+          position: absolute;
+          inset: 3px;
+          border: 1px dashed #c8281e;
+        }
+        .f32_seal_t {
+          position: relative;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 900;
+          font-size: 42px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          color: #c8281e;
+        }
+
+        .f32_form {
+          position: absolute;
+          inset: 0;
+          box-sizing: border-box;
+          padding: 48px 64px 40px;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          opacity: 0.35;
+          background:
+            repeating-linear-gradient(0deg, rgba(245, 245, 242, 0.022) 0 1px, transparent 1px 5px),
+            #0e0e0e;
+          border: 1px solid rgba(245, 245, 242, 0.24);
+          box-shadow:
+            0 60px 140px rgba(0, 0, 0, 0.85),
+            inset 0 1px 0 rgba(245, 245, 242, 0.16);
+        }
+        .f32_band {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 150px;
+          opacity: 0;
+          pointer-events: none;
+          background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(160, 235, 255, 0.1) 30%,
+            rgba(255, 255, 255, 0.22) 50%,
+            rgba(255, 170, 225, 0.1) 70%,
+            transparent 100%
+          );
+        }
+        .f32_head {
+          flex: none;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid rgba(245, 245, 242, 0.14);
+        }
+        .f32_head_l {
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        .f32_row {
+          flex: none;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid rgba(245, 245, 242, 0.14);
+        }
+        .f32_k {
+          flex: none;
+          width: 240px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        .f32_v {
+          font-family: "Pretendard", sans-serif;
+          font-weight: 300;
+          font-size: 40px;
+          line-height: 1.3;
+          letter-spacing: -0.01em;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        .f32_reason {
+          --f32-sx: -2000px;
+          position: relative;
+          flex: none;
+          margin-top: 30px;
+        }
+        .f32_k_reason {
+          height: 24px;
+        }
+        .f32_rule {
+          position: relative;
+          height: 168px;
+          border-bottom: 1px solid rgba(245, 245, 242, 0.28);
+        }
+
+        /* ---------- handwritten line: four stacked layers per ruled line ---------- */
+        .f32_hl {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 500;
+          font-size: 112px;
+          line-height: 1.15;
+          letter-spacing: 0;
+          white-space: nowrap;
+        }
+        .f32_hl_red {
+          z-index: 1;
+          opacity: 0;
+          color: rgba(255, 40, 40, 0.85);
+        }
+        .f32_hl_cyan {
+          z-index: 1;
+          opacity: 0;
+          color: rgba(0, 220, 255, 0.85);
+        }
+        .f32_hl_ink {
+          z-index: 2;
+          color: #f5f5f2;
+        }
+        .f32_hl_sheen {
+          z-index: 3;
+          opacity: 0;
+        }
+        .f32_gw {
+          position: relative;
+          display: block;
+          flex: none;
+          height: 1.15em;
+        }
+        .f32_gc,
+        .f32_gk,
+        .f32_gs {
+          display: block;
+          padding: 0.1em 0.08em;
+          margin: -0.1em -0.08em;
+          text-align: center;
+        }
+        .f32_gc {
+          text-shadow: 0 0 22px rgba(245, 245, 242, 0.2);
+          clip-path: polygon(0% 0%, 0% 0%, -25% 100%, 0% 100%);
+        }
+        .f32_gs {
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          background-image: linear-gradient(
+            115deg,
+            transparent 30%,
+            #ffffff 42%,
+            rgba(160, 235, 255, 0.55) 47%,
+            rgba(255, 170, 225, 0.45) 52%,
+            rgba(201, 184, 255, 0.45) 56%,
+            transparent 68%
+          );
+          background-size: 520px 100%;
+          background-repeat: no-repeat;
+          background-position: calc(var(--f32-sx) - var(--gx, 0px)) 0;
+          -webkit-background-clip: text;
+          background-clip: text;
+        }
+        .f32_tipw {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+        .f32_tip {
+          position: absolute;
+          left: 0;
+          top: 36%;
+          width: 12px;
+          height: 12px;
+          margin: -6px 0 0 -6px;
+          border-radius: 50%;
+          opacity: 0;
+          background: radial-gradient(
+            circle,
+            #ffffff 0 30%,
+            rgba(245, 245, 242, 0.6) 55%,
+            transparent 72%
+          );
+          box-shadow:
+            0 0 16px 4px rgba(245, 245, 242, 0.45),
+            0 0 34px 8px rgba(160, 235, 255, 0.2);
+        }
+
+        /* ---------- 11.38 cut: scrim + hero ---------- */
+        .f32_scrim {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          background: radial-gradient(
+            ellipse 980px 220px at 50% 50%,
+            rgba(5, 5, 5, 0.97) 0%,
+            rgba(5, 5, 5, 0.9) 55%,
+            rgba(5, 5, 5, 0) 100%
+          );
+        }
+        .f32_hero_push {
+          position: absolute;
+          inset: 0;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f32_hero_l {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 700;
+          font-size: 150px;
+          line-height: 1.2;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+        }
+        .f32_hero_red {
+          opacity: 0;
+          color: rgba(255, 40, 40, 0.85);
+        }
+        .f32_hero_cyan {
+          opacity: 0;
+          color: rgba(0, 220, 255, 0.85);
+        }
+        .f32_hero_ink {
+          color: #f5f5f2;
+          text-shadow: 0 0 30px rgba(245, 245, 242, 0.18);
+        }
+
+        /* ---------- holo-layer (identical in every frame, track-time driven) ---------- */
+        .f32_holo {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+        .f32_scanlines {
+          position: absolute;
+          inset: 0;
+          background-image: repeating-linear-gradient(
+            0deg,
+            rgba(245, 245, 242, 0.035) 0 1px,
+            transparent 1px 4px
+          );
+          background-position: 0px 168px;
+        }
+        .f32_grain {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0.06;
+        }
+        .f32_vignette {
+          position: absolute;
+          inset: 0;
+          box-shadow: inset 0 0 240px rgba(0, 0, 0, 0.85);
+        }
+
+        /* ---------- HUD (identical in every frame) ---------- */
+        .f32_hud {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+        .f32_hud_rule {
+          position: absolute;
+          left: 96px;
+          top: 84px;
+          width: 1728px;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        .f32_lab {
+          position: absolute;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        .f32_hud_tl {
+          left: 96px;
+          top: 48px;
+        }
+        .f32_hud_tr {
+          right: 96px;
+          top: 48px;
+        }
+        .f32_prog {
+          position: absolute;
+          left: 96px;
+          top: 1012px;
+          width: 1728px;
+          height: 2px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        .f32_prog_bar {
+          display: block;
+          width: 1728px;
+          height: 2px;
+          background: #c8281e;
+          transform-origin: 0 50%;
+          transform: scaleX(0.233333);
+        }
+        .f32_tc {
+          left: 96px;
+          top: 1032px;
+        }
+        .f32_slot {
+          display: inline-block;
+          height: 18px;
+          overflow: hidden;
+          vertical-align: top;
+        }
+        .f32_strip {
+          display: block;
+        }
+        .f32_strip span {
+          display: block;
+          height: 18px;
+          line-height: 18px;
+        }
+      </style>
+
+      <div
+        id="stage"
+        data-composition-id="32-f2"
+        data-width="1920"
+        data-height="1080"
+        data-duration="6"
+      >
+        <div id="f32_base"></div>
+        <svg class="f32_defs" width="0" height="0" aria-hidden="true">
+          <filter id="f32_ink" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n" />
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </svg>
+
+        <!-- g1: the whole frame span [0, 6.0] (track 7.0-13.0) -->
+        <div id="f32_g1" class="f32_group">
+          <div class="f32_digits" id="f32_g1_digits" data-layout-ignore data-layout-allow-overflow></div>
+
+          <div class="f32_outline" id="f32_g1_outline"><div class="f32_outline_scan"></div></div>
+
+          <div class="f32_scene">
+            <div class="f32_rig" id="f32_g1_rig">
+              <div class="f32_punch" id="f32_g1_punch">
+                <div class="f32_ghosts" id="f32_g1_ghosts" data-layout-allow-overflow></div>
+
+                <div class="f32_form" id="f32_g1_form">
+                  <div class="f32_band" id="f32_g1_band"></div>
+                  <div class="f32_head"><span class="f32_head_l">이의신청서 · 9번째</span></div>
+                  <div class="f32_row">
+                    <span class="f32_k">신청인</span><span class="f32_v">조옥순 (79)</span>
+                  </div>
+                  <div class="f32_row">
+                    <span class="f32_k">이전 결정</span><span class="f32_v">기각 8건</span>
+                  </div>
+                  <div class="f32_reason" id="f32_g1_reason">
+                    <div class="f32_k f32_k_reason">이유</div>
+                    <div class="f32_rule" id="f32_g1_line1"></div>
+                    <div class="f32_rule" id="f32_g1_line2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="f32_scrim" id="f32_g1_scrim"></div>
+          <div class="f32_hero_push" id="f32_g1_hero">
+            <div class="f32_hero_l f32_hero_red" id="f32_g1_hero_r" aria-hidden="true">손이 멈춘다.</div>
+            <div class="f32_hero_l f32_hero_cyan" id="f32_g1_hero_c" aria-hidden="true">손이 멈춘다.</div>
+            <div class="f32_hero_l f32_hero_ink" id="f32_g1_hero_i">손이 멈춘다.</div>
+          </div>
+        </div>
+
+        <!-- holo-layer -->
+        <div class="f32_holo">
+          <div class="f32_scanlines" id="f32_scan"></div>
+          <svg class="f32_grain" viewBox="0 0 1920 1080" aria-hidden="true">
+            <filter id="f32_grainf">
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3" stitchTiles="stitch" />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+            <rect width="1920" height="1080" filter="url(#f32_grainf)" />
+          </svg>
+          <div class="f32_vignette"></div>
+        </div>
+
+        <!-- HUD -->
+        <div class="f32_hud">
+          <div class="f32_hud_rule"></div>
+          <div class="f32_lab f32_hud_tl">OBJECTION · 이의신청</div>
+          <div class="f32_lab f32_hud_tr">2032 · SEOUL</div>
+          <div class="f32_prog"><div class="f32_prog_bar" id="f32_prog"></div></div>
+          <div class="f32_lab f32_tc" id="f32_tc">00:<span class="f32_slot" id="f32_tc_m" data-layout-allow-overlap></span><span class="f32_slot" id="f32_tc_s" data-layout-allow-overlap></span>.<span class="f32_slot" id="f32_tc_t" data-layout-allow-overlap></span><span class="f32_slot" id="f32_tc_h" data-layout-allow-overlap></span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          "use strict";
+          window.__timelines = window.__timelines || {};
+
+          var ROOT =
+            document.querySelector('#stage[data-composition-id="32-f2"]') ||
+            document.querySelector('[data-composition-id="32-f2"]');
+          function q(sel) {
+            return ROOT.querySelector(sel);
+          }
+          function mk(tag, cls, parent) {
+            var el = document.createElement(tag);
+            if (cls) el.className = cls;
+            if (parent) parent.appendChild(el);
+            return el;
+          }
+          function mulberry32(a) {
+            return function () {
+              a |= 0;
+              a = (a + 0x6d2b79f5) | 0;
+              var t = Math.imul(a ^ (a >>> 15), 1 | a);
+              t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+              return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+            };
+          }
+
+          var T0 = 7.0; // frame start, track seconds
+          var DUR = 6.0;
+          var TRACK = 30.0;
+          function L(trackT) {
+            return Math.round((trackT - T0) * 1000) / 1000;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          /* ============ holo-layer + HUD (track-time continuity) ============ */
+          // scanline drift: background-position-y = track_t * 24 px
+          tl.fromTo(
+            q("#f32_scan"),
+            { backgroundPosition: "0px " + (T0 * 24).toFixed(2) + "px" },
+            { backgroundPosition: "0px " + ((T0 + DUR) * 24).toFixed(2) + "px", duration: DUR, ease: "none" },
+            0
+          );
+          // progress line: width = track_t / 30 * 1728 (scaleX of a 1728px bar)
+          tl.fromTo(
+            q("#f32_prog"),
+            { scaleX: T0 / TRACK },
+            { scaleX: (T0 + DUR) / TRACK, duration: DUR, ease: "none" },
+            0
+          );
+          // timecode 00:SS.cc from pre-built digit strips (0ms y-sets, no textContent writes)
+          var slots = [q("#f32_tc_m"), q("#f32_tc_s"), q("#f32_tc_t"), q("#f32_tc_h")].map(function (slot) {
+            var strip = mk("span", "f32_strip", slot);
+            for (var d = 0; d < 10; d++) mk("span", "", strip).textContent = String(d);
+            return strip;
+          });
+          var prev = [-1, -1, -1, -1];
+          var cs0 = Math.round(T0 * 100);
+          var csN = Math.round((T0 + DUR) * 100);
+          for (var k = cs0; k <= csN; k++) {
+            var dg = [Math.floor(k / 1000) % 10, Math.floor(k / 100) % 10, Math.floor(k / 10) % 10, k % 10];
+            for (var s = 0; s < 4; s++) {
+              if (dg[s] !== prev[s]) {
+                if (k === cs0) gsap.set(slots[s], { y: -dg[s] * 18 });
+                tl.set(slots[s], { y: -dg[s] * 18 }, (k - cs0) / 100);
+                prev[s] = dg[s];
+              }
+            }
+          }
+
+          /* ============ g1 visibility ============ */
+          var G1 = q("#f32_g1");
+          tl.set(G1, { autoAlpha: 1 }, 0);
+
+          /* ============ 7.0-7.62 silence: the projection flickers on, quietly ============ */
+          var outline = q("#f32_g1_outline");
+          var digits = q("#f32_g1_digits");
+          tl.set(outline, { opacity: 0.1 }, 0);
+          tl.set(digits, { opacity: 0.12 }, 0);
+          [
+            [7.175, 0.32, 0.22],
+            [7.209, 0.08, 0.1],
+            [7.268, 0.22, 0.16],
+            [7.407, 0.42, 0.3],
+            [7.441, 0.16, 0.14],
+            [7.5, 0.46, 0.36],
+          ].forEach(function (f) {
+            tl.set(outline, { opacity: f[1] }, L(f[0]));
+            tl.set(digits, { opacity: f[2] }, L(f[0]));
+          });
+          tl.set(outline, { opacity: 0 }, L(7.616));
+
+          /* ============ digit columns: 9 seeded variants, swapped on hits ============ */
+          var COLS = 13,
+            ROWS = 19,
+            ROLL = [7.616, 7.918, 8.197, 8.8, 9.149, 9.358, 9.497, 10.449];
+          var grid = [];
+          var variants = [];
+          for (var v = 0; v <= ROLL.length; v++) {
+            var rv = mulberry32(2032 + v * 97);
+            var layer = mk("div", "f32_dv", digits);
+            if (v === 0) layer.style.opacity = "1";
+            for (var c = 0; c < COLS; c++) {
+              if (!grid[c]) grid[c] = [];
+              var lines = [];
+              for (var r = 0; r < ROWS; r++) {
+                if (v === 0 || rv() < 0.6) {
+                  grid[c][r] = String(Math.floor(rv() * 10)) + String(Math.floor(rv() * 10));
+                }
+                lines.push(grid[c][r]);
+              }
+              var col = mk("div", "f32_dcol", layer);
+              col.style.left = 132 + c * 138 + "px";
+              col.textContent = lines.join("\n");
+            }
+            variants.push(layer);
+          }
+          tl.set(variants[0], { opacity: 1 }, 0);
+          ROLL.forEach(function (tt, i) {
+            var at = L(tt);
+            tl.set(variants[i], { opacity: 0 }, at);
+            tl.set(variants[i + 1], { opacity: 1 }, at);
+            tl.fromTo(
+              digits,
+              { opacity: 1 },
+              { opacity: 0.55, duration: 0.16, ease: "power2.out", immediateRender: false },
+              at
+            );
+          });
+
+          /* ============ ghost sheets: 8 rejected applications fanning out behind ============ */
+          var ghostsWrap = q("#f32_g1_ghosts");
+          var GH = [
+            { x: -300, y: -100, z: -90, r: -6, seal: { left: 30, top: 26 } },
+            { x: 300, y: -108, z: -130, r: 5, seal: { right: 30, top: 26 } },
+            { x: -310, y: 108, z: -170, r: 4, seal: { left: 30, bottom: 26 } },
+            { x: 310, y: 116, z: -210, r: -5, seal: { right: 30, bottom: 26 } },
+            { x: -440, y: -14, z: -260, r: -9, seal: { left: 34, top: 250 } },
+            { x: 440, y: 14, z: -290, r: 8, seal: { right: 34, top: 330 } },
+            { x: -150, y: -178, z: -320, r: -3, seal: { left: 230, top: 18 } },
+            { x: 160, y: 190, z: -350, r: 3, seal: { right: 230, bottom: 18 } },
+          ];
+          var ghosts = GH.map(function (g, i) {
+            var el = mk("div", "f32_ghost", ghostsWrap);
+            var seal = mk("div", "f32_seal", el);
+            Object.keys(g.seal).forEach(function (side) {
+              seal.style[side] = g.seal[side] + "px";
+            });
+            seal.style.transform = "rotate(" + (-9 + ((i * 7) % 19)) + "deg)";
+            mk("div", "f32_seal_in", seal);
+            mk("span", "f32_seal_t", seal).textContent = "기각";
+            return el;
+          });
+          // 7.92 kick + 8.20 snare: 4 + 4 sheets fan out
+          [L(7.918), L(8.197)].forEach(function (at, b) {
+            for (var j = 0; j < 4; j++) {
+              var i = b * 4 + j;
+              var g = GH[i];
+              tl.fromTo(
+                ghosts[i],
+                { x: 0, y: 0, z: -40, rotation: 0, opacity: 0 },
+                {
+                  x: g.x,
+                  y: g.y,
+                  z: g.z,
+                  rotation: g.r,
+                  opacity: 1,
+                  duration: 0.44,
+                  ease: "expo.out",
+                  immediateRender: false,
+                },
+                at + 0.012 + j * 0.032
+              );
+            }
+          });
+          // 9.15 kick: one-frame projector dip on the sheets only (opacity on leaves keeps the 3D intact)
+          tl.set(ghosts, { opacity: 0.55 }, L(9.149));
+          tl.set(ghosts, { opacity: 1 }, L(9.149) + 0.034);
+          // 9.36 kick: the stack jolts behind the form; the written lines stay still
+          tl.fromTo(
+            ghostsWrap,
+            { scale: 1.03 },
+            { scale: 1, duration: 0.4, ease: "power3.out", immediateRender: false },
+            L(9.358)
+          );
+          // 10.45: energy falls away, the rejected stack recedes
+          tl.fromTo(
+            ghosts,
+            { opacity: 1 },
+            { opacity: 0.45, duration: 0.6, ease: "sine.out", immediateRender: false },
+            L(10.449)
+          );
+
+          /* ============ form: flip-in on 7.62, flicker, drift, punch ============ */
+          var rig = q("#f32_g1_rig");
+          var punch = q("#f32_g1_punch");
+          var form = q("#f32_g1_form");
+          var band = q("#f32_g1_band");
+          var FLIP = L(7.616);
+
+          tl.set(rig, { autoAlpha: 0 }, 0);
+          tl.set(rig, { autoAlpha: 1 }, FLIP);
+          // hologram form flips in to a -10deg resting tilt
+          tl.fromTo(
+            rig,
+            { rotationY: 64, rotationX: 6, scale: 0.9, z: -120, y: 0 },
+            { rotationY: -10, rotationX: 2, scale: 1, z: 0, y: 0, duration: 0.52, ease: "expo.out", immediateRender: false },
+            FLIP
+          );
+          // projector flicker (0ms sets)
+          tl.set(form, { opacity: 0.35 }, FLIP);
+          tl.set(form, { opacity: 1 }, FLIP + 0.034);
+          tl.set(form, { opacity: 0.55 }, FLIP + 0.067);
+          tl.set(form, { opacity: 1 }, FLIP + 0.1);
+          // scan band sweeps down the sheet as it materialises
+          tl.fromTo(
+            band,
+            { y: -160, opacity: 1 },
+            { y: 760, opacity: 0.25, duration: 0.5, ease: "power2.out", immediateRender: false },
+            FLIP + 0.02
+          );
+          tl.set(band, { opacity: 0 }, FLIP + 0.52);
+          // micro drift, settling to rest exactly when line 2 lands (9.36)
+          tl.fromTo(
+            rig,
+            { rotationY: -10, rotationX: 2, y: 0 },
+            { rotationY: -7.6, rotationX: 0.8, y: -8, duration: L(9.358) - (FLIP + 0.52), ease: "sine.inOut", immediateRender: false },
+            FLIP + 0.52
+          );
+          // 8.80 snare: line 1 lands with a punch
+          tl.fromTo(
+            punch,
+            { scale: 1.018 },
+            { scale: 1, duration: 0.36, ease: "power3.out", immediateRender: false },
+            L(8.8)
+          );
+
+          /* ============ handwritten line ============ */
+          var FS = 112;
+          var RULE_W = 1320 - 2 - 128; // form content width
+          var WID = { g: 0.98, sp: 0.3, dot: 0.36 };
+          var UNIT = { g: 1, sp: 0.35, dot: 0.5 };
+          var jit = mulberry32(1004);
+
+          function buildLine(rule, text, gxShift) {
+            var chars = Array.from(text);
+            var kinds = chars.map(function (ch) {
+              return ch === " " ? "sp" : ch === "." ? "dot" : "g";
+            });
+            var lineW = kinds.reduce(function (a, k) {
+              return a + WID[k] * FS;
+            }, 0);
+            var off = (RULE_W - lineW) / 2;
+            var tf = chars.map(function () {
+              var rot = (jit() * 2 - 1) * 1.2;
+              var dy = (jit() * 2 - 1) * 3;
+              return "translateY(" + dy.toFixed(2) + "px) rotate(" + rot.toFixed(2) + "deg)";
+            });
+            var layers = {};
+            ["red", "cyan", "ink", "sheen"].forEach(function (name) {
+              layers[name] = mk("div", "f32_hl f32_hl_" + name, rule);
+            });
+            var glyphs = [];
+            var cum = 0;
+            chars.forEach(function (ch, i) {
+              var k = kinds[i];
+              var w = WID[k] * FS;
+              var rec = { kind: k, gc: null, tip: null };
+              ["red", "cyan", "ink", "sheen"].forEach(function (name) {
+                var gw = mk("div", "f32_gw", layers[name]);
+                gw.style.width = w.toFixed(2) + "px";
+                gw.style.transform = tf[i];
+                if (k === "sp") return;
+                var cls = name === "ink" ? "f32_gc" : name === "sheen" ? "f32_gs" : "f32_gk";
+                var g = mk("span", cls, gw);
+                g.textContent = ch;
+                if (name === "sheen") {
+                  g.style.setProperty("--gx", (off + cum - 0.08 * FS + gxShift).toFixed(1) + "px");
+                }
+                if (name === "ink") {
+                  rec.gc = g;
+                  rec.tipw = mk("div", "f32_tipw", gw);
+                  rec.tip = mk("span", "f32_tip", rec.tipw);
+                }
+              });
+              glyphs.push(rec);
+              cum += w;
+            });
+            return { layers: layers, glyphs: glyphs };
+          }
+
+          var CLIP0 = "polygon(0% 0%, 0% 0%, -25% 100%, 0% 100%)";
+          var CLIP1 = "polygon(0% 0%, 125% 0%, 100% 100%, 0% 100%)";
+
+          // pencil-stroke wipe, glyph by glyph, ending exactly on `land`
+          function writeLine(line, start, land) {
+            var total = line.glyphs.reduce(function (a, g) {
+              return a + UNIT[g.kind];
+            }, 0);
+            var u = (land - start) / total;
+            var t = start;
+            var lastIdx = -1;
+            line.glyphs.forEach(function (g, i) {
+              if (g.gc) lastIdx = i;
+            });
+            line.glyphs.forEach(function (g, i) {
+              var d = UNIT[g.kind] * u;
+              if (g.gc) {
+                tl.fromTo(
+                  g.gc,
+                  { clipPath: CLIP0 },
+                  { clipPath: CLIP1, duration: d, ease: "sine.inOut", immediateRender: false },
+                  t
+                );
+                tl.set(g.tip, { opacity: 1 }, t);
+                tl.fromTo(
+                  g.tipw,
+                  { xPercent: 0, yPercent: 0 },
+                  { xPercent: 100, yPercent: 26, duration: d, ease: "sine.inOut", immediateRender: false },
+                  t
+                );
+                if (i === lastIdx) {
+                  tl.fromTo(
+                    g.tip,
+                    { opacity: 1 },
+                    { opacity: 0, duration: 0.16, ease: "power2.out", immediateRender: false },
+                    t + d
+                  );
+                } else {
+                  tl.set(g.tip, { opacity: 0 }, t + d);
+                }
+              }
+              t += d;
+            });
+          }
+
+          // chroma-hit: red/cyan copies split 10px, 5px, then close (about 3 frames)
+          function chroma(red, cyan, at) {
+            tl.set(red, { opacity: 1, x: -10 }, at);
+            tl.set(cyan, { opacity: 1, x: 10 }, at);
+            tl.set(red, { x: -5 }, at + 0.034);
+            tl.set(cyan, { x: 5 }, at + 0.034);
+            tl.set([red, cyan], { opacity: 0, x: 0 }, at + 0.1);
+          }
+
+          var line1 = buildLine(q("#f32_g1_line1"), "제 점수 말고", 0);
+          var line2 = buildLine(q("#f32_g1_line2"), "제 집을 봐 주세요.", 78);
+
+          // line 1: write from 8.25, completing ON the 8.80 snare
+          writeLine(line1, L(8.25), L(8.8));
+          chroma(line1.layers.red, line1.layers.cyan, L(8.8));
+          // line 2: write from the 9.03 kick, completing ON the 9.36 kick (no chroma: the lines hold clean)
+          writeLine(line2, L(9.033), L(9.358));
+
+          // holo-sheen across both lines, 9.50-10.10
+          var reason = q("#f32_g1_reason");
+          var sheenAt = L(9.497);
+          tl.set([line1.layers.sheen, line2.layers.sheen], { opacity: 1 }, sheenAt);
+          tl.fromTo(
+            reason,
+            { "--f32-sx": "-560px" },
+            { "--f32-sx": "1300px", duration: 0.6, ease: "power2.inOut", immediateRender: false },
+            sheenAt
+          );
+          tl.set([line1.layers.sheen, line2.layers.sheen], { opacity: 0 }, sheenAt + 0.62);
+
+          /* ============ 11.38 hard cut: the hand stops ============ */
+          var CUT = L(11.378);
+          var hero = q("#f32_g1_hero");
+          tl.set(form, { opacity: 0.25 }, CUT);
+          // the hand line sits in its own 3D layer: clear it outright so it never reads under the hero
+          tl.set(q("#f32_g1_reason"), { autoAlpha: 0 }, CUT);
+          tl.set(ghosts, { opacity: 0.12 }, CUT);
+          tl.set(digits, { opacity: 0.2 }, CUT);
+          tl.set(q("#f32_g1_scrim"), { opacity: 1 }, CUT);
+          // the dimmed form drifts back
+          tl.fromTo(
+            rig,
+            { z: 0, rotationY: -7.6, rotationX: 0.8, y: -8 },
+            { z: -260, rotationY: -4.5, rotationX: 0.4, y: -14, duration: DUR - CUT, ease: "sine.out", immediateRender: false },
+            CUT
+          );
+          // hero lands on the cut with a 3-frame chroma hit, then holds to 13.0
+          tl.set(hero, { autoAlpha: 1, scale: 1 }, CUT);
+          chroma(q("#f32_g1_hero_r"), q("#f32_g1_hero_c"), CUT);
+          // 12.79: a tiny push
+          tl.fromTo(
+            hero,
+            { scale: 1 },
+            { scale: 1.015, duration: DUR - L(12.794), ease: "power1.out", immediateRender: false },
+            L(12.794)
+          );
+
+          window.__timelines["32-f2"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+      <script>
+        /* audited by eye in snapshots: tight display leading / rolling digit strip are intentional */
+        document.querySelectorAll("#f32_tc_m span, #f32_tc_s span, #f32_tc_t span, #f32_tc_h span").forEach(function (e) { e.setAttribute("data-layout-ignore", ""); });
+      </script>
+    </template>
+  </body>
+</html>

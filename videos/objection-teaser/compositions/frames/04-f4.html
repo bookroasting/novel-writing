@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>04-f4 drawer slam and end card</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Serif KR";
+          src: url("assets/fonts/NotoSerifKR.woff2") format("woff2");
+          font-weight: 200 900;
+        }
+        @font-face {
+          font-family: "Pretendard";
+          src: url("assets/fonts/Pretendard.woff2") format("woff2");
+          font-weight: 45 930;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono.woff2") format("woff2");
+          font-weight: 100 800;
+        }
+
+        #stage[data-composition-id="04-f4"] {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+          /* continuity with F3's last line: adjust here if F3's CSS differs */
+          --f4-l1-center-y: 440px;
+          --f4-l1-size: 120px;
+          --f4-l1-weight: 700;
+          --f4-l1-track: -0.03em;
+        }
+        #stage[data-composition-id="04-f4"] * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* ================= g1: drawer slam ================= */
+        #f4_g1 {
+          position: absolute;
+          inset: 0;
+          /* continuity with F3's #f3g2_last (center y 440, 700, 120px, -0.03em) */
+          --f4-l1-center-y: 440px;
+          --f4-l1-size: 120px;
+          --f4-l1-weight: 700;
+          --f4-l1-track: -0.03em;
+        }
+        #f4_g1_shake {
+          position: absolute;
+          inset: 0;
+        }
+        .f4_l1 {
+          position: absolute;
+          left: 0;
+          width: 1920px;
+          top: calc(var(--f4-l1-center-y) - var(--f4-l1-size) * 0.6);
+          height: calc(var(--f4-l1-size) * 1.2);
+          line-height: calc(var(--f4-l1-size) * 1.2);
+          text-align: center;
+          font-family: "Noto Serif KR", serif;
+          font-weight: var(--f4-l1-weight);
+          font-size: var(--f4-l1-size);
+          letter-spacing: var(--f4-l1-track);
+          white-space: nowrap;
+          color: #f5f5f2;
+        }
+        /* drawer front: covers the bottom 45% (top edge at y=594), bleeds past edges for the shake */
+        #f4_g1_slab {
+          position: absolute;
+          left: -60px;
+          top: 594px;
+          width: 2040px;
+          height: 560px;
+          background: #0e0e0e;
+          border-top: 1px solid rgba(245, 245, 242, 0.14);
+        }
+        #f4_g1_handle {
+          position: absolute;
+          left: 930px;
+          top: 40px;
+          width: 180px;
+          height: 16px;
+          border: 1px solid rgba(245, 245, 242, 0.85);
+          border-radius: 8px;
+        }
+        #f4_g1_edge {
+          position: absolute;
+          left: 0;
+          top: -1px;
+          width: 2040px;
+          height: 2px;
+          background: #f5f5f2;
+          opacity: 0;
+        }
+        #f4_g1_streak {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 2040px;
+          height: 90px;
+          transform-origin: 50% 0%;
+          background: linear-gradient(
+            180deg,
+            rgba(245, 245, 242, 0.22) 0%,
+            rgba(245, 245, 242, 0.08) 35%,
+            transparent 100%
+          );
+          opacity: 0;
+        }
+        .f4_l2 {
+          position: absolute;
+          left: 0;
+          width: 2040px;
+          top: 90px;
+          height: 150px;
+          line-height: 150px;
+          text-align: center;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 900;
+          font-size: 150px;
+          letter-spacing: -0.045em;
+          white-space: nowrap;
+          color: #f5f5f2;
+        }
+        .f4_chr {
+          mix-blend-mode: screen;
+          visibility: hidden;
+          opacity: 0;
+        }
+        .f4_chr_r {
+          color: rgba(255, 40, 40, 0.85);
+        }
+        .f4_chr_c {
+          color: rgba(0, 220, 255, 0.85);
+        }
+
+        /* ================= g2: end card ================= */
+        #f4_g2 {
+          position: absolute;
+          inset: 0;
+          visibility: hidden;
+          opacity: 0;
+        }
+        #f4_g2_lock {
+          position: absolute;
+          left: 96px; /* the HUD's left margin: title, tagline and label share one edge with OBJECTION and the progress line */
+          top: 322px;
+          width: 1100px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .f4_g2_title {
+          display: block;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 900;
+          font-size: 240px;
+          line-height: 0.92;
+          letter-spacing: -0.06em;
+          white-space: nowrap;
+          color: #f5f5f2;
+        }
+        #f4_g2_titlewrap {
+          position: relative;
+          display: block;
+          margin-left: -19px; /* optical: "이" at 900/240px has a 19.2px left side bearing, so the stroke lands on x=96 */
+        }
+        #f4_g2_sheen {
+          position: absolute;
+          left: 0;
+          top: 0;
+          color: transparent;
+          background-image: linear-gradient(
+            115deg,
+            transparent 0%,
+            transparent 38%,
+            #ffffff 44%,
+            rgba(160, 235, 255, 0.55) 48%,
+            rgba(255, 170, 225, 0.45) 52%,
+            rgba(201, 184, 255, 0.45) 56%,
+            transparent 62%,
+            transparent 100%
+          );
+          background-size: 300% 100%;
+          background-position: 100% 50%;
+          background-repeat: no-repeat;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+        #f4_g2_glow {
+          position: absolute;
+          left: 0;
+          top: 122px;
+          width: 1000px;
+          height: 620px;
+          margin-left: -500px;
+          background: radial-gradient(
+            ellipse 50% 50% at 50% 50%,
+            rgba(245, 245, 242, 0.085) 0%,
+            rgba(245, 245, 242, 0.03) 45%,
+            transparent 72%
+          );
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+        #f4_g2_tag {
+          margin-top: 50px;
+          margin-left: -3px; /* optical: "2" side bearing at 300/40px */
+          font-family: "Pretendard", sans-serif;
+          font-weight: 300;
+          font-size: 40px;
+          line-height: 1.3;
+          letter-spacing: -0.01em;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        #f4_g2_sub {
+          margin-top: 30px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1.2;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f4_g2_nalin {
+          position: absolute;
+          left: 1440px;
+          top: 318px;
+          width: 260px;
+          height: 302px;
+        }
+        #f4_g2_nalin_label {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 260px;
+          text-align: center;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 700;
+          font-size: 22px;
+          line-height: 1;
+          letter-spacing: 0.3em;
+          text-indent: 0.3em;
+          color: #c8281e;
+        }
+        #f4_g2_nalin_box {
+          position: absolute;
+          left: 0;
+          top: 42px;
+          width: 260px;
+          height: 260px;
+          display: block;
+          overflow: visible;
+        }
+        #f4_g2_moon {
+          position: absolute;
+          left: 272px;
+          top: 214px;
+          width: 80px;
+          height: 80px;
+          display: block;
+          overflow: visible;
+        }
+        #f4_g2_credit {
+          position: absolute;
+          right: 96px;
+          top: 1032px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 18px;
+          letter-spacing: 0.18em;
+          color: #8c8c88;
+          white-space: pre;
+        }
+
+        /* ================= holo-layer (track-time driven) ================= */
+        #f4_hl_scan {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background-image: repeating-linear-gradient(
+            0deg,
+            rgba(245, 245, 242, 0.035) 0 1px,
+            transparent 1px 4px
+          );
+          background-position: 0px 293.76px;
+        }
+        #f4_hl_grain {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0.06;
+          pointer-events: none;
+          display: block;
+        }
+        #f4_hl_vig {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          box-shadow: inset 0 0 240px rgba(0, 0, 0, 0.85);
+        }
+
+        /* ================= hud (fixed chrome) ================= */
+        .f4_hud_label {
+          position: absolute;
+          top: 48px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f4_hud_tl {
+          left: 96px;
+        }
+        #f4_hud_tr {
+          right: 96px;
+        }
+        #f4_hud_rule {
+          position: absolute;
+          left: 96px;
+          top: 84px;
+          width: 1728px;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f4_hud_track {
+          position: absolute;
+          left: 96px;
+          top: 1012px;
+          width: 1728px;
+          height: 2px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f4_hud_bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 2px;
+          width: 1410.048px;
+          background: #c8281e;
+        }
+        #f4_hud_tc {
+          position: absolute;
+          left: 96px;
+          top: 1032px;
+          height: 18px;
+          width: 240px;
+          overflow: hidden;
+        }
+        #f4_hud_tc_strip {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 18px;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f4_hud_tc_strip span {
+          display: block;
+          height: 18px;
+        }
+      </style>
+
+      <div
+        id="stage"
+        data-composition-id="04-f4"
+        data-width="1920"
+        data-height="1080"
+        data-duration="2.76"
+      >
+        <!-- ===== g1 [12.24, 13.14]: drawer slam ===== -->
+        <div id="f4_g1">
+          <div id="f4_g1_shake">
+            <div id="f4_g1_l1_r" class="f4_l1 f4_chr f4_chr_r" aria-hidden="true">나는 도장을 찍지 않고</div>
+            <div id="f4_g1_l1_c" class="f4_l1 f4_chr f4_chr_c" aria-hidden="true">나는 도장을 찍지 않고</div>
+            <div id="f4_g1_l1" class="f4_l1">나는 도장을 찍지 않고</div>
+
+            <div id="f4_g1_slab">
+              <div id="f4_g1_streak"></div>
+              <div id="f4_g1_edge"></div>
+              <div id="f4_g1_handle"></div>
+              <div id="f4_g1_l2_r" class="f4_l2 f4_chr f4_chr_r" aria-hidden="true">서랍을 닫았다.</div>
+              <div id="f4_g1_l2_c" class="f4_l2 f4_chr f4_chr_c" aria-hidden="true">서랍을 닫았다.</div>
+              <div id="f4_g1_l2" class="f4_l2">서랍을 닫았다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== g2 [13.14, 15.0]: end card ===== -->
+        <div id="f4_g2">
+          <div id="f4_g2_glow"></div>
+
+          <div id="f4_g2_lock">
+            <div id="f4_g2_titlewrap">
+              <span id="f4_g2_title" class="f4_g2_title">이의신청</span>
+              <span id="f4_g2_sheen" class="f4_g2_title" aria-hidden="true">이의신청</span>
+            </div>
+            <div id="f4_g2_tag">2032년, AI가 판정하고 사람은 도장을 찍는다.</div>
+            <div id="f4_g2_sub">AI ROASTING 단편 소설 · 웹 e북</div>
+          </div>
+
+          <div id="f4_g2_nalin">
+            <div id="f4_g2_nalin_label">날인</div>
+            <svg id="f4_g2_nalin_box" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1.2" y="1.2" width="257.6" height="257.6" fill="none" stroke="#F5F5F2" stroke-width="2.4" />
+              <rect
+                x="25"
+                y="25"
+                width="210"
+                height="210"
+                fill="none"
+                stroke="rgba(245,245,242,0.55)"
+                stroke-width="1"
+                stroke-dasharray="6 7"
+              />
+            </svg>
+            <!-- one red half-moon: the edge of a round seal grazing the margin -->
+            <svg id="f4_g2_moon" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <mask id="f4_moon_mask" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="80">
+                  <rect x="0" y="0" width="80" height="80" fill="black" />
+                  <circle cx="40" cy="40" r="33" fill="white" />
+                  <circle cx="49" cy="31" r="31" fill="black" />
+                </mask>
+                <filter id="f4_moon_ink" x="-25%" y="-25%" width="150%" height="150%">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="5" result="warp" />
+                  <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="warp"
+                    scale="5"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                    result="rough"
+                  />
+                  <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" seed="9" result="grain" />
+                  <feColorMatrix
+                    in="grain"
+                    type="matrix"
+                    values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 2.05"
+                    result="holes"
+                  />
+                  <feComposite in="rough" in2="holes" operator="in" />
+                </filter>
+              </defs>
+              <g filter="url(#f4_moon_ink)" transform="rotate(-14 40 40)">
+                <rect x="0" y="0" width="80" height="80" fill="#C8281E" mask="url(#f4_moon_mask)" opacity="0.92" />
+              </g>
+            </svg>
+          </div>
+
+          <div id="f4_g2_credit" style="display: none" data-removed="2026-10-05 author: no timecode / no on-screen music credit">MUSIC  "THE WAY OUT" KEVIN MACLEOD (INCOMPETECH.COM) · CC BY 4.0</div>
+        </div>
+
+        <!-- ===== holo-layer ===== -->
+        <div id="f4_hl_scan"></div>
+        <svg id="f4_hl_grain" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <filter id="f4_hl_grain_f" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#f4_hl_grain_f)" />
+        </svg>
+        <div id="f4_hl_vig"></div>
+
+        <!-- ===== hud ===== -->
+        <div id="f4_hud_tl" class="f4_hud_label">OBJECTION · 이의신청</div>
+        <div id="f4_hud_tr" class="f4_hud_label">2032 · SEOUL</div>
+        <div id="f4_hud_rule"></div>
+        <div id="f4_hud_track"><div id="f4_hud_bar"></div></div>
+        <div id="f4_hud_tc" style="display: none" data-removed="2026-10-05 author: no timecode / no on-screen music credit"><div id="f4_hud_tc_strip" data-layout-ignore></div></div>
+      </div>
+
+      <script>
+        (function () {
+          var ID = "04-f4";
+          var T0 = 12.24; // frame start (track s)
+          var DUR = 2.76; // frame length
+          var TRACK_END = 15.0;
+          var G2 = 13.14 - T0; // 0.90, g1 -> g2 hard cut
+
+          // ---- timecode strip: one pre-built line per centisecond, stepped by a y tween ----
+          var CS0 = 1224;
+          var CS1 = 1500;
+          var STEPS = CS1 - CS0; // 276
+          function pad2(n) {
+            return n < 10 ? "0" + n : String(n);
+          }
+          var html = "";
+          for (var c = CS0; c <= CS1; c++) {
+            var sec = Math.floor(c / 100);
+            html += "<span>" + pad2(Math.floor(sec / 60)) + ":" + pad2(sec % 60) + "." + pad2(c % 100) + "</span>";
+          }
+          document.getElementById("f4_hud_tc_strip").innerHTML = html;
+
+          var tl = gsap.timeline({ paused: true });
+
+          // ================= g1 [0, 0.90]: drawer slam on the 12.24 hard-stop kick =================
+          // local 0 is the impact frame: slab already home (no overshoot), edge streak + shake + chroma.
+          tl.set("#f4_g1", { autoAlpha: 1, immediateRender: true }, 0);
+
+          // motion-blur streak of the leading edge, gone within 2-3 frames
+          tl.fromTo(
+            "#f4_g1_streak",
+            { opacity: 1, scaleY: 1 },
+            { opacity: 0, scaleY: 0.15, duration: 0.09, ease: "power2.out" },
+            0
+          );
+          // impact flash on the drawer's top edge
+          tl.fromTo("#f4_g1_edge", { opacity: 0.9 }, { opacity: 0, duration: 0.22, ease: "power2.out" }, 0);
+
+          // "서랍을 닫았다." lands with the slab: tiny scale punch, no ease on arrival
+          tl.fromTo(
+            "#f4_g1_l2",
+            { scale: 1.05, transformOrigin: "50% 60%" },
+            { scale: 1, duration: 0.1, ease: "power4.out" },
+            0
+          );
+
+          // screen-shake 10px decaying in ~0.25s (deterministic amplitudes)
+          var amps = [10, -8, 6.5, -5, 3.5, -2.2, 1.2];
+          tl.set("#f4_g1_shake", { x: amps[0], y: amps[0] * 0.7, immediateRender: true }, 0);
+          for (var i = 1; i < amps.length; i++) {
+            tl.to(
+              "#f4_g1_shake",
+              { x: amps[i], y: amps[i] * 0.7 * (i % 2 ? -1 : 1) * -1, duration: 0.034, ease: "steps(1)" },
+              i * 0.034
+            );
+          }
+          tl.to("#f4_g1_shake", { x: 0, y: 0, duration: 0.02, ease: "steps(1)" }, amps.length * 0.034);
+
+          // chroma-hit: split-red / split-cyan copies, 10 -> 6 -> 3px, gone after ~3 frames
+          var chroma = [
+            ["#f4_g1_l2_r", "#f4_g1_l2_c", [12, 7, 3]],
+            ["#f4_g1_l1_r", "#f4_g1_l1_c", [6, 4, 2]],
+          ];
+          chroma.forEach(function (row) {
+            var r = row[0];
+            var cy = row[1];
+            var off = row[2];
+            tl.set(r, { autoAlpha: 1, x: -off[0], immediateRender: true }, 0);
+            tl.set(cy, { autoAlpha: 1, x: off[0], immediateRender: true }, 0);
+            tl.set(r, { x: -off[1] }, 0.034);
+            tl.set(cy, { x: off[1] }, 0.034);
+            tl.set(r, { x: -off[2] }, 0.068);
+            tl.set(cy, { x: off[2] }, 0.068);
+            tl.set(r, { autoAlpha: 0, x: 0 }, 0.102);
+            tl.set(cy, { autoAlpha: 0, x: 0 }, 0.102);
+          });
+
+          // hold both lines still until 13.14, then 0ms cut
+          tl.set("#f4_g1", { autoAlpha: 0 }, G2);
+
+          // ================= g2 [0.90, 2.76]: end card =================
+          tl.set("#f4_g2", { autoAlpha: 1 }, G2);
+
+          // short settle: 4px blur / 0.96 scale -> clear within 0.4s
+          tl.fromTo(
+            "#f4_g2_titlewrap",
+            { filter: "blur(4px)", scale: 0.96, transformOrigin: "0% 60%" },
+            { filter: "blur(0px)", scale: 1, duration: 0.4, ease: "power2.out" },
+            G2
+          );
+          tl.fromTo(
+            "#f4_g2_tag",
+            { filter: "blur(4px)", scale: 0.96, transformOrigin: "0% 50%" },
+            { filter: "blur(0px)", scale: 1, duration: 0.36, ease: "power2.out" },
+            G2 + 0.04
+          );
+          tl.fromTo(
+            "#f4_g2_sub",
+            { filter: "blur(4px)", scale: 0.96, transformOrigin: "0% 50%" },
+            { filter: "blur(0px)", scale: 1, duration: 0.34, ease: "power2.out" },
+            G2 + 0.06
+          );
+          tl.fromTo(
+            "#f4_g2_nalin",
+            { filter: "blur(4px)", scale: 0.96, transformOrigin: "50% 50%" },
+            { filter: "blur(0px)", scale: 1, duration: 0.38, ease: "power2.out" },
+            G2 + 0.02
+          );
+
+          // holo-sheen + spotlight sweep across the title, crossing it around 13.58-13.7,
+          // finishing at 14.0 so the silence is dead still
+          var SW0 = 13.34 - T0; // 1.10
+          var SW = 14.0 - 13.34; // 0.66
+          tl.set("#f4_g2_sheen", { autoAlpha: 1 }, SW0);
+          tl.fromTo(
+            "#f4_g2_sheen",
+            { backgroundPosition: "100% 50%" },
+            { backgroundPosition: "0% 50%", duration: SW, ease: "sine.inOut" },
+            SW0
+          );
+          tl.set("#f4_g2_sheen", { autoAlpha: 0 }, SW0 + SW);
+
+          tl.set("#f4_g2_glow", { autoAlpha: 1 }, SW0);
+          tl.fromTo("#f4_g2_glow", { x: -120 }, { x: 1380, duration: SW, ease: "sine.inOut" }, SW0);
+          tl.fromTo("#f4_g2_glow", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "sine.out" }, SW0);
+          tl.to("#f4_g2_glow", { opacity: 0, duration: 0.2, ease: "sine.in" }, SW0 + SW - 0.2);
+          tl.set("#f4_g2_glow", { autoAlpha: 0 }, SW0 + SW);
+
+          // 14.0 -> 15.0: hold. Only the track-time chrome below moves.
+
+          // ================= holo-layer + hud on TRACK time =================
+          tl.fromTo(
+            "#f4_hl_scan",
+            { backgroundPosition: "0px " + (T0 * 24).toFixed(2) + "px" },
+            { backgroundPosition: "0px " + (TRACK_END * 24).toFixed(2) + "px", duration: DUR, ease: "none" },
+            0
+          );
+          tl.fromTo(
+            "#f4_hud_bar",
+            { width: (T0 / TRACK_END) * 1728 },
+            { width: 1728, duration: DUR, ease: "none" },
+            0
+          );
+          tl.fromTo(
+            "#f4_hud_tc_strip",
+            { y: 0 },
+            { y: -STEPS * 18, duration: DUR, ease: "steps(" + STEPS + ")" },
+            0
+          );
+
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>33-f3 rain, water lines, the survey seal</title>
+    <!-- Frame 3 of objection-teaser 30s. Track span [13.0, 19.71], local 0..6.71. Head is ignored by the runtime. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Serif KR";
+          src: url("assets/fonts/NotoSerifKR.woff2") format("woff2");
+          font-weight: 200 900;
+        }
+        @font-face {
+          font-family: "Pretendard";
+          src: url("assets/fonts/Pretendard.woff2") format("woff2");
+          font-weight: 45 930;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono.woff2") format("woff2");
+          font-weight: 100 800;
+        }
+
+        #stage[data-composition-id="33-f3"] {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+        }
+
+        /* own wrapper carries size, ground and tokens (works after cloning into the host) */
+        #f33_root {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+          --f33-ink: #f5f5f2;
+          --f33-dim: #8c8c88;
+          --f33-faint: rgba(245, 245, 242, 0.14);
+          --f33-seal: #c8281e;
+        }
+        :where(#f33_root, #f33_root *) {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        .f33_defs {
+          position: absolute;
+          width: 0;
+          height: 0;
+          overflow: hidden;
+        }
+        .f33_full {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+        }
+
+        /* ================= g1: rain, then the wall ================= */
+        #f33_g1 {
+          z-index: 1;
+        }
+        #f33_rain,
+        #f33_wall {
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f33_rainFar {
+          position: absolute;
+          left: 0;
+          top: -1800px;
+          display: block;
+          overflow: visible;
+        }
+        #f33_rainNear {
+          position: absolute;
+          left: 0;
+          top: -3000px;
+          display: block;
+          overflow: visible;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f33_rainHeroDrift {
+          transform-origin: 9% 26%;
+        }
+
+        .f33_hero {
+          position: absolute;
+          left: 168px;
+          top: 236px;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 800;
+          font-size: 136px;
+          line-height: 1;
+          letter-spacing: -0.045em;
+          font-kerning: none;
+          color: #f5f5f2;
+          white-space: nowrap;
+          text-shadow:
+            0px 0px 0px rgba(255, 40, 40, 0),
+            0px 0px 0px rgba(0, 220, 255, 0);
+        }
+        .f33_ch {
+          display: inline-block;
+          opacity: 0;
+          transform-origin: 50% 80%;
+        }
+        .f33_sheen {
+          position: absolute;
+          left: 0;
+          top: -20px;
+          padding: 20px 0;
+          white-space: nowrap;
+          font-kerning: none;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          text-shadow: none;
+          background-image: linear-gradient(
+            115deg,
+            transparent 30%,
+            #ffffff 42%,
+            rgba(160, 235, 255, 0.55) 47%,
+            rgba(255, 170, 225, 0.45) 52%,
+            rgba(201, 184, 255, 0.45) 56%,
+            transparent 68%
+          );
+          background-size: 300% 100%;
+          background-repeat: no-repeat;
+          background-position: 105% 50%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          pointer-events: none;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* the rule label, held across the rain -> wall cut in the same place */
+        #f33_label {
+          position: absolute;
+          left: 172px;
+          top: 420px;
+          font-family: "Pretendard", sans-serif;
+          font-weight: 400;
+          font-size: 38px;
+          line-height: 1.3;
+          letter-spacing: -0.01em;
+          color: #8c8c88;
+          white-space: nowrap;
+          text-shadow: 0 0 14px rgba(5, 5, 5, 0.95);
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* wall plane */
+        #f33_wallPush {
+          transform-origin: 66% 72%;
+        }
+        #f33_wallBase {
+          background:
+            radial-gradient(ellipse 70% 60% at 62% 34%, rgba(245, 245, 242, 0.045), transparent 70%),
+            linear-gradient(180deg, #0d0d0c 0%, #0a0a09 60%, #070707 100%);
+        }
+        #f33_wallTex {
+          display: block;
+          opacity: 0.07;
+        }
+        #f33_lines {
+          display: block;
+          overflow: visible;
+        }
+        #f33_water {
+          position: absolute;
+          left: 0;
+          top: 872px;
+          width: 1920px;
+          height: 208px;
+          background: linear-gradient(
+            180deg,
+            rgba(140, 140, 136, 0.16) 0%,
+            rgba(140, 140, 136, 0.12) 35%,
+            rgba(140, 140, 136, 0.1) 100%
+          );
+        }
+        #f33_surf {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.22);
+        }
+        #f33_hero2 {
+          transform-origin: 0% 50%;
+        }
+
+        /* ================= g2: the 2027 survey sheet ================= */
+        #f33_g2 {
+          z-index: 2;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f33_scene {
+          perspective: 1800px;
+          perspective-origin: 50% 45%;
+        }
+        #f33_rig {
+          position: absolute;
+          left: 400px;
+          top: 130px;
+          width: 1120px;
+          height: 600px;
+          transform-style: preserve-3d;
+        }
+        #f33_push {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1120px;
+          height: 600px;
+          transform-origin: 968px 471px;
+        }
+        #f33_sheet {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1120px;
+          height: 600px;
+          padding: 40px 64px 36px;
+          display: flex;
+          flex-direction: column;
+          background:
+            repeating-linear-gradient(0deg, rgba(245, 245, 242, 0.026) 0 1px, transparent 1px 5px),
+            linear-gradient(160deg, rgba(245, 245, 242, 0.055), rgba(245, 245, 242, 0.015)),
+            #0e0e0e;
+          border: 1px solid rgba(245, 245, 242, 0.32);
+          box-shadow:
+            0 60px 140px rgba(0, 0, 0, 0.85),
+            0 0 70px rgba(245, 245, 242, 0.05),
+            inset 0 1px 0 rgba(245, 245, 242, 0.2);
+        }
+        #f33_sweepClip {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1120px;
+          height: 600px;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        #f33_sweep {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1120px;
+          height: 160px;
+          opacity: 0;
+          visibility: hidden;
+          background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(160, 235, 255, 0.09) 30%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 170, 225, 0.09) 70%,
+            transparent 100%
+          );
+        }
+        #f33_head {
+          flex: none;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid rgba(245, 245, 242, 0.18);
+        }
+        #f33_headL {
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 24px;
+          line-height: 1;
+          letter-spacing: 0.18em;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        .f33_row {
+          flex: none;
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid rgba(245, 245, 242, 0.14);
+        }
+        #f33_row1 {
+          height: 130px;
+        }
+        .f33_rowBlank {
+          height: 64px;
+        }
+        .f33_k {
+          flex: none;
+          width: 220px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f33_val {
+          position: relative;
+          display: inline-block;
+          padding: 0 10px;
+          font-family: "Pretendard", sans-serif;
+          font-weight: 300;
+          font-size: 64px;
+          line-height: 1.3;
+          letter-spacing: -0.01em;
+          color: #f5f5f2;
+          white-space: nowrap;
+        }
+        #f33_circ {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 280px;
+          height: 150px;
+          margin: -75px 0 0 -140px;
+          display: block;
+          overflow: visible;
+        }
+        .f33_bar {
+          display: block;
+          flex: none;
+          height: 12px;
+          border-radius: 2px;
+          background: rgba(245, 245, 242, 0.07);
+        }
+        #f33_foot {
+          flex: 1;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 36px;
+        }
+        #f33_footK {
+          width: auto;
+        }
+        #f33_frame {
+          position: relative;
+          flex: none;
+          width: 176px;
+          height: 176px;
+          border-radius: 50%;
+          border: 1.5px dashed rgba(245, 245, 242, 0.55);
+        }
+        #f33_sealWrap {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 136px;
+          height: 136px;
+          margin: -68px 0 0 -68px;
+        }
+        #f33_glow {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 400px;
+          height: 400px;
+          margin: -200px 0 0 -200px;
+          border-radius: 50%;
+          background: radial-gradient(
+            circle,
+            rgba(200, 40, 30, 0.5) 0%,
+            rgba(200, 40, 30, 0.2) 34%,
+            rgba(200, 40, 30, 0) 68%
+          );
+          mix-blend-mode: screen;
+          opacity: 0;
+          visibility: hidden;
+        }
+        .f33_seal {
+          --f33-c: #c8281e;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 136px;
+          height: 136px;
+          border-radius: 50%;
+          border: 5.5px solid var(--f33-c);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+          filter: url(#f33_ink);
+        }
+        .f33_seal::before {
+          content: "";
+          position: absolute;
+          left: 4px;
+          top: 4px;
+          right: 4px;
+          bottom: 4px;
+          border-radius: 50%;
+          border: 1.2px dashed var(--f33-c);
+        }
+        .f33_seal span {
+          position: relative;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 900;
+          font-size: 34px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          color: var(--f33-c);
+          white-space: nowrap;
+        }
+        #f33_seal {
+          filter: url(#f33_ink) drop-shadow(0 0 14px rgba(200, 40, 30, 0.55));
+        }
+        #f33_sealR {
+          --f33-c: rgba(255, 40, 40, 0.85);
+          mix-blend-mode: screen;
+        }
+        #f33_sealC {
+          --f33-c: rgba(0, 220, 255, 0.85);
+          mix-blend-mode: screen;
+        }
+        #f33_hero3 {
+          left: 0;
+          top: 800px;
+          width: 1920px;
+          text-align: center;
+          opacity: 0;
+          visibility: hidden;
+          transform-origin: 50% 60%;
+        }
+
+        /* ================= holo-layer (track-time driven) ================= */
+        #f33_holo {
+          z-index: 5;
+          pointer-events: none;
+        }
+        #f33_scan {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          background-image: repeating-linear-gradient(
+            0deg,
+            rgba(245, 245, 242, 0.035) 0 1px,
+            transparent 1px 4px
+          );
+          background-position: 0px 312px;
+        }
+        #f33_flash {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0;
+          background:
+            repeating-linear-gradient(0deg, rgba(245, 245, 242, 0.16) 0 1px, transparent 1px 4px),
+            rgba(245, 245, 242, 0.07);
+        }
+        #f33_grain {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0.06;
+          display: block;
+        }
+        #f33_vig {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          box-shadow: inset 0 0 240px rgba(0, 0, 0, 0.85);
+        }
+
+        /* ================= hud (fixed chrome) ================= */
+        #f33_hud {
+          z-index: 6;
+          pointer-events: none;
+        }
+        .f33_hudLab {
+          position: absolute;
+          top: 48px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f33_hudL {
+          left: 96px;
+        }
+        #f33_hudR {
+          right: 96px;
+        }
+        #f33_rule {
+          position: absolute;
+          left: 96px;
+          top: 84px;
+          width: 1728px;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f33_track {
+          position: absolute;
+          left: 96px;
+          top: 1012px;
+          width: 1728px;
+          height: 2px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f33_bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 2px;
+          width: 748.8px;
+          background: #c8281e;
+        }
+        #f33_tc {
+          position: absolute;
+          left: 96px;
+          top: 1032px;
+          height: 18px;
+          width: 240px;
+          overflow: hidden;
+        }
+        #f33_tcStrip {
+          position: absolute;
+          left: 0;
+          top: 0;
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 18px;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f33_tcStrip span {
+          display: block;
+          height: 18px;
+        }
+      </style>
+
+      <div id="stage" data-composition-id="33-f3" data-width="1920" data-height="1080" data-duration="6.71">
+        <div id="f33_root">
+          <svg class="f33_defs" width="0" height="0" aria-hidden="true">
+            <!-- seal ink: edge displacement + speckled missing ink, fixed seeds -->
+            <filter id="f33_ink" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="23" result="n" />
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" result="d" />
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" seed="5" result="g" />
+              <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -8 0 0 0 5.2" result="gm" />
+              <feComposite in="d" in2="gm" operator="in" />
+            </filter>
+            <!-- pencil grain on the water lines -->
+            <filter id="f33_pencil" x="-2%" y="-60%" width="104%" height="220%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="41" result="p" />
+              <feDisplacementMap in="SourceGraphic" in2="p" scale="1.4" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </svg>
+
+          <!-- ===== g1 [0, 4.39]: rain (0.26-2.0), wall (2.0-4.39) ===== -->
+          <div id="f33_g1" class="f33_full">
+            <div id="f33_rain" class="f33_full">
+              <div id="f33_rainAll" class="f33_full" data-layout-ignore>
+                <svg id="f33_rainFar" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+                <svg id="f33_rainNear" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+              </div>
+              <div id="f33_rainHeroDrift" class="f33_full">
+                <div id="f33_hero1" class="f33_hero">
+                  <div id="f33_sheen1" class="f33_sheen" aria-hidden="true" data-layout-ignore>토요일, 장맛비.</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="f33_wall" class="f33_full">
+              <div id="f33_wallPush" class="f33_full">
+                <div id="f33_wallBase" class="f33_full"></div>
+                <svg id="f33_wallTex" class="f33_full" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-layout-ignore>
+                  <filter id="f33_wallF" x="0" y="0" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.011 0.02" numOctaves="3" seed="31" />
+                    <feColorMatrix type="saturate" values="0" />
+                  </filter>
+                  <rect width="1920" height="1080" filter="url(#f33_wallF)" />
+                </svg>
+                <div id="f33_water" data-layout-ignore><div id="f33_surf"></div></div>
+                <svg id="f33_lines" class="f33_full" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-layout-ignore></svg>
+              </div>
+              <div id="f33_hero2" class="f33_hero">벽에는 연필로 그은 수위선.</div>
+            </div>
+
+            <div id="f33_label">규정은 현장 방문을 금지한다.</div>
+          </div>
+
+          <!-- ===== g2 [4.39, 6.71]: the 2027 survey, the seal ===== -->
+          <div id="f33_g2" class="f33_full">
+            <div id="f33_scene" class="f33_full">
+              <div id="f33_rig">
+                <div id="f33_push">
+                  <div id="f33_sheet">
+                    <div id="f33_head"><span id="f33_headL">2027년 5월 현장 조사서</span></div>
+                    <div id="f33_row1" class="f33_row">
+                      <span class="f33_k">판정</span>
+                      <span id="f33_val"
+                        >양호<svg id="f33_circ" viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-layout-ignore></svg
+                      ></span>
+                    </div>
+                    <div class="f33_row f33_rowBlank">
+                      <span class="f33_bar" style="width: 120px; margin-right: 100px"></span>
+                      <span class="f33_bar" style="width: 430px"></span>
+                    </div>
+                    <div class="f33_row f33_rowBlank">
+                      <span class="f33_bar" style="width: 150px; margin-right: 70px"></span>
+                      <span class="f33_bar" style="width: 310px"></span>
+                    </div>
+                    <div id="f33_foot">
+                      <span id="f33_footK" class="f33_k">조사자 날인</span>
+                      <div id="f33_frame">
+                        <div id="f33_sealWrap">
+                          <div id="f33_glow"></div>
+                          <div id="f33_seal" class="f33_seal"><span>한서진</span></div>
+                          <div id="f33_sealR" class="f33_seal" aria-hidden="true"><span>한서진</span></div>
+                          <div id="f33_sealC" class="f33_seal" aria-hidden="true"><span>한서진</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="f33_sweepClip" data-layout-ignore><div id="f33_sweep"></div></div>
+                </div>
+              </div>
+            </div>
+            <div id="f33_hero3" class="f33_hero">내 도장이었다.</div>
+          </div>
+
+          <!-- ===== holo-layer ===== -->
+          <div id="f33_holo" class="f33_full">
+            <div id="f33_scan"></div>
+            <div id="f33_flash"></div>
+            <svg id="f33_grain" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <filter id="f33_grain_f" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" />
+                <feColorMatrix type="saturate" values="0" />
+              </filter>
+              <rect width="1920" height="1080" filter="url(#f33_grain_f)" />
+            </svg>
+            <div id="f33_vig"></div>
+          </div>
+
+          <!-- ===== hud ===== -->
+          <div id="f33_hud" class="f33_full">
+            <div id="f33_hudL" class="f33_hudLab">OBJECTION · 이의신청</div>
+            <div id="f33_hudR" class="f33_hudLab">2032 · SEOUL</div>
+            <div id="f33_rule"></div>
+            <div id="f33_track"><div id="f33_bar"></div></div>
+            <div id="f33_tc"><div id="f33_tcStrip" data-layout-ignore></div></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var ID = "33-f3";
+          var T0 = 13.0; // frame start, track seconds (local_t = track_t - T0)
+          var DUR = 6.71;
+          var TRACK_END = 30.0;
+          var F = 1 / 30;
+
+          // anchors, frame-local
+          var A0 = 0.26; // 13.26 kick: hard cut to rain + hero
+          var A1 = 0.4; // 13.40 snare: rain gets heavier
+          var A2 = 1.33; // 14.33: rule label
+          var W = 2.0; // 15.00: hard cut to the wall, water line 1
+          var H = [2.0, 2.97, 3.21, 3.77, 3.86]; // water lines (15.0 / 15.97 / 16.21 / 16.77 / 16.86)
+          var GL = 4.16; // 17.16 perc: water surface glint
+          var G2 = 4.39; // 17.39: hard cut to the survey sheet
+          var S = 5.07; // 18.07: the seal + 내 도장이었다.
+          var P1 = 5.67; // 18.67: glow pulse
+          var P2 = 6.23; // 19.23: glow pulse
+
+          function $(id) {
+            return document.getElementById(id);
+          }
+          function rng(seed) {
+            var a = seed >>> 0;
+            return function () {
+              a = (a + 0x6d2b79f5) | 0;
+              var t = Math.imul(a ^ (a >>> 15), 1 | a);
+              t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+              return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+            };
+          }
+          function f1(n) {
+            return n.toFixed(1);
+          }
+
+          // ---------- timecode strip: one line per centisecond, stepped by a y tween ----------
+          var CS0 = 1300;
+          var CS1 = 1971;
+          var STEPS = CS1 - CS0; // 671
+          function pad2(n) {
+            return n < 10 ? "0" + n : String(n);
+          }
+          var tcHtml = "";
+          for (var c = CS0; c <= CS1; c++) {
+            var sec = Math.floor(c / 100);
+            tcHtml += "<span>" + pad2(Math.floor(sec / 60)) + ":" + pad2(sec % 60) + "." + pad2(c % 100) + "</span>";
+          }
+          $("f33_tcStrip").innerHTML = tcHtml;
+
+          // ---------- rain: seeded thin diagonal streaks in two depths ----------
+          var SLANT = 0.22; // falls down-left
+          var FAR_D = 1800;
+          var NEAR_D = 3000;
+          function buildRain(id, seed, count, D, lenMin, lenMax, sw, opMin, opMax) {
+            var r = rng(seed);
+            var Wd = Math.round(1920 + SLANT * D + 60);
+            var Ht = 1080 + D;
+            var s = '<g stroke="#F5F5F2" stroke-width="' + sw + '" stroke-linecap="round" fill="none">';
+            for (var i = 0; i < count; i++) {
+              var x = r() * Wd;
+              var y = r() * Ht;
+              var len = lenMin + r() * (lenMax - lenMin);
+              var op = opMin + r() * (opMax - opMin);
+              s +=
+                '<line x1="' + f1(x) + '" y1="' + f1(y) + '" x2="' + f1(x - SLANT * len) + '" y2="' + f1(y + len) +
+                '" stroke-opacity="' + op.toFixed(3) + '"/>';
+            }
+            s += "</g>";
+            var el = $(id);
+            el.setAttribute("width", Wd);
+            el.setAttribute("height", Ht);
+            el.setAttribute("viewBox", "0 0 " + Wd + " " + Ht);
+            el.innerHTML = s;
+          }
+          buildRain("f33_rainFar", 1301, 270, FAR_D, 30, 72, 1, 0.18, 0.28);
+          buildRain("f33_rainNear", 1340, 205, NEAR_D, 80, 160, 1.4, 0.24, 0.35);
+
+          // ---------- rain hero: per-letter spans ----------
+          var hero1 = $("f33_hero1");
+          var sheen1 = $("f33_sheen1");
+          "토요일, 장맛비.".split("").forEach(function (ch) {
+            var sp = document.createElement("span");
+            sp.className = "f33_ch";
+            sp.innerHTML = ch === " " ? "&nbsp;" : ch;
+            hero1.insertBefore(sp, sheen1);
+          });
+
+          // ---------- pencil water lines: seeded uneven strokes, each higher, tick at the right end ----------
+          // [y, x0, x1, ink]
+          var LINES = [
+            [862, 520, 1690, 0.4],
+            [792, 590, 1650, 0.46],
+            [722, 548, 1712, 0.52],
+            [652, 630, 1676, 0.56],
+            [586, 572, 1700, 0.6],
+          ];
+          var ls = "<defs>";
+          LINES.forEach(function (L, i) {
+            ls += '<clipPath id="f33_lc' + i + '"><rect id="f33_lr' + i + '" x="' + (L[1] - 8) + '" y="' + (L[0] - 30) +
+              '" width="0" height="56"/></clipPath>';
+          });
+          ls += "</defs>";
+          LINES.forEach(function (L, i) {
+            var r = rng(2000 + i * 17);
+            var y0 = L[0];
+            var x0 = L[1];
+            var x1 = L[2];
+            var drift = 0;
+            var pts = [];
+            for (var x = x0; x <= x1 + 0.1; x += 22) {
+              drift += (r() - 0.5) * 0.9;
+              if (drift > 2.4) drift = 2.4;
+              if (drift < -2.4) drift = -2.4;
+              pts.push([Math.min(x, x1), y0 + drift + (r() - 0.5) * 0.8]);
+            }
+            var d1 = "";
+            var d2 = "";
+            pts.forEach(function (p, k) {
+              d1 += (k ? " L" : "M") + f1(p[0]) + " " + f1(p[1]);
+              d2 += (k ? " L" : "M") + f1(p[0] + 0.5) + " " + f1(p[1] + 0.7);
+            });
+            var ex = pts[pts.length - 1][0];
+            var ey = pts[pts.length - 1][1];
+            // illegible pencil tick: a short scribble, no glyphs
+            var tk = "M" + f1(ex + 12) + " " + f1(ey - 3);
+            var tx = ex + 12;
+            for (var k = 0; k < 6; k++) {
+              tx += 3 + r() * 3;
+              tk += " L" + f1(tx) + " " + f1(ey - 4 - (k % 2 ? 1 + r() * 3 : 9 + r() * 5));
+            }
+            tk += " M" + f1(tx + 7) + " " + f1(ey - 15) + " L" + f1(tx + 12 + r() * 3) + " " + f1(ey - 3);
+            var dash = (4 + r() * 5).toFixed(1) + " " + (1 + r() * 2).toFixed(1) + " " + (2 + r() * 4).toFixed(1) + " " + (1 + r()).toFixed(1);
+            var ink = L[3];
+            ls +=
+              '<g clip-path="url(#f33_lc' + i + ')"><g filter="url(#f33_pencil)" fill="none" stroke="#F5F5F2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="' + d1 + '" stroke-width="1.5" stroke-opacity="' + ink + '"/>' +
+              '<path d="' + d2 + '" stroke-width="1" stroke-opacity="' + (ink * 0.45).toFixed(2) + '" stroke-dasharray="' + dash + '"/>' +
+              '<path d="' + tk + '" stroke-width="1.2" stroke-opacity="' + (ink * 0.85).toFixed(2) + '"/>' +
+              "</g></g>";
+          });
+          $("f33_lines").innerHTML = ls;
+
+          // ---------- hand-drawn circle around 양호 (white pencil) ----------
+          function ellipsePath(seed, rx, ry, rot, a0, a1) {
+            var r = rng(seed);
+            var ph = r() * 6.28;
+            var d = "";
+            var cr = Math.cos(rot);
+            var sr = Math.sin(rot);
+            var n = 0;
+            for (var a = a0; a <= a1; a += 0.11) {
+              var k = 1 + 0.035 * Math.sin(3 * a + ph) + (r() - 0.5) * 0.012;
+              var ex = rx * k * Math.cos(a);
+              var ey = ry * k * Math.sin(a);
+              var px = 140 + ex * cr - ey * sr;
+              var py = 75 + ex * sr + ey * cr;
+              d += (n++ ? " L" : "M") + f1(px) + " " + f1(py);
+            }
+            return d;
+          }
+          $("f33_circ").innerHTML =
+            '<g fill="none" stroke="#F5F5F2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path id="f33_circA" d="' + ellipsePath(77, 118, 54, -0.07, 3.4, 3.4 + 6.283 + 0.55) +
+            '" stroke-width="2.2" stroke-opacity="0.85" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>' +
+            '<path id="f33_circB" d="' + ellipsePath(91, 114, 51, -0.05, 3.5, 3.5 + 6.283 + 0.3) +
+            '" stroke-width="1" stroke-opacity="0.4" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>' +
+            "</g>";
+
+          // ================= timeline =================
+          var tl = gsap.timeline({ paused: true });
+
+          var SR = "rgba(255, 40, 40, 0.85)";
+          var SC = "rgba(0, 220, 255, 0.85)";
+          function split(px) {
+            return -px + "px 0px 0px " + SR + ", " + px + "px 0px 0px " + SC;
+          }
+          var SPLIT0 = "0px 0px 0px rgba(255, 40, 40, 0), 0px 0px 0px rgba(0, 220, 255, 0)";
+          // chroma-hit: 0ms split, half at +2 frames, closed at +4 frames
+          function chroma(el, t, big, small) {
+            tl.set(el, { textShadow: split(big) }, t);
+            tl.set(el, { textShadow: split(small) }, t + 2 * F);
+            tl.set(el, { textShadow: SPLIT0 }, t + 4 * F);
+          }
+          function flash(t, peak, d) {
+            tl.set("#f33_flash", { opacity: peak }, t);
+            tl.to("#f33_flash", { opacity: 0, duration: d, ease: "power3.out", lazy: false }, t);
+          }
+
+          // ---------- group windows (g1 visible from 0, g2 holds to the end) ----------
+          tl.set("#f33_g1", { autoAlpha: 0 }, G2);
+          tl.set("#f33_g2", { autoAlpha: 1 }, G2);
+
+          // ---------- g1a: rain [A0, W] ----------
+          tl.set("#f33_rain", { autoAlpha: 1 }, A0);
+          tl.set("#f33_rain", { autoAlpha: 0 }, W);
+          flash(A0, 0.6, 0.32);
+          // linear fall along the slant (seek-safe: pure transform tween)
+          tl.fromTo("#f33_rainFar", { x: 0, y: 0 }, { x: -SLANT * FAR_D, y: FAR_D, duration: W, ease: "none" }, 0);
+          tl.fromTo("#f33_rainNear", { x: 0, y: 0 }, { x: -SLANT * NEAR_D, y: NEAR_D, duration: W, ease: "none" }, 0);
+          tl.set("#f33_rainNear", { autoAlpha: 1 }, A1);
+          // the rain thins before the cut
+          tl.fromTo("#f33_rainAll", { opacity: 1 }, { opacity: 0.45, duration: 0.45, ease: "sine.in", immediateRender: false }, W - 0.45);
+
+          // kinetic-letter-in, restrained: whole line on at the kick, glyphs settle on a short cascade
+          var chars = Array.prototype.slice.call(hero1.querySelectorAll(".f33_ch"));
+          tl.set(chars, { opacity: 1 }, A0);
+          chars.forEach(function (ch, j) {
+            tl.fromTo(ch, { y: -26 - j * 2, scale: 1.1 }, { y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, A0 + j * 0.028);
+          });
+          chroma(hero1, A0, 7, 3);
+          tl.fromTo("#f33_rainHeroDrift", { scale: 1 }, { scale: 1.015, duration: W - A0, ease: "none" }, A0);
+          // holo-sheen once across the settled line
+          tl.set(sheen1, { autoAlpha: 1 }, 0.95);
+          tl.fromTo(sheen1, { backgroundPosition: "105% 50%" }, { backgroundPosition: "-5% 50%", duration: 0.6, ease: "sine.inOut" }, 0.95);
+          tl.set(sheen1, { autoAlpha: 0 }, 1.55);
+
+          // rule label: types on at 14.33 and holds through the wall cut to 17.39 (3.06s)
+          tl.set("#f33_label", { autoAlpha: 1 }, A2);
+          tl.fromTo(
+            "#f33_label",
+            { clipPath: "inset(0% 100% -20% 0%)" },
+            { clipPath: "inset(0% 0% -20% 0%)", duration: 0.4, ease: "power2.out" },
+            A2
+          );
+
+          // ---------- g1b: wall [W, G2] ----------
+          tl.set("#f33_wall", { autoAlpha: 1 }, W);
+          flash(W, 0.28, 0.24);
+          tl.fromTo("#f33_wallPush", { scale: 1 }, { scale: 1.02, duration: G2 - W, ease: "none" }, W);
+          tl.fromTo("#f33_hero2", { scale: 1.025 }, { scale: 1, duration: 0.45, ease: "expo.out" }, W);
+          // water band rises from below and stops just under the lowest line
+          tl.fromTo("#f33_water", { y: 230 }, { y: 0, duration: 2.3, ease: "sine.out" }, W);
+          // one pencil line per roll hit, drawn left to right in 0.24s
+          LINES.forEach(function (L, i) {
+            tl.fromTo(
+              "#f33_lr" + i,
+              { attr: { width: 0 } },
+              { attr: { width: L[2] - L[1] + 76 }, duration: 0.24, ease: "power2.out" },
+              H[i]
+            );
+          });
+          chroma($("f33_hero2"), H[2], 4, 1); // 16.21, the strongest snare in the roll
+          // 17.16: surface glint
+          tl.set("#f33_surf", { backgroundColor: "rgba(245, 245, 242, 0.6)" }, GL);
+          tl.to("#f33_surf", { backgroundColor: "rgba(245, 245, 242, 0.22)", duration: 0.2, ease: "power2.out", lazy: false }, GL);
+
+          // ---------- g2: survey sheet [G2, DUR] ----------
+          flash(G2, 0.5, 0.3);
+          // 3d tilt in, settles to a slight angle, then drifts
+          tl.fromTo(
+            "#f33_rig",
+            { rotationY: 24, rotationX: 10, x: 160, y: 24 },
+            { rotationY: -6, rotationX: 5, x: 0, y: 0, duration: 0.62, ease: "expo.out" },
+            G2
+          );
+          tl.fromTo(
+            "#f33_rig",
+            { rotationY: -6, rotationX: 5 },
+            { rotationY: -3.5, rotationX: 3.5, duration: DUR - (G2 + 0.62), ease: "none", immediateRender: false },
+            G2 + 0.62
+          );
+          // projection flicker on
+          tl.set("#f33_sheet", { opacity: 0.45 }, G2);
+          tl.set("#f33_sheet", { opacity: 1 }, G2 + F);
+          tl.set("#f33_sheet", { opacity: 0.72 }, G2 + 2 * F);
+          tl.set("#f33_sheet", { opacity: 1 }, G2 + 3 * F);
+          // holo light band down the sheet
+          tl.set("#f33_sweep", { autoAlpha: 1 }, G2 + 0.12);
+          tl.fromTo("#f33_sweep", { y: -170 }, { y: 610, duration: 0.7, ease: "sine.inOut" }, G2 + 0.12);
+          tl.set("#f33_sweep", { autoAlpha: 0 }, G2 + 0.82);
+          // white pencil circle drawn around 양호, finished before the seal
+          tl.fromTo("#f33_circA", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.36, ease: "power1.inOut" }, 4.6);
+          tl.fromTo("#f33_circB", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.36, ease: "power1.inOut" }, 4.66);
+
+          // 18.07: the seal fills the empty round frame (outline-to-fill) + chroma-hit + red glow
+          tl.set("#f33_seal", { autoAlpha: 0.92, rotation: -7 }, S);
+          tl.fromTo("#f33_seal", { scale: 1.14 }, { scale: 1, duration: 2 * F, ease: "power2.out" }, S);
+          tl.set("#f33_frame", { borderColor: "rgba(245, 245, 242, 0.22)" }, S);
+          tl.set("#f33_sealR", { autoAlpha: 0.9, x: -9, rotation: -7 }, S);
+          tl.set("#f33_sealC", { autoAlpha: 0.9, x: 9, rotation: -7 }, S);
+          tl.set("#f33_sealR", { x: -4 }, S + 2 * F);
+          tl.set("#f33_sealC", { x: 4 }, S + 2 * F);
+          tl.set("#f33_sealR", { autoAlpha: 0, x: 0 }, S + 4 * F);
+          tl.set("#f33_sealC", { autoAlpha: 0, x: 0 }, S + 4 * F);
+          tl.set("#f33_glow", { autoAlpha: 1, scale: 1 }, S);
+          tl.fromTo("#f33_glow", { opacity: 1 }, { opacity: 0.6, duration: 0.5, ease: "power2.out", immediateRender: false }, S);
+          flash(S, 0.3, 0.22);
+          tl.fromTo("#f33_push", { scale: 1 }, { scale: 1.03, duration: DUR - S, ease: "none" }, S);
+
+          tl.set("#f33_hero3", { autoAlpha: 1 }, S);
+          tl.fromTo("#f33_hero3", { scale: 1.06 }, { scale: 1, duration: 0.42, ease: "expo.out" }, S);
+          chroma($("f33_hero3"), S, 10, 4);
+
+          // 18.67, 19.23: the glow breathes once each, very slightly
+          [P1, P2].forEach(function (p) {
+            tl.to("#f33_glow", { opacity: 0.8, scale: 1.05, duration: 0.1, ease: "sine.out", lazy: false }, p);
+            tl.to("#f33_glow", { opacity: 0.6, scale: 1, duration: 0.36, ease: "sine.inOut", lazy: false }, p + 0.1);
+          });
+
+          // ================= holo-layer + hud on TRACK time =================
+          tl.fromTo(
+            "#f33_scan",
+            { backgroundPosition: "0px " + (T0 * 24).toFixed(2) + "px" },
+            { backgroundPosition: "0px " + ((T0 + DUR) * 24).toFixed(2) + "px", duration: DUR, ease: "none" },
+            0
+          );
+          tl.fromTo(
+            "#f33_bar",
+            { width: (T0 / TRACK_END) * 1728 },
+            { width: ((T0 + DUR) / TRACK_END) * 1728, duration: DUR, ease: "none" },
+            0
+          );
+          tl.fromTo("#f33_tcStrip", { y: 0 }, { y: -STEPS * 18, duration: DUR, ease: "steps(" + STEPS + ")" }, 0);
+
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

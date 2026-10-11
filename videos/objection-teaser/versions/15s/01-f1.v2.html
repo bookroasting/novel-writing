@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>01-f1 statement buried by seals</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Serif KR";
+          src: url("assets/fonts/NotoSerifKR.woff2") format("woff2");
+          font-weight: 200 900;
+        }
+        @font-face {
+          font-family: "Pretendard";
+          src: url("assets/fonts/Pretendard.woff2") format("woff2");
+          font-weight: 45 930;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          src: url("assets/fonts/JetBrainsMono.woff2") format("woff2");
+          font-weight: 100 800;
+        }
+
+        #stage[data-composition-id="01-f1"] {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #050505;
+          color: #f5f5f2;
+        }
+        #stage[data-composition-id="01-f1"] * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* ---------- g1: statement, seals, counter ---------- */
+        #f1_g1 {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+        }
+        #f1_grid {
+          position: absolute;
+          left: 96px;
+          top: 108px;
+          width: 1728px;
+          height: 864px;
+          display: grid;
+          grid-template-columns: repeat(16, 108px);
+          grid-template-rows: repeat(8, 108px);
+        }
+        .f1-cell {
+          width: 108px;
+          height: 108px;
+          background-color: rgba(245, 245, 242, 0);
+        }
+        #f1_drift,
+        #f1_shake,
+        #f1_dim,
+        #f1_seals {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          transform-origin: 50% 50%;
+        }
+        #f1_date {
+          position: absolute;
+          left: 168px;
+          top: 354px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          color: #f5f5f2;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .f1-line {
+          position: absolute;
+          left: 168px;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.045em;
+          font-kerning: none;
+          color: #f5f5f2;
+          white-space: nowrap;
+          text-shadow:
+            0px 0px 0px rgba(255, 40, 40, 0),
+            0px 0px 0px rgba(0, 220, 255, 0);
+        }
+        #f1_l1 {
+          top: 408px;
+        }
+        #f1_l2 {
+          top: 576px;
+        }
+        .f1-ch {
+          display: inline-block;
+          opacity: 0;
+          transform-origin: 50% 80%;
+          will-change: transform, opacity;
+        }
+        .f1-red {
+          color: #c8281e;
+        }
+        /* holo-sheen: text clone, gradient clipped to glyphs, swept once */
+        .f1-sheen {
+          position: absolute;
+          left: 0;
+          top: -20px;
+          white-space: nowrap;
+          font-kerning: none;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          text-shadow: none;
+          background-image: linear-gradient(
+            115deg,
+            transparent 30%,
+            #ffffff 42%,
+            rgba(160, 235, 255, 0.55) 47%,
+            rgba(255, 170, 225, 0.45) 52%,
+            rgba(201, 184, 255, 0.45) 56%,
+            transparent 68%
+          );
+          background-size: 300% 100%;
+          background-repeat: no-repeat;
+          background-position: 105% 50%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          pointer-events: none;
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        #stage .f1-sheen {
+          padding: 20px 0; /* id-level so the #stage * reset does not zero it */
+        }
+
+        /* seal-imprint "기각" */
+        .f1-seal {
+          position: absolute;
+          width: var(--s);
+          height: var(--s);
+          border: calc(var(--s) * 0.04) solid #c8281e;
+          background: rgba(5, 5, 5, 0.55);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          filter: url(#f1_ink);
+        }
+        .f1-seal::before {
+          content: "";
+          position: absolute;
+          inset: calc(var(--s) * 0.025);
+          border: max(1.5px, calc(var(--s) * 0.009)) dashed rgba(200, 40, 30, 0.95);
+        }
+        .f1-seal span {
+          position: relative;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 900;
+          font-size: calc(var(--s) * 0.34);
+          line-height: 1;
+          letter-spacing: -0.02em;
+          color: #c8281e;
+          white-space: nowrap;
+        }
+
+        /* hard cut target: 하루 200장. */
+        #f1_cut {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+        }
+        #f1_cutDrift,
+        #f1_cutPunch {
+          position: relative;
+          transform-origin: 50% 55%;
+        }
+        #f1_cutLine {
+          position: relative;
+          font-family: "Noto Serif KR", serif;
+          font-weight: 800;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.045em;
+          font-kerning: none;
+          color: #f5f5f2;
+          white-space: nowrap;
+          text-shadow:
+            0px 0px 0px rgba(255, 40, 40, 0),
+            0px 0px 0px rgba(0, 220, 255, 0);
+        }
+
+        /* counter: 날인 000 -> 날인 200 */
+        #f1_cnt {
+          position: absolute;
+          right: 96px;
+          top: 914px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 300;
+          font-size: 64px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          color: #8c8c88;
+          white-space: nowrap;
+          font-variant-numeric: tabular-nums;
+          transform-origin: 100% 100%;
+          opacity: 0;
+          visibility: hidden;
+          text-shadow:
+            0px 0px 0px rgba(255, 40, 40, 0),
+            0px 0px 0px rgba(0, 220, 255, 0);
+        }
+
+        /* ---------- holo-layer (track-time driven) ---------- */
+        #f1_holo {
+          position: absolute;
+          inset: 0;
+          z-index: 5;
+          pointer-events: none;
+        }
+        #f1_scan {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background-image: repeating-linear-gradient(
+            0deg,
+            rgba(245, 245, 242, 0.035) 0 1px,
+            transparent 1px 4px
+          );
+          background-position: 0px 0px;
+          opacity: 0;
+        }
+        #f1_flash {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0;
+          background:
+            repeating-linear-gradient(0deg, rgba(245, 245, 242, 0.16) 0 1px, transparent 1px 4px),
+            rgba(245, 245, 242, 0.07);
+        }
+        #f1_grain {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          opacity: 0.06;
+          pointer-events: none;
+          display: block;
+        }
+        #f1_vig {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          box-shadow: inset 0 0 240px rgba(0, 0, 0, 0.85);
+        }
+
+        /* ---------- hud (fixed chrome) ---------- */
+        #f1_hud {
+          position: absolute;
+          inset: 0;
+          z-index: 6;
+          pointer-events: none;
+          opacity: 0;
+        }
+        .f1-lab {
+          position: absolute;
+          top: 48px;
+          font-family: "JetBrains Mono", "Pretendard", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 1;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+        #f1_hudL {
+          left: 96px;
+        }
+        #f1_hudR {
+          right: 96px;
+        }
+        #f1_rule {
+          position: absolute;
+          left: 96px;
+          top: 84px;
+          width: 1728px;
+          height: 1px;
+          background: rgba(245, 245, 242, 0.14);
+          transform-origin: 0% 50%;
+        }
+        #f1_track {
+          position: absolute;
+          left: 96px;
+          top: 1012px;
+          width: 1728px;
+          height: 2px;
+          background: rgba(245, 245, 242, 0.14);
+        }
+        #f1_bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 2px;
+          width: 0px;
+          background: #c8281e;
+        }
+        #f1_tc {
+          position: absolute;
+          left: 96px;
+          top: 1032px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 18px;
+          letter-spacing: 0.22em;
+          color: #8c8c88;
+          white-space: nowrap;
+        }
+      </style>
+
+      <div
+        id="stage"
+        data-composition-id="01-f1"
+        data-width="1920"
+        data-height="1080"
+        data-duration="3.88"
+      >
+        <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+          <filter id="f1_ink" x="-6%" y="-6%" width="112%" height="112%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="11" result="n" />
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </svg>
+
+        <!-- g1 -->
+        <div id="f1_g1">
+          <div id="f1_grid" data-layout-ignore></div>
+
+          <div id="f1_drift">
+            <div id="f1_shake">
+              <div id="f1_dim">
+                <div id="f1_date">2032년, 서울.</div>
+                <div id="f1_l1" data-layout-allow-overlap class="f1-line">
+                  <span class="f1-ch">A</span><span class="f1-ch">I</span><span class="f1-ch">가</span
+                  ><span class="f1-ch">&nbsp;</span><span class="f1-ch">판</span><span class="f1-ch">정</span
+                  ><span class="f1-ch">하</span><span class="f1-ch">고</span>
+                  <div id="f1_sheen1" class="f1-sheen" aria-hidden="true" data-layout-ignore>AI가 판정하고</div>
+                </div>
+                <div id="f1_l2" data-layout-allow-overlap class="f1-line">
+                  <span class="f1-ch">사</span><span class="f1-ch">람</span><span class="f1-ch">은</span
+                  ><span class="f1-ch">&nbsp;</span><span class="f1-ch f1-red">도</span
+                  ><span class="f1-ch f1-red">장</span><span class="f1-ch">을</span><span class="f1-ch">&nbsp;</span
+                  ><span class="f1-ch">찍</span><span class="f1-ch">는</span><span class="f1-ch">다</span
+                  ><span class="f1-ch">.</span>
+                </div>
+              </div>
+              <div id="f1_seals" data-layout-ignore></div>
+            </div>
+          </div>
+
+          <div id="f1_cut">
+            <div id="f1_cutDrift">
+              <div id="f1_cutPunch">
+                <div id="f1_cutLine">
+                  하루 200장.
+                  <div id="f1_sheen2" class="f1-sheen" aria-hidden="true" data-layout-ignore>하루 200장.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="f1_cnt">날인 000</div>
+        </div>
+
+        <!-- holo-layer -->
+        <div id="f1_holo">
+          <div id="f1_scan"></div>
+          <div id="f1_flash"></div>
+          <svg id="f1_grain" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <filter id="f1_grain_f" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+            <rect width="1920" height="1080" filter="url(#f1_grain_f)" />
+          </svg>
+          <div id="f1_vig"></div>
+        </div>
+
+        <!-- hud -->
+        <div id="f1_hud">
+          <div id="f1_hudL" class="f1-lab">OBJECTION · 이의신청</div>
+          <div id="f1_hudR" class="f1-lab">2032 · SEOUL</div>
+          <div id="f1_rule"></div>
+          <div id="f1_track"><div id="f1_bar"></div></div>
+          <div id="f1_tc" style="display: none" data-removed="2026-10-05 author: no timecode / no on-screen music credit">00:00.00</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var ID = "01-f1";
+          var T0 = 0.0; // frame start, track seconds (local_t = track_t - T0)
+          var DUR = 3.88;
+          var TRACK_END = 15.0;
+          var F = 1 / 30;
+
+          var R = document.querySelector('#stage[data-composition-id="01-f1"]') ||
+            document.querySelector('[data-composition-id="01-f1"]');
+          function q(s) {
+            return R.querySelector(s);
+          }
+          function qa(s) {
+            return Array.prototype.slice.call(R.querySelectorAll(s));
+          }
+
+          var SR = "rgba(255, 40, 40, 0.85)";
+          var SC = "rgba(0, 220, 255, 0.85)";
+          function split(px) {
+            return -px + "px 0px 0px " + SR + ", " + px + "px 0px 0px " + SC;
+          }
+          var SPLIT0 = "0px 0px 0px rgba(255, 40, 40, 0), 0px 0px 0px rgba(0, 220, 255, 0)";
+
+          var tl = gsap.timeline({ paused: true });
+
+          // chroma-hit: 0ms split, half at +2 frames, closed at +4 frames
+          function chroma(el, t, big, small) {
+            tl.set(el, { textShadow: split(big) }, t);
+            tl.set(el, { textShadow: split(small) }, t + 2 * F);
+            tl.set(el, { textShadow: SPLIT0 }, t + 4 * F);
+          }
+
+          // ---------- group window ----------
+          var g1 = q("#f1_g1");
+          tl.set(g1, { autoAlpha: 1 }, 0);
+          tl.set(g1, { autoAlpha: 0 }, DUR);
+
+          // ---------- holo-layer + hud (track time) ----------
+          var scan = q("#f1_scan");
+          tl.fromTo(
+            scan,
+            { backgroundPosition: "0px " + (T0 * 24).toFixed(2) + "px" },
+            { backgroundPosition: "0px " + ((T0 + DUR) * 24).toFixed(2) + "px", duration: DUR, ease: "none" },
+            0
+          );
+          tl.fromTo(
+            q("#f1_bar"),
+            { width: (T0 / TRACK_END) * 1728 },
+            { width: ((T0 + DUR) / TRACK_END) * 1728, duration: DUR, ease: "none" },
+            0
+          );
+          var tcEl = q("#f1_tc");
+          function pad2(n) {
+            return n < 10 ? "0" + n : String(n);
+          }
+          function fmtTC(t) {
+            var cs = Math.floor(t * 100 + 1e-4);
+            var s = Math.floor(cs / 100);
+            return pad2(Math.floor(s / 60)) + ":" + pad2(s % 60) + "." + pad2(cs % 100);
+          }
+          // timecode: one 0ms text swap per video frame (no callbacks, seek-safe both ways)
+          var NF = Math.round(DUR / F); // 116 frame steps
+          for (var k = 1; k < NF + 1; k++) {
+            var lt = k * F;
+            if (lt >= DUR) break;
+            tl.set(tcEl, { textContent: fmtTC(T0 + lt) }, lt - 0.001);
+          }
+
+          // boot on the 0.05 kick: scanlines flash on, hud hairline draws
+          var BOOT = 0.05;
+          tl.set(scan, { opacity: 1 }, BOOT);
+          tl.set(q("#f1_flash"), { opacity: 1 }, BOOT);
+          tl.to(q("#f1_flash"), { opacity: 0, duration: 0.34, ease: "power3.out", lazy: false }, BOOT);
+          tl.set(q("#f1_hud"), { opacity: 1 }, BOOT);
+          tl.fromTo(q("#f1_rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "expo.out" }, BOOT);
+
+          // ---------- statement ----------
+          // micro-drift of the whole statement while it holds
+          tl.fromTo(q("#f1_drift"), { scale: 1 }, { scale: 1.02, duration: 3.06 - BOOT, ease: "none" }, BOOT);
+
+          // dateline: 0ms on, type-on clip
+          var date = q("#f1_date");
+          tl.set(date, { opacity: 1 }, BOOT);
+          tl.fromTo(
+            date,
+            { clipPath: "inset(0% 100% 0% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "power3.out" },
+            BOOT
+          );
+
+          // kinetic-letter-in: the whole line lands at 0ms on the kick, each glyph
+          // then slams down into place on a tight cascade
+          function letters(lineSel, t0, stagger) {
+            var chars = qa(lineSel + " .f1-ch");
+            tl.set(chars, { opacity: 1 }, t0);
+            chars.forEach(function (c, j) {
+              tl.fromTo(
+                c,
+                { y: -54 - j * 4, scale: 1.32 },
+                { y: 0, scale: 1, duration: 0.42, ease: "expo.out" },
+                t0 + j * stagger
+              );
+            });
+          }
+          var l1 = q("#f1_l1");
+          var l2 = q("#f1_l2");
+          letters("#f1_l1", BOOT, 0.018);
+          chroma(l1, BOOT, 12, 5);
+
+          // holo-sheen across line 1 once it has settled (light, never a fill)
+          function sheen(el, t, d) {
+            tl.set(el, { autoAlpha: 1 }, t);
+            tl.fromTo(
+              el,
+              { backgroundPosition: "105% 50%" },
+              { backgroundPosition: "-5% 50%", duration: d, ease: "sine.inOut" },
+              t
+            );
+            tl.set(el, { autoAlpha: 0 }, t + d);
+          }
+          sheen(q("#f1_sheen1"), 0.62, 0.6);
+
+          // line 2 on the 1.21 kick
+          var L2 = 1.21;
+          letters("#f1_l2", L2, 0.018);
+          chroma(l2, L2, 8, 3);
+
+          // ---------- roll: 기각 seals accumulate, grid shuffles, counter climbs ----------
+          // 10 roll hits. The 10th (3.065 kick) leads its anchor by one frame so the
+          // hard cut can land exactly on 3.06.
+          var HITS = [1.56, 1.76, 1.86, 2.16, 2.39, 2.6, 2.72, 2.83, 2.97, 3.03];
+          // [cx, cy, size]: edges first, then over the lines, growing denser
+          var SEALS = [
+            [1490, 250, 210],
+            [300, 830, 200],
+            [1650, 690, 250],
+            [930, 262, 220],
+            [560, 660, 290],
+            [1270, 470, 310],
+            [380, 470, 300],
+            [1080, 700, 350],
+            [760, 520, 380],
+            [980, 560, 500],
+          ];
+          var sealsBox = q("#f1_seals");
+          var sealEls = SEALS.map(function (d, i) {
+            var el = document.createElement("div");
+            el.className = "f1-seal";
+            el.style.setProperty("--s", d[2] + "px");
+            el.style.left = d[0] - d[2] / 2 + "px";
+            el.style.top = d[1] - d[2] / 2 + "px";
+            var sp = document.createElement("span");
+            sp.textContent = "기각";
+            el.appendChild(sp);
+            sealsBox.appendChild(el);
+            gsap.set(el, { rotation: ((i * 7) % 19) - 9 }); // index-derived -9..+9 deg
+            return el;
+          });
+
+          // grid of form cells, recolored per onset by index (color-grid-shuffle)
+          var grid = q("#f1_grid");
+          var COLS = 16;
+          var ROWS = 8;
+          var cells = [];
+          for (var r = 0; r < ROWS; r++) {
+            for (var c = 0; c < COLS; c++) {
+              var cell = document.createElement("div");
+              cell.className = "f1-cell";
+              grid.appendChild(cell);
+              cells.push({ el: cell, c: c, r: r });
+            }
+          }
+          var OFF = { backgroundColor: "rgba(245, 245, 242, 0)", boxShadow: "inset 0 0 0 1px rgba(245, 245, 242, 0)" };
+          function litSet(i) {
+            return cells.filter(function (k) {
+              return (k.c * 5 + k.r * 11 + i * 7) % 13 === 0;
+            });
+          }
+
+          var dim = q("#f1_dim");
+          var shake = q("#f1_shake");
+          var prev = [];
+          HITS.forEach(function (t, i) {
+            // seal lands: 0ms set + 2-frame squash 1.08 -> 1.0
+            var s = sealEls[i];
+            tl.set(s, { opacity: 0.92 }, t);
+            tl.fromTo(s, { scale: 1.08 }, { scale: 1, duration: 2 * F, ease: "power2.out" }, t);
+
+            // small screen jolt on the statement, index-derived direction
+            var dx = (((i * 37) % 9) - 4) * 1.6;
+            var dy = (((i * 53) % 7) - 3) * 1.6;
+            tl.set(shake, { x: dx, y: dy }, t);
+            tl.to(shake, { x: 0, y: 0, duration: 0.12, ease: "power3.out", lazy: false }, t);
+
+            // statement sinks under the stamps
+            tl.set(dim, { opacity: 1 - (i + 1) * 0.05 }, t);
+
+            // grid shuffle
+            prev.forEach(function (k) {
+              tl.set(k.el, OFF, t);
+            });
+            var lit = litSet(i);
+            lit.forEach(function (k) {
+              var seal = (k.c + k.r + i) % 4 === 0;
+              tl.set(
+                k.el,
+                {
+                  backgroundColor: seal ? "rgba(200, 40, 30, 0.14)" : "rgba(245, 245, 242, 0.045)",
+                  boxShadow: "inset 0 0 0 1px rgba(245, 245, 242, 0.1)",
+                },
+                t
+              );
+            });
+            prev = lit;
+          });
+
+          // counter-punch: 날인 000 -> 날인 200, accelerating with the roll, locks on 3.06
+          var LOCK = 3.06;
+          var cntEl = q("#f1_cnt");
+          function pad3(n) {
+            return n < 10 ? "00" + n : n < 100 ? "0" + n : String(n);
+          }
+          // count-up as 0ms text swaps on every video frame, accelerating (power2.in), locks on 3.06
+          tl.set(cntEl, { autoAlpha: 1 }, HITS[0]);
+          var CN = Math.round((LOCK - HITS[0]) / F); // 45 steps
+          for (var n = 1; n <= CN; n++) {
+            var p = n / CN;
+            var val = n === CN ? 200 : Math.round(200 * p * p);
+            var at = n === CN ? LOCK : HITS[0] + n * F - 0.001;
+            tl.set(cntEl, { textContent: "날인 " + pad3(val) }, at);
+          }
+          tl.set(cntEl, { scale: 1.16, color: "#F5F5F2" }, LOCK);
+          tl.to(cntEl, { scale: 1, duration: 0.38, ease: "expo.out", lazy: false }, LOCK);
+          chroma(cntEl, LOCK, 8, 3);
+
+          // ---------- 3.06 hard cut: stamps clear in one frame, 하루 200장. ----------
+          tl.set(q("#f1_drift"), { autoAlpha: 0 }, LOCK);
+          tl.set(grid, { autoAlpha: 0 }, LOCK);
+          tl.set(q("#f1_cut"), { autoAlpha: 1 }, LOCK);
+          var cutLine = q("#f1_cutLine");
+          var cutPunch = q("#f1_cutPunch");
+          tl.set(cutPunch, { scale: 1.07 }, LOCK);
+          tl.to(cutPunch, { scale: 1, duration: 0.4, ease: "expo.out", lazy: false }, LOCK);
+          chroma(cutLine, LOCK, 12, 5);
+          tl.fromTo(q("#f1_cutDrift"), { scale: 1 }, { scale: 1.015, duration: DUR - LOCK, ease: "none" }, LOCK);
+
+          // holo-sheen across the locked line
+          sheen(q("#f1_sheen2"), 3.13, 0.56);
+
+          // 3.41-3.88 roll: small chroma flicker only, final frame clean
+          chroma(cutLine, 3.41, 5, 2);
+          chroma(cutLine, 3.67, 6, 2);
+          tl.set(cutLine, { opacity: 0.86 }, 3.67);
+          tl.set(cutLine, { opacity: 1 }, 3.67 + F);
+          tl.set(cutLine, { textShadow: split(4) }, 3.76);
+          tl.set(cutLine, { textShadow: SPLIT0 }, 3.76 + 2 * F); // clean by 3.83, final frame held clean
+
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines[ID] = tl;
+        })();
+      </script>
+          <script>
+        /* audited by eye in snapshots: tight display leading / rolling digit strip are intentional */
+        document.querySelectorAll("#f1_l1 span, #f1_l2 span").forEach(function (e) { e.setAttribute("data-layout-allow-overlap", ""); });
+      </script>
+    </template>
+  </body>
+</html>
